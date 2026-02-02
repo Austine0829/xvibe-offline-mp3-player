@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/services/labeling_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import '../widgets/vertical_card.dart';
 
@@ -20,7 +21,10 @@ class _EnergeticSectionState extends State<EnergeticSection> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child:  Text("Energetic Vibes", style: Theme.of(context).textTheme.sectionLabel)
+              child:  Text(
+                LabelingService.generate(LabelType.energetic), 
+                style: Theme.of(context).textTheme.sectionLabel
+              )
             ),
             TextButton(
               onPressed: () {
