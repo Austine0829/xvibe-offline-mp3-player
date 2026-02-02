@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/widgets/horizontal_card.dart';
 
-class RecentTracksSection extends StatefulWidget {
-  const RecentTracksSection({super.key});
+class TopListenSection extends StatefulWidget {
+  const TopListenSection({super.key});
 
   @override
-  State<RecentTracksSection> createState() => _RecentTracksSectionState();
+  State<TopListenSection> createState() => _TopListenSection();
 }
 
-class _RecentTracksSectionState extends State<RecentTracksSection> {
+class _TopListenSection extends State<TopListenSection> {
 
   @override 
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Recent Tracks", style: Theme.of(context).textTheme.sectionLabel),
+            Text("Top Listen", style: Theme.of(context).textTheme.sectionLabel),
             TextButton(
               onPressed: () {
 
