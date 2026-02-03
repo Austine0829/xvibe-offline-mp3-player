@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import '../services/labeling_service.dart';
 import '../widgets/horizontal_text_and_text_button.dart';
 import '../widgets/vertical_card.dart';
