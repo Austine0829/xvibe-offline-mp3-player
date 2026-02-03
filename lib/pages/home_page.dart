@@ -21,25 +21,28 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 17),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              HomeBanner(),
-              SizedBox(height: 10),
-              RoadTripSection(),
-              RecentTracksSection(),
-              EnergeticSection(),
-              ChaoticSection(),
-              MixSection(),
-              AcousticSection(),
-              TopListenSection(),
-              ChillVibeSection(),
-              SizedBox(height: 50)
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            HomeBanner(),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+              children: [
+                RoadTripSection(),
+                SizedBox(height: 15),
+                RecentTracksSection(),
+                EnergeticSection(),
+                ChillVibeSection(),
+                MixSection(),
+                TopListenSection(),
+                AcousticSection(),
+                ChaoticSection(),
+                SizedBox(height: 50)
+              ])
+            ) 
+          ],
         ),
       ),
     );

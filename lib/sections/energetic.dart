@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/services/labeling_service.dart';
-import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
+import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
 import '../widgets/vertical_card.dart';
 
 class EnergeticSection extends StatefulWidget {
@@ -17,24 +17,9 @@ class _EnergeticSectionState extends State<EnergeticSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child:  Text(
-                LabelingService.generate(LabelType.energetic), 
-                style: Theme.of(context).textTheme.sectionLabel
-              )
-            ),
-            TextButton(
-              onPressed: () {
-
-            }, 
-              child: Text("Show More", style: TextStyle(color: Colors.white54))
-            )
-          ],
+        HorizontalTextAndTextButton(
+          label: LabelingService.generate(LabelType.energetic),
         ),
-        SizedBox(height: 10),
         SizedBox(
           height: 215,
           width: double.infinity,

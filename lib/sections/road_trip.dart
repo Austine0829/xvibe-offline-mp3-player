@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
+import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
+import '../services/labeling_service.dart';
 import '../widgets/vertical_card.dart';
 
 class RoadTripSection extends StatefulWidget {
@@ -16,21 +17,14 @@ class _RoadTripSectionState extends State<RoadTripSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Road Trip Vibes", style: Theme.of(context).textTheme.sectionLabel),
-            TextButton(
-              onPressed: () {
-
-            }, 
-              child: Text("Show More", style: TextStyle(color: Colors.white54))
-            )
-          ],
+        HorizontalTextAndTextButton(
+          label: LabelingService.generate(LabelType.roadTrip)
         ),
-        SizedBox(
-          height: 215,
-          width: double.infinity,
+        Container(
+          constraints: BoxConstraints(
+            maxHeight: 200,
+            maxWidth: double.infinity
+          ),
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemBuilder:(_, index) {
@@ -39,7 +33,7 @@ class _RoadTripSectionState extends State<RoadTripSection> {
             separatorBuilder: (_, _) => SizedBox(width: 8), 
             itemCount: 3
           )
-        ),
+        )
       ],
     );
   }

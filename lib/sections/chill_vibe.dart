@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
+import '../services/labeling_service.dart';
+import '../widgets/horizontal_text_and_text_button.dart';
 import '../widgets/vertical_card.dart';
 
 class ChillVibeSection extends StatefulWidget {
@@ -16,17 +18,8 @@ class _ChillVibeSection extends State<ChillVibeSection> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Chill Vibes", style: Theme.of(context).textTheme.sectionLabel),
-            TextButton(
-              onPressed: () {
-
-            }, 
-              child: Text("Show More", style: TextStyle(color: Colors.white54))
-            )
-          ],
+        HorizontalTextAndTextButton(
+          label: LabelingService.generate(LabelType.chill),
         ),
         SizedBox(
           height: 215,
@@ -34,7 +27,7 @@ class _ChillVibeSection extends State<ChillVibeSection> {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemBuilder:(_, index) {
-              return VerticalCard(songTitle: "My Music Card", songVibe: "Road Trip");
+              return VerticalCard(songTitle: "My Music Card", songVibe: "Chill");
             }, 
             separatorBuilder: (_, _) => SizedBox(width: 8), 
             itemCount: 3
