@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
 import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
 import '../services/labeling_service.dart';
 import '../widgets/vertical_card.dart';
@@ -18,7 +19,8 @@ class _RoadTripSectionState extends State<RoadTripSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HorizontalTextAndTextButton(
-          label: LabelingService.generate(LabelType.roadTrip)
+          textLabel: LabelingService.generate(LabelType.roadTrip),
+          textButtonLabel: LabelName.showMore,
         ),
         Container(
           constraints: BoxConstraints(

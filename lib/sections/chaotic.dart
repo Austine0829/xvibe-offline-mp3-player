@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
 import '../services/labeling_service.dart';
 import '../widgets/horizontal_text_and_text_button.dart';
 import '../widgets/vertical_card.dart';
@@ -18,7 +19,8 @@ class _ChaoticSectionState extends State<ChaoticSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HorizontalTextAndTextButton(
-          label: LabelingService.generate(LabelType.chaotic),
+          textLabel: LabelingService.generate(LabelType.chaotic),
+          textButtonLabel: LabelName.showMore,
         ),
         SizedBox(
           height: 215,

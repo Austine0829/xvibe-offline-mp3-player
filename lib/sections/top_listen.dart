@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
 import 'package:xvibe_offline_mp3_player/widgets/horizontal_card.dart';
 import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
 
@@ -17,7 +18,8 @@ class _TopListenSection extends State<TopListenSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
        HorizontalTextAndTextButton(
-        label: "Top Listen"
+        textLabel: "Top Listen",
+        textButtonLabel: LabelName.showAll,
       ),
       ...List.generate(3, (index) => 
           Padding(

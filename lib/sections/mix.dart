@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
 import '../widgets/horizontal_text_and_text_button.dart';
 import '../widgets/vertical_card.dart';
 
@@ -17,7 +18,8 @@ class _MixSection extends State<MixSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HorizontalTextAndTextButton(
-          label: "Mix For You",
+          textLabel: "Mix For You",
+          textButtonLabel: LabelName.showMore,
         ),
         SizedBox(
           height: 215,
