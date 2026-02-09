@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../utils/app_text_theme.dart';
 
-class SwipableMenuSheet extends StatelessWidget {
+class BottomSwipableSongMenuSheet extends StatelessWidget {
   static const double iconSize = 35;
   static const Color iconColor = Colors.white;
 
-  const SwipableMenuSheet({super.key});
+  const BottomSwipableSongMenuSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
