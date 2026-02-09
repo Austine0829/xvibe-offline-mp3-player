@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import '../utils/app_text_theme.dart';
 
 class HorizontalTextAndTextButton extends StatelessWidget {
-  final String label;
+  final String textLabel;
+  final String textButtonLabel;
   final VoidCallback? callback;
 
   const HorizontalTextAndTextButton({
     super.key,
-    required this.label,
+    required this.textLabel,
+    required this.textButtonLabel,
     this.callback
   });
 
@@ -26,7 +28,7 @@ class HorizontalTextAndTextButton extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              label,
+              textLabel,
               style: Theme.of(context).textTheme.sectionLabel
             )  
           ),
@@ -39,7 +41,7 @@ class HorizontalTextAndTextButton extends StatelessWidget {
             onPressed: () {
              runCallBack();
             }, 
-            child: Text("Show More", style: TextStyle(color: Colors.white54))
+            child: Text(textButtonLabel, style: TextStyle(color: Colors.white54))
         )
       ])
     );
