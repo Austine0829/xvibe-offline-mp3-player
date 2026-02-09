@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
-import 'package:xvibe_offline_mp3_player/widgets/horizontal_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/horizontal_song_card.dart';
 import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
 
 class RecentTracksSection extends StatefulWidget {
@@ -11,22 +11,25 @@ class RecentTracksSection extends StatefulWidget {
 }
 
 class _RecentTracksSectionState extends State<RecentTracksSection> {
-
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         HorizontalTextAndTextButton(
           textLabel: "Recent Tracks",
-          textButtonLabel: LabelName.showAll, 
+          textButtonLabel: LabelName.showAll,
         ),
-        ...List.generate(3, (index) => 
-          Padding(
+        ...List.generate(
+          3,
+          (index) => Padding(
             padding: EdgeInsets.only(bottom: 8),
-            child: HorizontalCard(songTitle: "Music Card", songVibe: "Road Trip")
-          )
-        )
+            child: HorizontalCard(
+              songTitle: "Music Card",
+              songVibe: "Road Trip",
+            ),
+          ),
+        ),
       ],
     );
   }
