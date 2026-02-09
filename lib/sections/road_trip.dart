@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
 import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
 import '../services/labeling_service.dart';
-import '../widgets/vertical_card.dart';
+import '../widgets/vertical_song_card.dart';
 
 class RoadTripSection extends StatefulWidget {
   const RoadTripSection({super.key});
@@ -12,8 +12,7 @@ class RoadTripSection extends StatefulWidget {
 }
 
 class _RoadTripSectionState extends State<RoadTripSection> {
-
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,17 +24,20 @@ class _RoadTripSectionState extends State<RoadTripSection> {
         Container(
           constraints: BoxConstraints(
             maxHeight: 200,
-            maxWidth: double.infinity
+            maxWidth: double.infinity,
           ),
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            itemBuilder:(_, index) {
-              return VerticalCard(songTitle: "My Music Card", songVibe: "Road Trip");
-            }, 
-            separatorBuilder: (_, _) => SizedBox(width: 8), 
-            itemCount: 3
-          )
-        )
+            itemBuilder: (_, index) {
+              return VerticalSongCard(
+                songTitle: "My Music Card",
+                songVibe: "Road Trip",
+              );
+            },
+            separatorBuilder: (_, _) => SizedBox(width: 8),
+            itemCount: 3,
+          ),
+        ),
       ],
     );
   }
