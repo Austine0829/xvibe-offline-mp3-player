@@ -24,7 +24,7 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
           3,
           (index) => Padding(
             padding: EdgeInsets.only(bottom: 8),
-            child: HorizontalCard(
+            child: HorizontalSongCard(
               songTitle: "Music Card",
               songVibe: "Road Trip",
             ),
