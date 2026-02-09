@@ -11,7 +11,7 @@ class HorizontalTextAndTextButton extends StatelessWidget {
     super.key,
     required this.textLabel,
     required this.textButtonLabel,
-    this.callback
+    this.callback,
   });
 
   void runCallBack() {
@@ -19,31 +19,36 @@ class HorizontalTextAndTextButton extends StatelessWidget {
     callback!();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10),
       child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Text(
               textLabel,
-              style: Theme.of(context).textTheme.sectionLabel
-            )  
+              style: Theme.of(context).textTheme.sectionLabel,
+            ),
           ),
+          SizedBox(width: 15),
           TextButton(
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
               minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
             onPressed: () {
-             runCallBack();
-            }, 
-            child: Text(textButtonLabel, style: TextStyle(color: Colors.white54))
-        )
-      ])
+              runCallBack();
+            },
+            child: Text(
+              textButtonLabel,
+              style: TextStyle(color: Colors.white54),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
