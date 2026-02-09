@@ -22,5 +22,9 @@ extension AppTextTheme on TextTheme {
                          color: Colors.white);  
                          
   TextStyle get textButtonColor => 
-    titleLarge!.copyWith(color: Colors.white54);                      
+    titleLarge!.copyWith(color: Colors.white54);  
+
+  TextStyle get listTitleLabel => 
+    titleLarge!.copyWith(fontSize: 15,
+                         color: Colors.white);                     
 }
