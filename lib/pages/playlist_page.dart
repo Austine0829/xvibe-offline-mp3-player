@@ -11,6 +11,26 @@ class PlaylistPage extends StatefulWidget {
 }
 
 class _PlaylistPageState extends State<PlaylistPage> {
+  List<String> data = [
+    "Zero Vibe",
+    "Mulawin",
+    "Dancing in the Rain",
+    "May Lupa Pa",
+    "Baragbagan",
+    "Songs That Makes you Smile",
+    "Crying",
+    "Effin Soul",
+    "DM Me When you Get Home Vibe",
+    "Road Trips",
+    "Cignature",
+  ];
+
+  void reverseList() {
+    setState(() {
+      data = data.reversed.toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,15 +39,38 @@ class _PlaylistPageState extends State<PlaylistPage> {
         title: Text("Playlist", style: Theme.of(context).textTheme.pageLabel),
         backgroundColor: Colors.black,
       ),
-      body: ListView.separated(
-        itemBuilder: (_, index) {
-          return PlaylistCard(
-            textLabel: "My Playlist ${index + 1}",
-            backgroundColor: RandomColorPicker.generate(),
-          );
-        },
-        separatorBuilder: (_, _) => SizedBox(height: 5),
-        itemCount: 10,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 3),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Recent",
+                    style: Theme.of(context).textTheme.sectionLabel,
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      reverseList();
+                    },
+                    icon: Icon(Icons.sort, color: Colors.white),
+                  ),
+                ],
+              ),
+            ),
+            ...List.generate(
+              data.length,
+              (index) => PlaylistCard(
+                textLabel: data[index],
+                backgroundColor: RandomColorPicker.generate(),
+              ),
+            ),
+            SizedBox(height: 50),
+          ],
+        ),
       ),
     );
   }
