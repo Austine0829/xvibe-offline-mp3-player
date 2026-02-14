@@ -16,9 +16,17 @@ class _BrowsePageState extends State<BrowsePage> {
   ValueNotifier<String> text = ValueNotifier('');
   Timer? _debounce;
 
+  void debounce(String value) {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      text.value = value;
+    });
+  }
+
   @override
   void dispose() {
-    _debounce!.cancel();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -39,13 +47,7 @@ class _BrowsePageState extends State<BrowsePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  onChanged: (value) {
-                    if (_debounce?.isActive ?? false) _debounce!.cancel();
-
-                    _debounce = Timer(const Duration(milliseconds: 500), () {
-                      text.value = value;
-                    });
-                  },
+                  onChanged: (value) => debounce(value),
                   cursorColor: Colors.black,
                   decoration: InputDecoration(
                     filled: true,
