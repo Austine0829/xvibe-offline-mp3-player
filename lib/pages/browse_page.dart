@@ -13,14 +13,14 @@ class BrowsePage extends StatefulWidget {
 }
 
 class _BrowsePageState extends State<BrowsePage> {
-  ValueNotifier<String> text = ValueNotifier('');
+  final ValueNotifier<String> _text = ValueNotifier('');
   Timer? _debounce;
 
   void debounce(String value) {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      text.value = value;
+      _text.value = value;
     });
   }
 
@@ -64,7 +64,7 @@ class _BrowsePageState extends State<BrowsePage> {
                   ),
                 ),
                 ValueListenableBuilder(
-                  valueListenable: text,
+                  valueListenable: _text,
                   builder: (_, value, _) {
                     return value.isEmpty
                         ? BrowseCatalogGridView()
