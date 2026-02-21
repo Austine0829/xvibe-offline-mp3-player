@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/app_text_theme.dart';
+import '../../utils/app_text_theme.dart';
 
 class BottomSwipableSongMenuSheet extends StatelessWidget {
   static const double iconSize = 35;

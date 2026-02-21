@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/widgets/browse_catalog_grid_card.dart';
-import '../utils/app_text_theme.dart';
+import 'package:xvibe_offline_mp3_player/widgets/browse/browse_catalog_grid_card.dart';
+import '../../utils/app_text_theme.dart';
 
 class BrowseCatalogGridView extends StatelessWidget {
   const BrowseCatalogGridView({super.key});

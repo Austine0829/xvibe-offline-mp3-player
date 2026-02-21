@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/app_text_theme.dart';
+import '../../utils/app_text_theme.dart';
 
 class HorizontalTextAndTextButton extends StatelessWidget {
   final String textLabel;

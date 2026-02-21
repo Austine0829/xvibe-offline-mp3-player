@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/widgets/bottom_swipable_song_menu_sheet.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/bottom_swipable_song_menu_sheet.dart';
 
-import '../utils/app_text_theme.dart';
+import '../../utils/app_text_theme.dart';
 
 class HorizontalSongCard extends StatelessWidget {
   final String songTitle;

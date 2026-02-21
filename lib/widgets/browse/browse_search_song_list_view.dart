@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/widgets/horizontal_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
 
 class BrowseSearchSongListView extends StatefulWidget {
   const BrowseSearchSongListView({super.key});
