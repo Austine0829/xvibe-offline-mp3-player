@@ -3,7 +3,6 @@ import '../sections/home/acoustic.dart';
 import '../sections/home/chaotic.dart';
 import '../sections/home/chill_vibe.dart';
 import '../sections/home/energetic.dart';
-import '../sections/home/home_banner.dart';
 import '../sections/home/mix.dart';
 import '../sections/home/recent_tracks.dart';
 import '../sections/home/road_trip.dart';
@@ -25,7 +24,6 @@ class HomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            HomeBanner(),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Column(
