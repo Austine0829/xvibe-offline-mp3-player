@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
           child: Column(
