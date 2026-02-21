@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../sections/acoustic.dart';
-import '../sections/chaotic.dart';
-import '../sections/chill_vibe.dart';
-import '../sections/energetic.dart';
-import '../sections/home_banner.dart';
-import '../sections/mix.dart';
-import '../sections/recent_tracks.dart';
-import '../sections/road_trip.dart';
-import '../sections/top_listen.dart';
+import '../sections/home/acoustic.dart';
+import '../sections/home/chaotic.dart';
+import '../sections/home/chill_vibe.dart';
+import '../sections/home/energetic.dart';
+import '../sections/home/home_banner.dart';
+import '../sections/home/mix.dart';
+import '../sections/home/recent_tracks.dart';
+import '../sections/home/road_trip.dart';
+import '../sections/home/top_listen.dart';
 import '../utils/app_text_theme.dart';
 
 class HomePage extends StatelessWidget {

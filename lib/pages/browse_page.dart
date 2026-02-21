@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
-import 'package:xvibe_offline_mp3_player/widgets/browse_catalog_grid_view.dart';
-import 'package:xvibe_offline_mp3_player/widgets/browse_search_song_list_view.dart';
+import 'package:xvibe_offline_mp3_player/widgets/browse/browse_catalog_grid_view.dart';
+import 'package:xvibe_offline_mp3_player/widgets/browse/browse_search_song_list_view.dart';
 
 class BrowsePage extends StatefulWidget {
   const BrowsePage({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/utils/random_color_picker.dart';
-import 'package:xvibe_offline_mp3_player/widgets/playlist_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/playlist/playlist_card.dart';
 
 class PlaylistPage extends StatefulWidget {
   const PlaylistPage({super.key});
