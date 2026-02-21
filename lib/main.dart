@@ -35,17 +35,20 @@ class _MainState extends State<Main> {
   int _currentPageIndex = 0;
 
   final List<Widget> _pages = [
-    HomePage(),
-    PlaylistPage(),
-    BrowsePage(),
-    Text("Analytics"),
+    const HomePage(),
+    const PlaylistPage(),
+    const BrowsePage(),
+    const Text("Analytics"),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      body: _pages[_currentPageIndex],
+      body: IndexedStack(
+        index: _currentPageIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -68,7 +71,7 @@ class _MainState extends State<Main> {
               _currentPageIndex = index;
             });
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
               icon: Icon(Icons.playlist_play),
@@ -85,3 +88,65 @@ class _MainState extends State<Main> {
     );
   }
 }
+
+// class Main extends StatefulWidget {
+//   const Main({super.key});
+
+//   @override
+//   State<Main> createState() => _MainState();
+// }
+
+// class _MainState extends State<Main> {
+//   int _currentPageIndex = 0;
+
+//   final List<Widget> _pages = [
+//     HomePage(),
+//     PlaylistPage(),
+//     BrowsePage(),
+//     Text("Analytics"),
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       extendBody: true,
+//       body: _pages[_currentPageIndex],
+//       bottomNavigationBar: Container(
+//         decoration: BoxDecoration(
+//           boxShadow: [
+//             BoxShadow(
+//               color: Colors.black.withValues(alpha: 0.7),
+//               blurRadius: 30,
+//               spreadRadius: 15,
+//             ),
+//           ],
+//         ),
+//         child: BottomNavigationBar(
+//           type: BottomNavigationBarType.fixed,
+//           backgroundColor: Colors.transparent,
+//           selectedItemColor: Colors.white,
+//           unselectedItemColor: Colors.white54,
+//           elevation: 15,
+//           currentIndex: _currentPageIndex,
+//           onTap: (index) {
+//             setState(() {
+//               _currentPageIndex = index;
+//             });
+//           },
+//           items: [
+//             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.playlist_play),
+//               label: "Playlist",
+//             ),
+//             BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
+//             BottomNavigationBarItem(
+//               icon: Icon(Icons.analytics),
+//               label: "Analytics",
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
