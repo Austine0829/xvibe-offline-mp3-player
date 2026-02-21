@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
-import 'package:xvibe_offline_mp3_player/widgets/horizontal_song_card.dart';
-import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
 
 class RecentTracksSection extends StatefulWidget {
   const RecentTracksSection({super.key});

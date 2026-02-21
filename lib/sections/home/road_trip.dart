@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
-import 'package:xvibe_offline_mp3_player/widgets/horizontal_text_and_text_button.dart';
-import '../services/labeling_service.dart';
-import '../widgets/vertical_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
+import '../../services/home/labeling_service.dart';
+import '../../widgets/home/vertical_song_card.dart';
 
 class RoadTripSection extends StatefulWidget {
   const RoadTripSection({super.key});
