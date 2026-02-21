@@ -67,8 +67,8 @@ class _BrowsePageState extends State<BrowsePage> {
                   valueListenable: _text,
                   builder: (_, value, _) {
                     return value.isEmpty
-                        ? BrowseCatalogGridView()
-                        : BrowseSearchSongListView();
+                        ? const BrowseCatalogGridView()
+                        : const BrowseSearchSongListView();
                   },
                 ),
               ],
