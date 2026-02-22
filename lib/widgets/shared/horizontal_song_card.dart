@@ -16,12 +16,13 @@ class HorizontalSongCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
+      height: 55,
       width: double.infinity,
       child: Row(
         children: [
           Container(
-            width: 60,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: AssetImage("assets/music_card_default.jpeg"),
