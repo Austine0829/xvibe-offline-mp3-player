@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
 
 class SongsPage extends StatefulWidget {
