@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
+import 'package:xvibe_offline_mp3_player/pages/songs_page.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
 import '../../services/home/labeling_service.dart';
 import '../../widgets/home/vertical_song_card.dart';
@@ -20,6 +21,14 @@ class _RoadTripSectionState extends State<RoadTripSection> {
         HorizontalTextAndTextButton(
           textLabel: LabelingService.generate(LabelType.roadTrip),
           textButtonLabel: LabelName.showMore,
+          callback: () {
+            Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (_) => SongsPage(pageLabel: "Road Trip")
+              )
+            );
+          },
         ),
         Container(
           constraints: BoxConstraints(
