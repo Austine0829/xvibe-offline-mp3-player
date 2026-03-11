@@ -1,5 +1,7 @@
 import 'package:just_audio/just_audio.dart';
 
+// TODO: Turn the service into non-static when you start managing dependencies using provider
+
 class MusicPlayerService {
   static final AudioPlayer _player = AudioPlayer();
   static final Map<String, List<AudioSource>> _playlist = {};
