@@ -22,6 +22,8 @@ class _BrowseSearchSongListViewState extends State<BrowseSearchSongListView> {
               child: HorizontalSongCard(
                 songTitle: "Random",
                 songVibe: "Random",
+                playlistId: "",
+                indexId: 0,
               ),
             );
           }),
