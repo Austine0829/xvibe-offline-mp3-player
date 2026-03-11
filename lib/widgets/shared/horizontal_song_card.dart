@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/bottom_swipable_song_menu_sheet.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/swipable_music_player.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
 
 import '../../utils/app_text_theme.dart';
 
 class HorizontalSongCard extends StatelessWidget {
   final String songTitle;
   final String songVibe;
+  final String playlistId;
+  final int indexId;
 
   const HorizontalSongCard({
     super.key,
     required this.songTitle,
     required this.songVibe,
+    required this.playlistId,
+    required this.indexId,
   });
+
+  Future<void> play(String id, int index) async =>
+      await MusicPlayerService.seekIndex(id, index);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showModalBottomSheet(
-          backgroundColor: const Color.fromARGB(255, 83, 83, 83).withValues(alpha: 0.5),
-          showDragHandle: true,
-          isScrollControlled: true,
-          context: context, 
-          builder: (context) {
-            return SwipableMusicPlayer();
-          },
-        );
+        play(playlistId, indexId);
+        SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
       },
       child: SizedBox(
         height: 55,
@@ -45,27 +47,28 @@ class HorizontalSongCard extends StatelessWidget {
               ),
             ),
             SizedBox(width: 8),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    songTitle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.horizontalCardTitle,
-                  ),
-                  Text(
-                    songVibe,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.cardGenre,
-                  ),
-                ],
-              ),
+            Expanded(
+              child:  Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      songTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.horizontalCardTitle,
+                    ),
+                    Text(
+                      songVibe,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.cardGenre,
+                    ),
+                  ],
+                ),
+              ), 
             ),
-            Spacer(),
             IconButton(
               onPressed: () {
                 showModalBottomSheet(
@@ -83,6 +86,6 @@ class HorizontalSongCard extends StatelessWidget {
           ],
         ),
       ),
-    ) ;
+    );
   }
 }
