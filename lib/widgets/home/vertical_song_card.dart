@@ -1,47 +1,63 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
 
 import '../../utils/app_text_theme.dart';
 
 class VerticalSongCard extends StatelessWidget {
   final String songTitle;
   final String songVibe;
+  final String playlistId;
+  final int indexId;
 
   const VerticalSongCard({
     super.key,
     required this.songTitle,
     required this.songVibe,
+    required this.playlistId,
+    required this.indexId,
   });
+
+  Future<void> play(String id, int index) async =>
+      await MusicPlayerService.seekIndex(id, index);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 150,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              image: DecorationImage(
-                image: AssetImage("assets/music_card_default.jpeg"),
+    return GestureDetector(
+      onTap: () {
+        play(playlistId, indexId);
+        SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
+      },
+      child: SizedBox(
+        width: 150,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 150,
+              height: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                image: DecorationImage(
+                  image: AssetImage("assets/music_card_default.jpeg"),
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10),
-          Text(
-            songVibe,
-            maxLines: 1,
-            style: Theme.of(context).textTheme.cardGenre,
-          ),
-          Text(
-            songTitle,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.verticalCardTitle,
-          ),
-        ],
+            SizedBox(height: 10),
+            Text(
+              songVibe,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.cardGenre,
+            ),
+            Text(
+              songTitle,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.verticalCardTitle,
+            ),
+          ],
+        ),
       ),
     );
   }
