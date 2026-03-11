@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/playlist_page.dart';
@@ -8,8 +9,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await requestPermissions();
 
   runApp(const MyApp());
+}
+
+Future<void> requestPermissions() async {
+  await Permission.audio.request();
+  await Permission.storage.request();
 }
 
 class MyApp extends StatelessWidget {
