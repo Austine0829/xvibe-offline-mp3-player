@@ -1,42 +1,44 @@
-import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
-import '../../services/home/labeling_service.dart';
-import '../../widgets/home/horizontal_text_and_text_button.dart';
-import '../../widgets/home/vertical_song_card.dart';
+// import 'package:flutter/material.dart';
+// import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
+// import '../../services/home/labeling_service.dart';
+// import '../../widgets/home/horizontal_text_and_text_button.dart';
+// import '../../widgets/home/vertical_song_card.dart';
 
-class ChaoticSection extends StatefulWidget {
-  const ChaoticSection({super.key});
+// TODO: Re-implement it into a responsive design
 
-  @override
-  State<ChaoticSection> createState() => _ChaoticSectionState();
-}
+// class ChaoticSection extends StatefulWidget {
+//   const ChaoticSection({super.key});
 
-class _ChaoticSectionState extends State<ChaoticSection> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        HorizontalTextAndTextButton(
-          textLabel: LabelingService.generate(LabelType.chaotic),
-          textButtonLabel: LabelName.showMore,
-        ),
-        SizedBox(
-          height: 215,
-          width: double.infinity,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (_, index) {
-              return VerticalSongCard(
-                songTitle: "My Music Card",
-                songVibe: "Chaotic",
-              );
-            },
-            separatorBuilder: (_, _) => SizedBox(width: 8),
-            itemCount: 3,
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   State<ChaoticSection> createState() => _ChaoticSectionState();
+// }
+
+// class _ChaoticSectionState extends State<ChaoticSection> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       crossAxisAlignment: CrossAxisAlignment.start,
+//       children: [
+//         HorizontalTextAndTextButton(
+//           textLabel: LabelingService.generate(LabelType.chaotic),
+//           textButtonLabel: LabelName.showMore,
+//         ),
+//         SizedBox(
+//           height: 215,
+//           width: double.infinity,
+//           child: ListView.separated(
+//             scrollDirection: Axis.horizontal,
+//             itemBuilder: (_, index) {
+//               return VerticalSongCard(
+//                 songTitle: "My Music Card",
+//                 songVibe: "Chaotic",
+//               );
+//             },
+//             separatorBuilder: (_, _) => SizedBox(width: 8),
+//             itemCount: 3,
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
