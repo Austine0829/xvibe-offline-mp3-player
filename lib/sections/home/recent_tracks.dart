@@ -1,18 +1,17 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
+import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/show_more_page.dart';
-import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/scanning_service.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
-
-// TODO: Re-implement it into a responsive design
+import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
 
 class RecentTracksSection extends StatefulWidget {
   const RecentTracksSection({super.key});
@@ -22,6 +21,7 @@ class RecentTracksSection extends StatefulWidget {
 }
 
 class _RecentTracksSectionState extends State<RecentTracksSection> {
+  late final IMusicPlayerService _musicPlayerService;
   final String playlistId = Playlistid.recentTrack;
   // final List<Song> songs = [
   //   Song(id: 1, title: "AllDay Project - Look at me", vibe: "Chill", path: "assets/music/adp.mp3"),
@@ -29,20 +29,27 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
   //   Song(id: 1, title: "J Tajor - All That Matters", vibe: "Chill", path: "assets/music/j_tajor.mp3"),
   // ];
 
+  bool isInitialize = false;
+
   List<Song> songs = [];
   bool isLoading = true;
 
   @override
-  void initState() {
-    super.initState();
-    initPlaylist();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if(!isInitialize) {
+      _musicPlayerService = context.read<MusicPlayerService>();
+      initPlaylist();
+      isInitialize = true;
+    }
   }
 
   List<Song> formatSongs(List<File> files) {
     return files.map((file) {
       return Song(
         id: 1,
-        title: basename(file.path.replaceAll(RegExp(r"_mixed\.mp3$|.mp3"), "")),
+        title: path.basename(file.path.replaceAll(RegExp(r"_mixed\.mp3$|.mp3"), "")),
         path: file.path.replaceAll(RegExp(r"_mixed\.mp3$"), "").trim(),
         vibe: "Chill"
       );
@@ -62,7 +69,7 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
     final List<AudioSource> playlist = songs.map((song) => 
       AudioSource.file(song.path, tag: song)).toList();
 
-    MusicPlayerService.setPlaylist(playlistId, playlist);
+    _musicPlayerService.setPlaylist(playlistId, playlist);
   }
 
   @override
@@ -78,6 +85,7 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
               context,
               MaterialPageRoute(
                 builder: (_) => ShowMorePage( 
+                  musicPlayerService: _musicPlayerService,
                   songs: songs, 
                   playlistId: playlistId
                 ),
@@ -92,6 +100,7 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
               (index) => Padding(
                 padding: EdgeInsets.only(bottom: 8),
                 child: HorizontalSongCard(
+                  musicPlayerService: _musicPlayerService,
                   songTitle: songs[index].title,
                   songVibe: songs[index].vibe,
                   playlistId: playlistId,
