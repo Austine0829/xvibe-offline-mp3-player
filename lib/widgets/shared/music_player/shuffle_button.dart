@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 
 class ShuffleButton extends StatefulWidget {
+  final IMusicPlayerService musicPlayerService;
 
-  const ShuffleButton({super.key});
+  const ShuffleButton({
+    super.key,
+    required this.musicPlayerService
+  });
 
   @override
   State<ShuffleButton> createState() => _ShuffleButtonState();
@@ -12,7 +16,7 @@ class ShuffleButton extends StatefulWidget {
 class _ShuffleButtonState extends State<ShuffleButton> {
 
   Future<void> shuffle(bool isShuffle) async {
-    await MusicPlayerService.enableShuffle(isShuffle);
+    await widget.musicPlayerService.enableShuffle(isShuffle);
   }
 
   void enableShuffle(bool isShuffle) => setState(() {
@@ -21,7 +25,7 @@ class _ShuffleButtonState extends State<ShuffleButton> {
 
   @override
   Widget build(BuildContext context) {
-    if (MusicPlayerService.isShuffle) {
+    if (widget.musicPlayerService.isShuffle) {
       return IconButton(
         onPressed: () => enableShuffle(false),
         icon: Icon(Icons.shuffle, color: Colors.white, size: 30),

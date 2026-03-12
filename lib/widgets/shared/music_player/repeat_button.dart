@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 
 class RepeatButton extends StatefulWidget {
-  const RepeatButton({super.key});
+  final IMusicPlayerService musicPlayerService;
+
+  const RepeatButton({
+    super.key,
+    required this.musicPlayerService
+  });
 
   @override
   State<RepeatButton> createState() => _RepeatButtonState();
@@ -12,7 +17,7 @@ class RepeatButton extends StatefulWidget {
 class _RepeatButtonState extends State<RepeatButton> {
 
   Future<void> repeat(LoopMode mode) async {
-    await MusicPlayerService.setLoopMode(mode);
+    await widget.musicPlayerService.setLoopMode(mode);
   }
 
   void repeatMode(LoopMode mode) => setState(() {
@@ -21,7 +26,7 @@ class _RepeatButtonState extends State<RepeatButton> {
 
   @override
   Widget build(BuildContext context) {
-    switch (MusicPlayerService.currentLoopMode) {
+    switch (widget.musicPlayerService.currentLoopMode) {
       case LoopMode.off:
         return IconButton(
           onPressed: () => repeatMode(LoopMode.one),

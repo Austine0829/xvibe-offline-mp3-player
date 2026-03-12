@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/song_duration_formater.dart';
 
-class DurationSlider extends StatefulWidget {
-  const DurationSlider({super.key});
+class DurationSlider extends StatelessWidget {
+  final IMusicPlayerService musicPlayerService;
 
-  @override
-  State<DurationSlider> createState() => _DurationSliderState();
-}
+  const DurationSlider({
+    super.key,
+    required this.musicPlayerService
+  });
 
-class _DurationSliderState extends State<DurationSlider> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: MusicPlayerService.positionStream(), 
+      stream: musicPlayerService.positionStream(), 
       builder: (context, snapshot) {
         final currentDuration = snapshot.data ?? Duration.zero;
-        final songDuration = MusicPlayerService.currentSongDuration() ?? Duration.zero;
+        final songDuration = musicPlayerService.currentSongDuration() ?? Duration.zero;
 
         return SliderTheme(
           data: SliderTheme.of(context).copyWith(
@@ -35,7 +35,7 @@ class _DurationSliderState extends State<DurationSlider> {
                 min: 0,
                 padding: EdgeInsets.only(left: 0, right: 0, top: 15),
                 onChanged: (value) {
-                  MusicPlayerService.seekTo(Duration(seconds: value.toInt()));
+                  musicPlayerService.seekTo(Duration(seconds: value.toInt()));
                 },
               ),
                 Row(
