@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/playlist_page.dart';
+import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,7 +13,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await requestPermissions();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 Future<void> requestPermissions() async {
@@ -50,46 +52,51 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: IndexedStack(
-        index: _currentPageIndex,
-        children: _pages,
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.7),
-              blurRadius: 30,
-              spreadRadius: 15,
-            ),
-          ],
+    return MultiProvider(
+      providers: [
+        Provider(create: (_) => LabelingService())
+      ],
+      child: Scaffold(
+        extendBody: true,
+        body: IndexedStack(
+          index: _currentPageIndex,
+          children: _pages,
         ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.transparent,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white54,
-          elevation: 15,
-          currentIndex: _currentPageIndex,
-          onTap: (index) {
-            setState(() {
-              _currentPageIndex = index;
-            });
-          },
-          items: const [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.playlist_play),
-              label: "Playlist",
-            ),
-            BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.analytics),
-              label: "Analytics",
-            ),
-          ],
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.7),
+                blurRadius: 30,
+                spreadRadius: 15,
+              ),
+            ],
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: Colors.transparent,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white54,
+            elevation: 15,
+            currentIndex: _currentPageIndex,
+            onTap: (index) {
+              setState(() {
+                _currentPageIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.playlist_play),
+                label: "Playlist",
+              ),
+              BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.analytics),
+                label: "Analytics",
+              ),
+            ],
+          ),
         ),
       ),
     );
