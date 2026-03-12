@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:xvibe_offline_mp3_player/services/home/i_labeling_service.dart';
+
 enum LabelType {
   energetic,
   chill,
@@ -8,11 +10,12 @@ enum LabelType {
   acoustic
 }
 
-class LabelingService {
-  static final _random = Random();
+class LabelingService implements ILabelingService {
+  final _random = Random();
 
-  static const Map<LabelType, List<String>> _labels = {
-    LabelType.energetic: [
+  @override
+  final Map<LabelType, List<String>> labels = {
+     LabelType.energetic: [
       "Energetic Vibes",
       "Music to fuel your fire",
       "High-energy hits to lift you up",
@@ -49,8 +52,11 @@ class LabelingService {
     ]
   };
 
-  static String generate(LabelType type) {
-    final list = _labels[type]!;
+  @override
+  String generate(LabelType type) {
+    final list = labels[type]!;
     return list[_random.nextInt(list.length)];
   }
+
+
 }
