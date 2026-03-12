@@ -6,6 +6,7 @@ import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/playlist_page.dart';
 import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +14,15 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await requestPermissions();
 
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider(create: (_) => MusicPlayerService()),
+        Provider(create: (_) => LabelingService())
+      ],
+      child: MyApp(),
+    )
+  );
 }
 
 Future<void> requestPermissions() async {
@@ -52,11 +61,7 @@ class _MainState extends State<Main> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(create: (_) => LabelingService())
-      ],
-      child: Scaffold(
+    return Scaffold(
         extendBody: true,
         body: IndexedStack(
           index: _currentPageIndex,
@@ -98,8 +103,7 @@ class _MainState extends State<Main> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
 
