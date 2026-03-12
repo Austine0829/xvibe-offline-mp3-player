@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:provider/provider.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/duration_slider.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/play_pause_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/repeat_button.dart';
@@ -14,8 +16,22 @@ class SwipableMusicPlayer extends StatefulWidget {
 }
 
 class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
-  Future<void> seekNext() async => await MusicPlayerService.seekNext();
-  Future<void> seekPrevious() async => await MusicPlayerService.seekPrevious();
+  late final IMusicPlayerService _musicPlayerService;
+  bool isInitialize = false;
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if(!isInitialize) {
+      _musicPlayerService = context.read<MusicPlayerService>();
+      isInitialize = true;
+    }
+  }
+
+  Future<void> seekNext() async => await _musicPlayerService.seekNext();
+  Future<void> seekPrevious() async => await _musicPlayerService.seekPrevious();
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +59,12 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                   fit: BoxFit.cover,
                 ),
               ),
-              TitleSubtitle(),
-              DurationSlider(),
+              TitleSubtitle(musicPlayerService: _musicPlayerService,),
+              DurationSlider(musicPlayerService: _musicPlayerService,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  ShuffleButton(),
+                  ShuffleButton(musicPlayerService: _musicPlayerService,),
                   IconButton(
                     onPressed: () => seekPrevious(),
                     icon: Icon(
@@ -57,12 +73,12 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                       size: 50,
                     ),
                   ),
-                  PlayPauseButton(),
+                  PlayPauseButton(musicPlayerService: _musicPlayerService,),
                   IconButton(
                     onPressed: () => seekNext(),
                     icon: Icon(Icons.skip_next, color: Colors.white, size: 50),
                   ),
-                  RepeatButton(),
+                  RepeatButton(musicPlayerService: _musicPlayerService,),
                 ],
               ),
               Container(
