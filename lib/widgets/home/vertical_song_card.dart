@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/services/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
 
 import '../../utils/app_text_theme.dart';
 
 class VerticalSongCard extends StatelessWidget {
+  final IMusicPlayerService musicPlayerService;
   final String songTitle;
   final String songVibe;
   final String playlistId;
@@ -13,6 +14,7 @@ class VerticalSongCard extends StatelessWidget {
 
   const VerticalSongCard({
     super.key,
+    required this.musicPlayerService,
     required this.songTitle,
     required this.songVibe,
     required this.playlistId,
@@ -20,7 +22,7 @@ class VerticalSongCard extends StatelessWidget {
   });
 
   Future<void> play(String id, int index) async =>
-      await MusicPlayerService.seekIndex(id, index);
+      await musicPlayerService.seekIndex(id, index);
 
   @override
   Widget build(BuildContext context) {
