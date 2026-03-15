@@ -1,13 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-// TODO: continue the implementation of other tables
-
 class ApplicationDatabase {
-  static final ApplicationDatabase instance = ApplicationDatabase._internal();
-
-  ApplicationDatabase._internal();
-
   static Database? _database;
 
   Future<Database> get database async {
