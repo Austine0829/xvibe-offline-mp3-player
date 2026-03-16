@@ -54,7 +54,7 @@ class VerticalSongCard extends StatelessWidget {
             ),
             Text(
               songTitle,
-              maxLines: 2,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.verticalCardTitle,
             ),
