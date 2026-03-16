@@ -19,9 +19,9 @@ class SongRepository implements IRepository {
   }
 
   @override
-  Future<List<Song>> getAll() async {
+  Future<List<Song>> getAll({String? vibe}) async {
     final db = await _db;
-    final List<dynamic> songs = await db.query(tableSong);
+    final List<dynamic> songs = await db.query(tableSong, where: "vibe = ?", whereArgs: [vibe]);
     
     return songs.map((song) => Song.toObject(song)).toList();
   }
