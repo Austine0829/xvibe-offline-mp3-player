@@ -2,32 +2,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:xvibe_offline_mp3_player/data/application_database.dart';
+import 'package:xvibe_offline_mp3_player/data/contracts/i_repository.dart';
+import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
+import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/playlist_page.dart';
 import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_scanning_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/media_store_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
+
+Future<void> permission(IRepository songRepository, IMusicScanningService musicScanningService) async {
+  PermissionStatus audio = await Permission.audio.request();
+
+  if (audio.isGranted) {
+    List<Song> songs = await musicScanningService.scanSongs();
+
+      for (var song in songs) {
+        Song s = await songRepository.get(song.id!);
+
+        if (s.id == song.id) continue;
+          songRepository.add(song);
+      }
+
+  } else {
+    openAppSettings();
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+
+  final ApplicationDatabase applicationDatabase = ApplicationDatabase();
+  final SongRepository songRepository = SongRepository(appDb: applicationDatabase);
+  final MediaStoreMusicScanningService mediaStoreMusicScanningService = MediaStoreMusicScanningService();
+
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await requestPermissions();
+  await permission(songRepository, mediaStoreMusicScanningService);
 
   runApp(
     MultiProvider(
       providers: [
         Provider(create: (_) => MusicPlayerService()),
-        Provider(create: (_) => LabelingService())
+        Provider(create: (_) => LabelingService()),
+        Provider(create: (_) => applicationDatabase),
+        Provider(create: (_) => songRepository)
       ],
       child: MyApp(),
     )
   );
-}
-
-Future<void> requestPermissions() async {
-  await Permission.audio.request();
-  await Permission.storage.request();
 }
 
 class MyApp extends StatelessWidget {
@@ -51,6 +77,7 @@ class Main extends StatefulWidget {
 
 class _MainState extends State<Main> {
   int _currentPageIndex = 0;
+  bool isInitialize = false;
 
   final List<Widget> _pages = [
     const HomePage(),
