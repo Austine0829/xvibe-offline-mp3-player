@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/app_text_theme.dart';
@@ -5,18 +6,31 @@ import '../../utils/app_text_theme.dart';
 class BottomSwipableSongMenuSheet extends StatelessWidget {
   static const double iconSize = 35;
   static const Color iconColor = Colors.white;
+  final VoidCallback playCallBack;
 
-  const BottomSwipableSongMenuSheet({super.key});
+  const BottomSwipableSongMenuSheet({
+    super.key,
+    required this.playCallBack
+  });
+
+  void play() {
+    playCallBack();
+  }
 
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
+      initialChildSize: 1,
       expand: false,
       builder: (context, scrollController) {
         return ListView(
           controller: scrollController,
           children: [
             ListTile(
+              onTap: () {
+                play();
+                Navigator.pop(context);
+              },
               leading: Icon(
                 Icons.play_circle,
                 size: iconSize,
@@ -40,12 +54,12 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.queue_music,
+                Icons.edit_rounded,
                 size: iconSize,
                 color: iconColor,
               ),
               title: Text(
-                "Add to Queue",
+                "Edit",
                 style: Theme.of(context).textTheme.listTitleLabel,
               ),
             ),
