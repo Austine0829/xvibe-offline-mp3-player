@@ -77,7 +77,11 @@ class HorizontalSongCard extends StatelessWidget {
                   backgroundColor: const Color.fromARGB(221, 27, 27, 27),
                   showDragHandle: true,
                   builder: (context) {
-                    return BottomSwipableSongMenuSheet();
+                    return BottomSwipableSongMenuSheet(
+                      playCallBack: () {
+                        play(playlistId, indexId);
+                      },
+                    );
                   },
                 );
               },
