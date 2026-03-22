@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/bottom_swipable_song_menu_sheet.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
 import '../../utils/app_text_theme.dart';
 
 class HorizontalSongCard extends StatelessWidget {
-  final IMusicPlayerService musicPlayerService;
+  final IVibeViewModel vibeViewModel;
+  final int songId;
   final String songTitle;
   final String songVibe;
-  final String playlistId;
   final int indexId;
 
   const HorizontalSongCard({
     super.key,
-    required this.musicPlayerService,
+    required this.vibeViewModel,
+    required this.songId,
     required this.songTitle,
     required this.songVibe,
-    required this.playlistId,
     required this.indexId,
   });
-
-  Future<void> play(String id, int index) async =>
-      await musicPlayerService.seekIndex(id, index);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        play(playlistId, indexId);
+        vibeViewModel.play(indexId);
         SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
       },
       child: SizedBox(
@@ -72,18 +68,19 @@ class HorizontalSongCard extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
-                showModalBottomSheet(
-                  context: context,
-                  backgroundColor: const Color.fromARGB(221, 27, 27, 27),
-                  showDragHandle: true,
-                  builder: (context) {
-                    return BottomSwipableSongMenuSheet(
-                      playCallBack: () {
-                        play(playlistId, indexId);
-                      },
-                    );
-                  },
-                );
+                // showModalBottomSheet(
+                //   context: context,
+                //   backgroundColor: const Color.fromARGB(221, 27, 27, 27),
+                //   showDragHandle: true,
+                //   builder: (context) {
+                //     return BottomSwipableSongMenuSheet(
+                //       songId: songId,
+                //       playCallBack: () {
+
+                //       },
+                //     );
+                //   },
+                // );
               },
               icon: Icon(Icons.more_vert),
               color: Colors.white,
