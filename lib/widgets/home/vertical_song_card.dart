@@ -1,34 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
 
 import '../../utils/app_text_theme.dart';
 
 class VerticalSongCard extends StatelessWidget {
-  final IMusicPlayerService musicPlayerService;
+  final IVibeViewModel vibeViewModel;
   final String songTitle;
   final String songVibe;
-  final String playlistId;
   final int indexId;
 
   const VerticalSongCard({
     super.key,
-    required this.musicPlayerService,
+    required this.vibeViewModel,
     required this.songTitle,
     required this.songVibe,
-    required this.playlistId,
     required this.indexId,
   });
-
-  Future<void> play(String id, int index) async =>
-      await musicPlayerService.seekIndex(id, index);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        play(playlistId, indexId);
+        vibeViewModel.play(indexId);
         SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
       },
       child: SizedBox(
