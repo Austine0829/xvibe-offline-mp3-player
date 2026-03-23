@@ -1,23 +1,13 @@
-import 'package:flutter/services.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_scanning_service.dart';
+import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
 
 class MediaStoreMusicScanningService implements IMusicScanningService {
-  static const MethodChannel _channel =
-      MethodChannel("com.example.mediastore");
-
-  Future<List<Map<String, dynamic>>> _queryAudioFiles() async {
-    final result = await _channel.invokeMethod("queryAudio");
-
-    final List list = result;
-
-    return list.map((e) => Map<String, dynamic>.from(e)).toList();
-  }
 
   @override
   Future<List<Song>> scanSongs() async {
     List<Song> songs = [];
-    final audioFiles = await _queryAudioFiles();
+    final audioFiles = await MediaStore.queryAudioFiles();
 
     for (var audioFile in audioFiles) {
       songs.add(
