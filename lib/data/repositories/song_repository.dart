@@ -49,7 +49,7 @@ class SongRepository implements IRepository {
   Future<void> update(int id, Song song) async {
     final db = await _db;
 
-    db.update(
+    await db.update(
       tableSong, 
       song.toMap(),
       where: "id = ?",
@@ -61,7 +61,7 @@ class SongRepository implements IRepository {
   Future<void> delete(int id) async {
     final db = await _db;
 
-    db.delete(
+    await db.delete(
       tableSong, 
       where: "id = ?",
       whereArgs: [id]
