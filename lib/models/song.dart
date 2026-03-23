@@ -1,12 +1,12 @@
 class Song {
-  final int? id;
+  final int id;
   final String title;
   final String vibe;
   final String path;
   final bool isFavorite;
 
   Song({
-    this.id,
+    required this.id,
     required this.title,
     required this.vibe,
     required this.path,
@@ -31,5 +31,15 @@ class Song {
       path: map["path"] as String,
       isFavorite: map["isFavorite"] == 1 ? true : false
     );
+  }
+
+  Song copyWith({required String title, 
+                 required String vibe}) {
+    return Song(
+      id: id, 
+      title: title, 
+      vibe: vibe, 
+      path: path,
+      isFavorite: isFavorite);
   }
 }
