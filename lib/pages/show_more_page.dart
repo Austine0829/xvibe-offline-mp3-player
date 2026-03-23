@@ -3,15 +3,17 @@ import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
 
 class ShowMorePage extends StatelessWidget {
-  final IVibeViewModel vibeViewModel;
+  final IVibeViewModel Function(BuildContext context) vibeViewModel;
 
   const ShowMorePage({
     super.key, 
-    required this.vibeViewModel
+    required this.vibeViewModel,
   });
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = vibeViewModel(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -30,15 +32,15 @@ class ShowMorePage extends StatelessWidget {
         children: [
           ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            itemCount: vibeViewModel.getSongs.length,
+            itemCount: viewModel.getSongs.length,
             itemBuilder: (_, index) {
               return Column(
                 children: [
                   HorizontalSongCard(
-                    vibeViewModel: vibeViewModel,
-                    songId: vibeViewModel.getSongs[index].id,
-                    songTitle: vibeViewModel.getSongs[index].title, 
-                    songVibe: vibeViewModel.getSongs[index].vibe, 
+                    vibeViewModel: viewModel,
+                    songId: viewModel.getSongs[index].id,
+                    songTitle: viewModel.getSongs[index].title, 
+                    songVibe: viewModel.getSongs[index].vibe, 
                     indexId: index
                   ),
                   SizedBox(height: 5)
