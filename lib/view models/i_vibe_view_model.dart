@@ -9,5 +9,5 @@ abstract class IVibeViewModel {
 
   Future<void> update(int id, Song song);
   Future<void> initialize();
-  Future<void> delete(int id);
+  Future<bool> delete(int id);
 }
