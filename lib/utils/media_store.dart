@@ -6,11 +6,10 @@ class MediaStore {
 
  static Future<bool> deleteSong(dynamic songId) async {
     try {
-      final bool result = await _channel.invokeMethod('deleteAudio', {
-        'id': songId,
-      });
-      
-      return result;
+      return await _channel.invokeMethod<bool>(
+        'deleteSong',
+        {'id': songId},
+      ) ?? false;
 
     // ignore: unused_catch_clause
     } on PlatformException catch (e) {
@@ -46,6 +45,7 @@ class MediaStore {
         'setRingtone',
         {'id': id, 'title': title},
       ) ?? false;
+
     // ignore: unused_catch_clause
     } on PlatformException catch (e) {
       return false;
