@@ -1,10 +1,13 @@
 package com.example.xvibe_offline_mp3_player
 
+import android.app.Activity
+import android.app.RecoverableSecurityException
 import android.content.ContentUris
-import android.content.ContentValues
+import android.content.IntentSender
 import android.database.Cursor
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings
 import androidx.annotation.NonNull
@@ -15,6 +18,9 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
 
     private val CHANNEL = "com.example.mediastore"
+    private val DELETE_REQUEST_CODE = 1001
+
+    private var pendingDeleteResult: MethodChannel.Result? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -41,7 +47,7 @@ class MainActivity : FlutterActivity() {
                         result.success(null)
                     }
 
-                   "setRingtone" -> {
+                    "setRingtone" -> {
                         val songId = (call.argument<Any>("id") as? Number)?.toLong()
                         val songTitle = call.argument<String>("title")
 
@@ -63,14 +69,12 @@ class MainActivity : FlutterActivity() {
 
                             android.util.Log.d("RINGTONE", "Song URI: $songUri")
 
-                            // ✅ Directly set as ringtone — no MediaStore update needed
                             RingtoneManager.setActualDefaultRingtoneUri(
                                 this,
                                 RingtoneManager.TYPE_RINGTONE,
                                 songUri
                             )
 
-                            // Verify it was actually set
                             val currentRingtone = RingtoneManager.getActualDefaultRingtoneUri(
                                 this,
                                 RingtoneManager.TYPE_RINGTONE
@@ -93,9 +97,75 @@ class MainActivity : FlutterActivity() {
                         }
                     }
 
+                    "deleteSong" -> {
+                        val songId = (call.argument<Any>("id") as? Number)?.toLong()
+
+                        if (songId == null) {
+                            result.error("INVALID_ARGS", "Song id is null", null)
+                            return@setMethodCallHandler
+                        }
+
+                        val songUri = ContentUris.withAppendedId(
+                            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                            songId
+                        )
+
+                        android.util.Log.d("DELETE", "Attempting to delete URI: $songUri")
+
+                        try {
+                            val rowsDeleted = contentResolver.delete(songUri, null, null)
+                            android.util.Log.d("DELETE", "Rows deleted: $rowsDeleted")
+
+                            if (rowsDeleted > 0) {
+                                result.success(true)
+                            } else {
+                                result.error("DELETE_FAILED", "No rows were deleted", null)
+                            }
+
+                        } catch (e: RecoverableSecurityException) {
+                            android.util.Log.d("DELETE", "RecoverableSecurityException — requesting user confirmation")
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                try {
+                                    pendingDeleteResult = result
+                                    val intentSender: IntentSender = e.userAction.actionIntent.intentSender
+                                    startIntentSenderForResult(
+                                        intentSender,
+                                        DELETE_REQUEST_CODE,
+                                        null, 0, 0, 0
+                                    )
+                                } catch (ex: IntentSender.SendIntentException) {
+                                    pendingDeleteResult = null
+                                    result.error("DELETE_FAILED", ex.message, null)
+                                }
+                            } else {
+                                result.error("DELETE_FAILED", e.message, null)
+                            }
+
+                        } catch (e: Exception) {
+                            android.util.Log.e("DELETE", "Exception: ${e.message}", e)
+                            result.error("DELETE_FAILED", e.message, null)
+                        }
+                    }
+
                     else -> result.notImplemented()
                 }
             }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == DELETE_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                android.util.Log.d("DELETE", "User confirmed delete")
+                pendingDeleteResult?.success(true)
+            } else {
+                android.util.Log.d("DELETE", "User denied delete")
+                pendingDeleteResult?.error("DELETE_DENIED", "User denied the delete request", null)
+            }
+            pendingDeleteResult = null
+        }
     }
 
     private fun queryAudio(): List<Map<String, Any>> {
@@ -108,7 +178,9 @@ class MainActivity : FlutterActivity() {
             MediaStore.Audio.Media.DATA
         )
 
-        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0"
+        // ✅ Filter to MP3 files only
+        val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND " +
+                "${MediaStore.Audio.Media.MIME_TYPE} = 'audio/mpeg'"
 
         val cursor: Cursor? = contentResolver.query(
             uri, projection, selection, null,
