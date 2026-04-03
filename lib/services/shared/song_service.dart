@@ -1,9 +1,9 @@
-import 'package:xvibe_offline_mp3_player/data/contracts/i_repository.dart';
+import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 
 class SongService implements ISongService {
-  late final IRepository _songRepository;
+  late final ISongRepository _songRepository;
 
   SongService(this._songRepository);
   
