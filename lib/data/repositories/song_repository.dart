@@ -1,9 +1,9 @@
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
-import 'package:xvibe_offline_mp3_player/data/contracts/i_repository.dart';
+import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
-class SongRepository implements IRepository {
+class SongRepository implements ISongRepository {
   late final Future<Database> _db;
   final String tableSong = "song";
 
