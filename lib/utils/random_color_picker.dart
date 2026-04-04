@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 class RandomColorPicker {
   static final _rng = Random();
-  static final List<dynamic> _colorList = [
+  static final List<Color> _colorList = [
     Colors.lightBlueAccent,
     Colors.red,
     Colors.redAccent,
@@ -27,7 +27,7 @@ class RandomColorPicker {
     Colors.deepOrangeAccent,
   ];
 
-  static dynamic generate() {
+  static Color generate() {
     return _colorList[_rng.nextInt(_colorList.length)];
   }
 }
