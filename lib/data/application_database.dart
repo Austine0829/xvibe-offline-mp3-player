@@ -33,5 +33,13 @@ class ApplicationDatabase {
         isFavorite INTEGER
       )
     """);
+
+     await db.execute("""
+      CREATE TABLE playlist(
+        id TEXT PRIMARY KEY,
+        name TEXT,
+        backgroundColor INTEGER
+      )
+    """);
   }
 }
