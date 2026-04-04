@@ -48,7 +48,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   ),
                   IconButton(
                     onPressed: () {
-                      
+                      playlistViewModel.sort();
                     },
                     icon: Icon(Icons.sort, color: Colors.white),
                   ),
