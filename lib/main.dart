@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
+import 'package:xvibe_offline_mp3_player/data/repositories/playlist_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
@@ -13,7 +14,9 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_music_scanning_servic
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/media_store_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 
 Future<void> permission(ISongService songService, IMusicScanningService musicScanningService) async {
@@ -54,9 +57,12 @@ void main() async {
         Provider(create: (_) => applicationDatabase),
         Provider(create: (_) => songRepository),
         Provider(create: (_) => songService),
+        Provider(create: (_) => PlaylistRepository(appDb: applicationDatabase)),
+        Provider(create: (context) => PlaylistService(context.read<PlaylistRepository>())),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
           songService, context.read<MusicPlayerService>(), context.read<LabelingService>())
-        )
+        ),
+        ChangeNotifierProvider(create: (context) => PlaylistViewModel(context.read<PlaylistService>()))
       ],
       child: MyApp(),
     )
@@ -96,11 +102,15 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
         extendBody: true,
-        body: IndexedStack(
-          index: _currentPageIndex,
-          children: _pages,
-        ),
+        body: Padding(
+          padding: EdgeInsetsGeometry.only(bottom: 45),
+          child: IndexedStack(
+            index: _currentPageIndex,
+            children: _pages,
+          ),
+        ) ,
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
             boxShadow: [
