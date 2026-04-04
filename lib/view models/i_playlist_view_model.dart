@@ -11,4 +11,5 @@ abstract class IPlaylistViewModel {
   Future<void> get(String id);
   Future<void> initialize();
   Future<bool> delete(String id);
+  void sort();
 }

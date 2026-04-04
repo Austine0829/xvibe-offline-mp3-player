@@ -108,4 +108,10 @@ class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
       notifyListeners();
     }
   }
+
+  @override
+  void sort() {
+    _playlists = _playlists.reversed.toList();
+    notifyListeners();
+  }
 } 
