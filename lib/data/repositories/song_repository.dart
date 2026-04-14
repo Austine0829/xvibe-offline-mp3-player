@@ -21,8 +21,14 @@ class SongRepository implements ISongRepository {
   @override
   Future<List<Song>> getAll({String? vibe}) async {
     final db = await _db;
-    final List<dynamic> songs = await db.query(tableSong, where: "vibe = ?", whereArgs: [vibe]);
-    
+    final List<dynamic> songs;
+
+    if (vibe == null || vibe == "") {
+      songs = await db.query(tableSong);
+    } else {
+      songs = await db.query(tableSong, where: "vibe = ?", whereArgs: [vibe]);
+    }
+
     return songs.map((song) => Song.toObject(song)).toList();
   }
 
