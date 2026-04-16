@@ -6,7 +6,6 @@ abstract class IMusicPlayerService {
 
   // ignore: unused_field
   final Map<String, List<AudioSource>> _playlist = {};
-  late String currentPlaylistId;
 
   late LoopMode currentLoopMode;
   late bool isShuffle;
