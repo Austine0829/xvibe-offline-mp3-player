@@ -1,4 +1,5 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/models/song.dart';
 
 abstract class IMusicPlayerService {
   // ignore: unused_field
@@ -24,4 +25,6 @@ abstract class IMusicPlayerService {
   Future<void> seekTo(Duration duration);
   Future<void> seekNext();
   Future<void> seekPrevious();
+  Future<void> removeAudioAtAndRenewAudioSource(String playlistId, int index);
+  Future<void> addAudioInPlaylist(String playlistId, Song song);
 }
