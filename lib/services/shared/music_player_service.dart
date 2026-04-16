@@ -1,4 +1,5 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 
 class MusicPlayerService implements IMusicPlayerService {
@@ -99,5 +100,24 @@ class MusicPlayerService implements IMusicPlayerService {
   @override
   Future<void> seekPrevious() async {
     await _player.seekToPrevious();
+  }
+
+  @override
+  Future<void> removeAudioAtAndRenewAudioSource(String playlistId, int index) async {
+    if (playlistId.isEmpty) throw Exception("Playlist id is set emtpy!");
+    
+    _playlist[playlistId]!.removeAt(index);
+
+    if (_currentPlaylistId != playlistId) return;
+      await _player.removeAudioSourceAt(index);
+  }
+
+  @override
+  Future<void> addAudioInPlaylist(String playlistId, Song song) async {
+    if (playlistId.isEmpty) throw Exception("Playlist id is set empty!");
+
+    final AudioSource audioSource = AudioSource.file(song.path, tag: song);
+    _playlist[playlistId]!.add(audioSource);
+    _player.addAudioSource(audioSource);
   }
 }
