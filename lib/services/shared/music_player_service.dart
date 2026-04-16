@@ -6,7 +6,6 @@ class MusicPlayerService implements IMusicPlayerService {
 
   final Map<String, List<AudioSource>> _playlist = {};
   
-  @override
   String _currentPlaylistId = "";
 
   @override
