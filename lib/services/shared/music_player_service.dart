@@ -7,7 +7,7 @@ class MusicPlayerService implements IMusicPlayerService {
   final Map<String, List<AudioSource>> _playlist = {};
   
   @override
-  String currentPlaylistId = "";
+  String _currentPlaylistId = "";
 
   @override
   LoopMode currentLoopMode = LoopMode.off;
@@ -27,7 +27,8 @@ class MusicPlayerService implements IMusicPlayerService {
 
   @override
   Future<void> seekIndex(String playlistId, int index) async {
-    if (currentPlaylistId != playlistId) {
+    if (_currentPlaylistId != playlistId) {
+      _currentPlaylistId = playlistId;
       await setAudioSource(playlistId);
     }
 
