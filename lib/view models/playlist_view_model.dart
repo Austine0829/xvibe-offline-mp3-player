@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_playlist_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_view_model.dart';
 
 class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
@@ -26,7 +26,7 @@ class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
   Playlist get getPlaylist => _playlist!;
 
   @override
-  Future<void> add(Playlist playlist) async {
+  Future<void> addPlaylist(Playlist playlist) async {
     _errorMessage = null;
 
     try {
@@ -40,7 +40,7 @@ class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
   }
 
   @override
-  Future<bool> delete(String id) async { 
+  Future<bool> deletePlaylist(String id) async { 
     _errorMessage = null;
 
     try {
@@ -59,7 +59,6 @@ class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
     }
   }
 
-
   @override
   Future<void> initialize() async {
     _isLoading = true;
@@ -77,7 +76,7 @@ class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
   }
 
   @override
-  Future<void> update(String id, Playlist playlist) async {
+  Future<void> updatePlaylist(String id, Playlist playlist) async {
     _errorMessage = null;
     
     try {
@@ -92,25 +91,9 @@ class PlaylistViewModel extends ChangeNotifier implements IPlaylistViewModel {
       notifyListeners();
     }
   }
-  
-  @override
-  Future<void> get(String id) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-
-    try {
-      _playlist = await _playlistService.getPlaylist(id);
-    } catch (e) {
-      _errorMessage = "Error has occured while getting the playlist";
-    } finally {
-      _isLoading = false;
-      notifyListeners();
-    }
-  }
 
   @override
-  void sort() {
+  void sortPlaylist() {
     _playlists = _playlists.reversed.toList();
     notifyListeners();
   }

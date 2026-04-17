@@ -6,10 +6,9 @@ abstract class IPlaylistViewModel {
   String? get errorMessage;
   bool get isLoading;
 
-  Future<void> add(Playlist playlist);
-  Future<void> update(String id, Playlist playlist);
-  Future<void> get(String id);
+  Future<void> addPlaylist(Playlist playlist);
+  Future<void> updatePlaylist(String id, Playlist playlist);
   Future<void> initialize();
-  Future<bool> delete(String id);
-  void sort();
+  Future<bool> deletePlaylist(String id);
+  void sortPlaylist();
 }
