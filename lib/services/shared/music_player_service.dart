@@ -50,8 +50,6 @@ class MusicPlayerService implements IMusicPlayerService {
 
   @override
   void setPlaylist(String playlistId, List<AudioSource> playlist) {
-    if (_playlist.containsKey(playlistId)) return;
-    
     _playlist[playlistId] = playlist;
   }
 
@@ -103,7 +101,7 @@ class MusicPlayerService implements IMusicPlayerService {
   }
 
   @override
-  Future<void> removeAudioAtAndRenewAudioSource(String playlistId, int index) async {
+  Future<void> removeAudioAt(String playlistId, int index) async {
     if (playlistId.isEmpty) throw Exception("Playlist id is set emtpy!");
     
     _playlist[playlistId]!.removeAt(index);
