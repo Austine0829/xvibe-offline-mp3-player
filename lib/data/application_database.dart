@@ -19,8 +19,15 @@ class ApplicationDatabase {
     return await openDatabase(
       path,
       version: 1,
+      onConfigure: _onConfigure,
       onCreate: _onCreate
     );
+  }
+
+  Future<void> _onConfigure(Database db) async {
+    await db.execute("""
+      PRAGMA foreign_keys = ON
+    """);
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -39,6 +46,16 @@ class ApplicationDatabase {
         id TEXT PRIMARY KEY,
         name TEXT,
         backgroundColor INTEGER
+      )
+    """);
+
+     await db.execute("""
+      CREATE TABLE playlist_song(
+        id TEXT PRIMARY KEY,
+        playlistId TEXT,
+        songId INTEGER,
+        FOREIGN KEY(playlistId) REFERENCES playlist(id) ON DELETE CASCADE,
+        FOREIGN KEY(songId) REFERENCES song(id) ON DELETE CASCADE
       )
     """);
   }
