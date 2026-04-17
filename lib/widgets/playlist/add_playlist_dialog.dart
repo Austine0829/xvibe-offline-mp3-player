@@ -4,19 +4,19 @@ import 'package:xvibe_offline_mp3_player/utils/random_color_picker.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_view_model.dart';
 
-class AddDialog extends StatefulWidget {
+class AddPlaylistDialog extends StatefulWidget {
   final IPlaylistViewModel playlistViewModel;
 
-  const AddDialog({
+  const AddPlaylistDialog({
     super.key,
     required this.playlistViewModel,
   });
 
   @override
-  State<AddDialog> createState() => _AddDialogState();
+  State<AddPlaylistDialog> createState() => _AddPlaylistDialogState();
 }
 
-class _AddDialogState extends State<AddDialog> {
+class _AddPlaylistDialogState extends State<AddPlaylistDialog> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _name = TextEditingController();
 
@@ -60,7 +60,7 @@ class _AddDialogState extends State<AddDialog> {
 
             if (isValid) {
               Navigator.pop(context);
-              await widget.playlistViewModel.add(
+              await widget.playlistViewModel.addPlaylist(
                 Playlist(
                   id: UuidGenerator.generate(),
                   name: _name.text, 
