@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/delete_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/edit_dialog.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/set_ringtone.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/share.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/song_information.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
 import '../../../utils/app_text_theme.dart';
 
 // TODO: Implement playlist function after implementing playlist page functionalities
