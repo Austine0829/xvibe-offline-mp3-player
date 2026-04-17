@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
-import 'package:xvibe_offline_mp3_player/widgets/playlist/add_dialog.dart';
+import 'package:xvibe_offline_mp3_player/widgets/playlist/add_playlist_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/playlist/playlist_card.dart';
 
 class PlaylistPage extends StatefulWidget {
@@ -48,7 +48,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                   ),
                   IconButton(
                     onPressed: () {
-                      playlistViewModel.sort();
+                      playlistViewModel.sortPlaylist();
                     },
                     icon: Icon(Icons.sort, color: Colors.white),
                   ),
@@ -84,7 +84,8 @@ class _PlaylistPageState extends State<PlaylistPage> {
                           );
                         },
                         onDismissed: (direction) async {
-                          bool isDelete = await playlistViewModel.delete(playlistViewModel.getPlaylists[index].id);
+                          bool isDelete = await playlistViewModel
+                            .deletePlaylist(playlistViewModel.getPlaylists[index].id);
                         
                           if (isDelete && context.mounted) {
                             ScaffoldMessenger.of(context)
@@ -117,7 +118,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
           showDialog(
             context: context, 
             builder: (context) {
-              return AddDialog(
+              return AddPlaylistDialog(
                 playlistViewModel: playlistViewModel,
               );
             }
