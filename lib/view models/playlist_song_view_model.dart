@@ -121,7 +121,16 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
       _playlistSongs = await _playlistSongService.getPlaylistSongs(_currentPlaylistId);
       
       final List<AudioSource> playlist = _playlistSongs.map((playlistSong) => 
-        AudioSource.file(playlistSong.path, tag: playlistSong)).toList();
+        AudioSource.file(
+          playlistSong.path, 
+          tag: Song(
+            id: playlistSong.songId, 
+            title: playlistSong.title, 
+            vibe: playlistSong.vibe, 
+            path: playlistSong.path
+          )
+        )
+      ).toList();
       _musicPlayerService.setPlaylist(_currentPlaylistId, playlist);
 
       _songs = _filterPlaylistSong(_playlistSongs, await _songService.getSongs());
