@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_playlist_service.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/playlist_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
 
-class EditDialog extends StatefulWidget {
+class EditPlaylistDialog extends StatefulWidget {
   final String playlistId;
 
-  const EditDialog({
+  const EditPlaylistDialog({
     super.key,
     required this.playlistId,
   });
 
   @override
-  State<EditDialog> createState() => _EditDialogState();
+  State<EditPlaylistDialog> createState() => _EditPlaylistDialogState();
 }
 
-class _EditDialogState extends State<EditDialog> {
+class _EditPlaylistDialogState extends State<EditPlaylistDialog> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _name = TextEditingController();
 
@@ -87,7 +87,7 @@ class _EditDialogState extends State<EditDialog> {
             if (isValid) {
               Navigator.pop(context);
               final updatedPlaylist = _playlist!.copyWith(name: _name.text);
-              await playlistViewModel.update(widget.playlistId, updatedPlaylist);
+              await playlistViewModel.updatePlaylist(widget.playlistId, updatedPlaylist);
             }
           },
           child: Text("Update"),
