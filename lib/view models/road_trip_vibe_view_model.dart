@@ -76,7 +76,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
       final bool isDeleted = await MediaStore.deleteSong(songId);
 
       if (!isDeleted) {
-        _errorMessage = "Error has occured while deleting the song";
+        _errorMessage = "Error has occured while deleting the song in your file system";
         return;  
       }
 
@@ -90,7 +90,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
       _successMessage = "Song has been deleted";
     } catch (e) {
-      _errorMessage = e.toString();
+      _errorMessage = "Error has occured while deleting the song";
     } finally {
       notifyListeners();
     }
