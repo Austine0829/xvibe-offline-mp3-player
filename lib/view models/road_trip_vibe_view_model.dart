@@ -2,28 +2,39 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/constants/vibe.dart';
+import 'package:xvibe_offline_mp3_player/models/playlist.dart';
+import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/home/i_labeling_service.dart';
 import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
+import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 
 class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {  
   late final IMusicPlayerService _musicPlayerService;
   late final ISongService _songService;
   late final ILabelingService _labelingService;
+  late final IPlaylistService _playlistService;
+  late final IPlaylistSongService _playlistSongService;
 
   late final String _playlistId = Playlistid.chill;
   late List<Song> _songs = [];
+  late List<Playlist> _playlists = [];
   String? _errorMessage;
   bool _isLoading = false;
+  String? _successMessage;
 
   RoadTripVibeViewModel(
     this._songService, 
     this._musicPlayerService,
-    this._labelingService
+    this._labelingService,
+    this._playlistService,
+    this._playlistSongService
   );
 
   @override
@@ -34,6 +45,12 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   
   @override
   bool get isLoading => _isLoading;
+
+  @override
+  List<Playlist> get getPlaylists => _playlists;
+
+  @override
+  String? get successMessage => _successMessage;
 
   String generateLabel() => _labelingService.generate(LabelType.chill);
 
@@ -89,6 +106,49 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
       _musicPlayerService.setPlaylist(_playlistId, playlist);
     } catch (e) {
       _errorMessage = "Error has occured while getting songs";
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  @override
+  Future<void> addSongToPlaylist(String playlistId, int songId) async {
+    _errorMessage = null;
+
+    try {
+      if (await _playlistSongService
+          .playlistSongExist(playlistId, songId)) {
+        _successMessage = "Song is already existing in this playlist";
+        return ;
+      }
+
+      await _playlistSongService.addPlaylistSong(
+        PlaylistSong(
+          id: UuidGenerator.generate(), 
+          playlistId: playlistId, 
+          songId: songId
+        )
+      );
+
+      _successMessage = "Song has been added in the playlist";
+    } catch (e) {
+      _errorMessage = "Error has occured while adding the song in the playlist";
+    } finally {
+      notifyListeners();
+    }
+  }
+  
+  @override
+  Future<void> getAllPlaylist() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _playlists = await _playlistService.getPlaylists();
+    } catch (e) {
+      _errorMessage = "Error has occured while getting playlists";
     } finally {
       _isLoading = false;
       notifyListeners();
