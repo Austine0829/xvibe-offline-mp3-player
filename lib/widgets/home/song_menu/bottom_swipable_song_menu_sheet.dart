@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/delete_dialog.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/song_menu/edit_dialog.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/delete_song_dialog.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/edit_song_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
@@ -67,7 +67,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                   showDialog(
                     context: context, 
                     builder: (context) {
-                      return EditDialog(
+                      return EditSongDialog(
                         vibeViewModel: vibeViewModel, 
                         songId: songId
                       );
@@ -145,7 +145,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                   showDialog(
                     context: context, 
                     builder: (context) {
-                      return DeleteDialog(
+                      return DeleteSongDialog(
                         vibeViewModel: vibeViewModel,
                         songId: songId
                       );
