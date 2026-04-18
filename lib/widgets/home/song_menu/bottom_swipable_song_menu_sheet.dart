@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/add_to_playlist_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/delete_song_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/edit_song_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
@@ -51,6 +52,27 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                 ),
               ),
               ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  await vibeViewModel.getAllPlaylist();
+                  if (!context.mounted) return;
+
+                  if (vibeViewModel.errorMessage != null) {
+                    ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(vibeViewModel.errorMessage!)));
+                    return ;
+                  }
+
+                  showDialog(
+                    context: context, 
+                    builder: (context) {
+                      return AddToPlaylistDialog(
+                        vibeViewModel: vibeViewModel, 
+                        songId: songId
+                      );
+                    }
+                  );
+                },
                 leading: Icon(
                   Icons.playlist_add_circle,
                   size: iconSize,
