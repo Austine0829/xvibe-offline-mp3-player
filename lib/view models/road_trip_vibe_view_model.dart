@@ -56,40 +56,63 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
   @override
   Future<void> play(int index) async {
-    _musicPlayerService.seekIndex(_playlistId, index);
+    _errorMessage = null;
+
+    try {
+      _musicPlayerService.seekIndex(_playlistId, index);
+    } catch (e) {
+      _errorMessage = "Error has occured while playing the song";
+    } finally {
+      notifyListeners();
+    }
   }
 
   @override
-  Future<bool> delete(int id) async {
-    final bool isDeleted = await MediaStore.deleteSong(id);
+  Future<void> deleteSong(int songId) async {
+    _errorMessage = null;
+    _successMessage = null;
 
-    if (!isDeleted) {
-      return false;
+    try {
+      final bool isDeleted = await MediaStore.deleteSong(songId);
+
+      if (!isDeleted) {
+        _errorMessage = "Error has occured while deleting the song";
+        return;  
+      }
+
+      await _songService.deletSong(songId);
+
+      int foundIndex = _songs.indexWhere((song) => song.id == songId);
+      if (foundIndex != -1) {
+        _songs.removeAt(foundIndex);
+        await _musicPlayerService.removeAudioAt(_playlistId, foundIndex);
+      }
+
+      _successMessage = "Song has been deleted";
+    } catch (e) {
+      _errorMessage = e.toString();
+    } finally {
+      notifyListeners();
     }
-
-    await _songService.deletSong(id);
-
-    int foundIndex = _songs.indexWhere((song) => song.id == id);
-
-     if (foundIndex != -1) {
-      _songs.removeAt(foundIndex);
-    }
-
-    notifyListeners();
-
-    return true;
   }
 
   @override
-  Future<void> update(int id, Song song) async {
-    await _songService.updateSong(id, song);
-    int foundIndex = _songs.indexWhere((song) => song.id == id);
+  Future<void> updateSong(int songId, Song song) async {
+    _errorMessage = null;
+    _successMessage = null;
 
-    if (foundIndex != -1) {
-      _songs[foundIndex] = song;
+    try {
+      await _songService.updateSong(songId, song);
+      
+      int foundIndex = _songs.indexWhere((song) => song.id == songId);
+      if (foundIndex != -1) _songs[foundIndex] = song;
+
+      _successMessage = "Song has been updated";
+    } catch (e) {
+      _errorMessage = "Error has occured while updating the song";
+    } finally {
+      notifyListeners(); 
     }
-
-    notifyListeners();
   }
   
   @override
