@@ -110,18 +110,28 @@ class _EditSongDialogState extends State<EditSongDialog> {
         TextButton(
           onPressed: () async {
             final isValid = _formKey.currentState!.validate();
+            
+            if (!isValid) return;
+
             final Song updatedSong = song!
-                                    .copyWith(title: _title.text, vibe: _selectedVibe!);
+                .copyWith(title: _title.text, vibe: _selectedVibe!);
+            
+            await widget.vibeViewModel
+                .updateSong(widget.songId, updatedSong);  
 
-            if (isValid) {
-              await widget
-                .vibeViewModel
-                .update(widget.songId, updatedSong);
-            } 
+            if (!context.mounted) return;
 
-            if (!mounted) return;
-              // ignore: use_build_context_synchronously
-              Navigator.pop(context);
+            if (widget.vibeViewModel.successMessage != null) {
+              ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(widget.vibeViewModel.successMessage!)));
+            }
+
+            if (widget.vibeViewModel.errorMessage != null) {
+              ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(widget.vibeViewModel.errorMessage!)));
+            }
+
+            Navigator.pop(context);
           },
           child: Text("Update"),
         ),
