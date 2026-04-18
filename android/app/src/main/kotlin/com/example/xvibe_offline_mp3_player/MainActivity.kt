@@ -21,6 +21,7 @@ class MainActivity : FlutterActivity() {
     private val DELETE_REQUEST_CODE = 1001
 
     private var pendingDeleteResult: MethodChannel.Result? = null
+    private var pendingDeleteUri: Uri? = null
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -128,6 +129,7 @@ class MainActivity : FlutterActivity() {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                                 try {
                                     pendingDeleteResult = result
+                                    pendingDeleteUri = songUri
                                     val intentSender: IntentSender = e.userAction.actionIntent.intentSender
                                     startIntentSenderForResult(
                                         intentSender,
@@ -136,6 +138,7 @@ class MainActivity : FlutterActivity() {
                                     )
                                 } catch (ex: IntentSender.SendIntentException) {
                                     pendingDeleteResult = null
+                                    pendingDeleteUri = null
                                     result.error("DELETE_FAILED", ex.message, null)
                                 }
                             } else {
@@ -159,12 +162,24 @@ class MainActivity : FlutterActivity() {
         if (requestCode == DELETE_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 android.util.Log.d("DELETE", "User confirmed delete")
-                pendingDeleteResult?.success(true)
+                try {
+                    val rowsDeleted = contentResolver.delete(pendingDeleteUri!!, null, null)
+                    if (rowsDeleted > 0) {
+                        pendingDeleteResult?.success(true)
+                    } else {
+                        pendingDeleteResult?.error("DELETE_FAILED", "No rows deleted after confirmation", null)
+                    }
+                } catch (e: Exception) {
+                    android.util.Log.e("DELETE", "Exception after confirmation: ${e.message}", e)
+                    pendingDeleteResult?.error("DELETE_FAILED", e.message, null)
+                }
             } else {
                 android.util.Log.d("DELETE", "User denied delete")
                 pendingDeleteResult?.error("DELETE_DENIED", "User denied the delete request", null)
             }
+
             pendingDeleteResult = null
+            pendingDeleteUri = null
         }
     }
 
@@ -178,7 +193,6 @@ class MainActivity : FlutterActivity() {
             MediaStore.Audio.Media.DATA
         )
 
-        // ✅ Filter to MP3 files only
         val selection = "${MediaStore.Audio.Media.IS_MUSIC} != 0 AND " +
                 "${MediaStore.Audio.Media.MIME_TYPE} = 'audio/mpeg'"
 
