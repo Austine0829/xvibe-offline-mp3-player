@@ -8,8 +8,6 @@ import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
 import '../../../utils/app_text_theme.dart';
 
-// TODO: Implement playlist function after implementing playlist page functionalities
-
 class BottomSwipableSongMenuSheet extends StatelessWidget {
   static const double iconSize = 35;
   static const Color iconColor = Colors.white;
