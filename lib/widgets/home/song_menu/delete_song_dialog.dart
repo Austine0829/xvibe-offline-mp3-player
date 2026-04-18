@@ -20,12 +20,25 @@ class DeleteSongDialog extends StatelessWidget {
         TextButton(onPressed: () => Navigator.pop(context), child: Text("No")),
         TextButton(
           onPressed: () async {
-            if (await vibeViewModel.delete(songId) && context.mounted) {
+            await vibeViewModel.deleteSong(songId);
+
+            if (!context.mounted) return;
+
+            final String? successMessage = vibeViewModel.successMessage;
+            if (successMessage != null) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Song has been successfully deleted")),
+                SnackBar(content: Text(successMessage)),
               );
-              Navigator.pop(context);
+            }
+
+            final String? errorMessage = vibeViewModel.errorMessage;
+            if (errorMessage != null) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(errorMessage)),
+              );
             } 
+
+            Navigator.pop(context);
           },
           child: Text("Yes"),
         ),
