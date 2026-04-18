@@ -5,21 +5,21 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
-class EditDialog extends StatefulWidget {
+class EditSongDialog extends StatefulWidget {
   final IVibeViewModel vibeViewModel;
   final int songId;
 
-  const EditDialog({
+  const EditSongDialog({
     super.key,
     required this.vibeViewModel,
     required this.songId
   });
 
   @override
-  State<EditDialog> createState() => _EditDialogState();
+  State<EditSongDialog> createState() => _EditSongDialogState();
 }
 
-class _EditDialogState extends State<EditDialog> {
+class _EditSongDialogState extends State<EditSongDialog> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _title = TextEditingController();
 

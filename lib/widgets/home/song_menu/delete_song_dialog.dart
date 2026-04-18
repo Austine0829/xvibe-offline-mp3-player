@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 
-class DeleteDialog extends StatelessWidget {
+class DeleteSongDialog extends StatelessWidget {
   final IVibeViewModel vibeViewModel;
   final int songId;
 
-  const DeleteDialog({
+  const DeleteSongDialog({
     super.key, 
     required this.vibeViewModel,
     required this.songId
