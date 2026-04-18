@@ -10,9 +10,9 @@ abstract class IVibeViewModel {
 
   Future<void> play(int index);
 
-  Future<void> update(int id, Song song);
+  Future<void> updateSong(int songId, Song song);
   Future<void> initialize();
-  Future<bool> delete(int id);
+  Future<void> deleteSong(int songId);
   Future<void> getAllPlaylist();
   Future<void> addSongToPlaylist(String playlistId, int songId);
 }
