@@ -175,6 +175,7 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
   @override
   Future<void> addSongToCurrentQueue(int songId) async {
     _errorMessage = null;
+    _sucessMessage = null;
 
     try {
       final PlaylistSongDTO playlistSongDTO = _playlistSongs
@@ -189,6 +190,7 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
         )
       );
 
+      _sucessMessage = "Song has been added in the current queue";
     } catch (e) {
       _errorMessage = "Error has occured while adding the song on you current queue";
     } finally {
