@@ -4,18 +4,21 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_repository.dart';
+import 'package:xvibe_offline_mp3_player/data/repositories/playlist_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home_page.dart';
-import 'package:xvibe_offline_mp3_player/pages/playlist_page.dart';
+import 'package:xvibe_offline_mp3_player/pages/playlist/playlist_page.dart';
 import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/playlist_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/media_store_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/playlist_service.dart';
+import 'package:xvibe_offline_mp3_player/services/playlist/playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 
@@ -52,17 +55,23 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (_) => MusicPlayerService()),
+        ChangeNotifierProvider(create: (_) => MusicPlayerService()),
         Provider(create: (_) => LabelingService()),
         Provider(create: (_) => applicationDatabase),
         Provider(create: (_) => songRepository),
         Provider(create: (_) => songService),
         Provider(create: (_) => PlaylistRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistService(context.read<PlaylistRepository>())),
+        Provider(create: (_) => PlaylistSongRepository(appDb: applicationDatabase)),
+        Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
-          songService, context.read<MusicPlayerService>(), context.read<LabelingService>())
+          songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
+          context.read<PlaylistService>(), context.read<PlaylistSongService>())
         ),
-        ChangeNotifierProvider(create: (context) => PlaylistViewModel(context.read<PlaylistService>()))
+        ChangeNotifierProvider(create: (context) => PlaylistViewModel(context.read<PlaylistService>())),
+        ChangeNotifierProvider(create: (context) => PlaylistSongViewModel(
+          context.read<MusicPlayerService>(), context.read<PlaylistSongService>(), songService, context.read<PlaylistService>())
+        )
       ],
       child: MyApp(),
     )
