@@ -27,4 +27,8 @@ abstract class IMusicPlayerService {
   Future<void> seekPrevious();
   Future<void> removeAudioAt(String playlistId, int index);
   Future<void> addAudioInPlaylist(String playlistId, Song song);
+  Future<void> addAudioToCurrentQueue(Song song);
+  List<Song> getCurrentQueue();
+  Future<void> removeCurrentQueueSongAt(int index);
+  Future<void> seekIndexInCurrentQueue(int index);
 }
