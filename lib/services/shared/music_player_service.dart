@@ -38,8 +38,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     /*
       user is still currently in the same queue of a playlist but he/she deleted some of the 
       songs in queue but then he/she decides to play again a song inside the playlist page. This one
-      will get triggered to reset the current state of the saved playlist in the playlist map into its original
-      state by using the copy we save earlier 
+      will get triggered to reset the current state of the queue similar to the state of the playlist
+      itself.
     */
     if (_currentPlaylistId == playlistId 
         && !_isSimilar(_currentQueueSongs!, _playlist[_currentPlaylistId]!)) {
