@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/current_queue_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/duration_slider.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/play_pause_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/repeat_button.dart';
@@ -84,10 +85,38 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
               Container(
                 margin: EdgeInsets.symmetric(vertical: 10),
                 width: double.infinity,
-                height: 50,
+                height: 60,
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                     IconButton(
+                      onPressed: () {}, 
+                      icon: Icon(Icons.favorite),
+                      color: Colors.white,
+                      iconSize: 35,
+                    ),
+                    IconButton(
+                      onPressed: () {
+                         showModalBottomSheet(
+                          context: context,
+                          backgroundColor: const Color.fromARGB(221, 27, 27, 27),
+                          showDragHandle: true,
+                          builder: (context) {
+                            return CurrentQueueDialog(
+                              musicPlayerService: context.watch<MusicPlayerService>()
+                            );
+                          },
+                        );
+                      }, 
+                      icon: Icon(Icons.menu_rounded),
+                      color: Colors.white,
+                      iconSize: 35,
+                    )
+                  ],
                 ),
               ),
             ],
