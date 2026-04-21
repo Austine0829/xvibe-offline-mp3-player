@@ -80,6 +80,27 @@ class BottomSwipablePlaylistSongMenuSheet extends StatelessWidget {
                 ),
               ),
               ListTile(
+                onTap: () async {
+                  await playlistSongViewModel
+                    .addSongToCurrentQueue(songId);
+
+                  if (!context.mounted) return;
+
+
+                  final String? successMessage = playlistSongViewModel.successMessage;
+                  if (successMessage != null) {
+                    ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(successMessage)));
+                  }
+
+                  final String? errorMessage = playlistSongViewModel.errorMessage;
+                  if (errorMessage != null) {
+                    ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text(errorMessage)));
+                  }
+
+                  Navigator.pop(context);
+                },
                 leading: Icon(
                   Icons.queue_music,
                   size: iconSize,
