@@ -16,4 +16,5 @@ abstract class IPlaylistSongViewModel {
   Future<void> initialize(String playlistId);
   Future<void> deletePlaylistSong(String playlistSongId);
   Future<void> addSongToPlaylist(String playlistId, int songId);
+  Future<void> addSongToCurrentQueue(int songId);
 }

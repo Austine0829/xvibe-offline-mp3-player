@@ -50,7 +50,6 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
 
   @override
   String? get successMessage => _sucessMessage;
-
   
   @override
   Future<void> addPlaylistSong(PlaylistSongDTO playlistSongDTO) async {
@@ -173,6 +172,30 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
     }
   }
 
+  @override
+  Future<void> addSongToCurrentQueue(int songId) async {
+    _errorMessage = null;
+
+    try {
+      final PlaylistSongDTO playlistSongDTO = _playlistSongs
+        .firstWhere((playlistSong) => playlistSong.songId == songId);
+
+      await _musicPlayerService.addAudioToCurrentQueue(
+        Song(
+          id: playlistSongDTO.songId, 
+          title: playlistSongDTO.title, 
+          vibe: playlistSongDTO.vibe, 
+          path: playlistSongDTO.path
+        )
+      );
+
+    } catch (e) {
+      _errorMessage = "Error has occured while adding the song on you current queue";
+    } finally {
+      notifyListeners();
+    }
+  }  
+
   List<Song> _filterPlaylistSong(List<PlaylistSongDTO> playlistSongs, List<Song> songs) {
     List<Song> filteredSongs = [];
     
@@ -203,5 +226,5 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
     }
 
     return filteredPlaylists;
-  }  
+  }
 }
