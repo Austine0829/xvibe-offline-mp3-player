@@ -79,7 +79,7 @@ class AddPlaylistSongCard extends StatelessWidget {
                   .showSnackBar(SnackBar(content: Text(playlistSongViewModel.errorMessage!)));
               }
             },
-            icon: Icon(Icons.add, size: 30),
+            icon: Icon(Icons.add_rounded, size: 30),
             color: Colors.white,
           ),
         ],
