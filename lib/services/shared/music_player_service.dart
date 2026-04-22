@@ -49,6 +49,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     await _player.seek(Duration(), index: index);
     await play();
+
+    notifyListeners();
   }
 
   @override
