@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/playlist/song_menu/bottom_swipable_playlist_song_menu_sheet.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player_handler.dart';
 
 class PlaylistSongCard extends StatelessWidget {
   final IPlaylistSongViewModel playlistSongViewModel;
