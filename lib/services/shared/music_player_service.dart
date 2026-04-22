@@ -124,6 +124,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     _playlist[playlistId]!.removeAt(index);
 
     if (_currentPlaylistId != playlistId) return;
+      _currentQueueSongs!.removeAt(index);
       await _player.removeAudioSourceAt(index);
   }
 
@@ -133,7 +134,10 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     final AudioSource audioSource = AudioSource.file(song.path, tag: song);
     _playlist[playlistId]!.add(audioSource);
-    _player.addAudioSource(audioSource);
+  
+    if (_currentPlaylistId != playlistId) return;
+      _currentQueueSongs!.add(audioSource);
+      await _player.addAudioSource(audioSource);
   }
   
   @override
