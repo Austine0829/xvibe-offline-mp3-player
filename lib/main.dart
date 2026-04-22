@@ -21,6 +21,7 @@ import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/mini_music_player/mini_music_player.dart';
 
 Future<void> permission(ISongService songService, IMusicScanningService musicScanningService) async {
   final audio = await Permission.audio.request();
@@ -119,44 +120,50 @@ class _MainState extends State<Main> {
             index: _currentPageIndex,
             children: _pages,
           ),
-        ) ,
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.7),
-                blurRadius: 30,
-                spreadRadius: 15,
-              ),
-            ],
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.transparent,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white54,
-            elevation: 15,
-            currentIndex: _currentPageIndex,
-            onTap: (index) {
-              setState(() {
-                _currentPageIndex = index;
-              });
-            },
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.playlist_play),
-                label: "Playlist",
-              ),
-              BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.analytics),
-                label: "Analytics",
-              ),
-            ],
-          ),
         ),
-      );
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          MiniMusicPlayer(),
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.7),
+                  blurRadius: 30,
+                  spreadRadius: 15,
+                ),
+              ],
+            ),
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              selectedItemColor: Colors.white,
+              unselectedItemColor: Colors.white54,
+              elevation: 15,
+              currentIndex: _currentPageIndex,
+              onTap: (index) {
+                setState(() {
+                  _currentPageIndex = index;
+                });
+              },
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.playlist_play),
+                  label: "Playlist",
+                ),
+                BottomNavigationBarItem(icon: Icon(Icons.search), label: "Browse"),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.analytics),
+                  label: "Analytics",
+                ),
+              ],
+            ),
+          ),
+        ],
+      ) 
+    );
   }
 }
 
