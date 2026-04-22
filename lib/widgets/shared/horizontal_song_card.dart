@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/music_player/swipable_music_player_handler.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player_handler.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/bottom_swipable_song_menu_sheet.dart';
 import '../../utils/app_text_theme.dart';
 
