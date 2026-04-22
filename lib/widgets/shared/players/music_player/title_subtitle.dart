@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 
 class TitleSubtitle extends StatelessWidget {
   final IMusicPlayerService musicPlayerService;
@@ -12,6 +14,23 @@ class TitleSubtitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final IMusicPlayerService musicPlayerService = context
+        .watch<MusicPlayerService>();
+
+    if (musicPlayerService.getCurrentQueue().isEmpty) {
+      return Column(
+        children: [
+          Text(
+            "No Title",
+            style: TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          Text(
+            "No Vibe", 
+            style: TextStyle(color: Colors.grey, fontSize: 14)),
+        ],
+      );
+    }
+
     return StreamBuilder(
       stream: musicPlayerService.playerSequenceStateStream(), 
       builder:(context, snapshot) {
