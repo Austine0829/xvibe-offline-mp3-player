@@ -30,7 +30,25 @@ class _PlaylistPageState extends State<PlaylistPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Playlist", style: Theme.of(context).textTheme.pageLabel),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Playlist", style: Theme.of(context).textTheme.pageLabel),
+            IconButton(
+              onPressed: () {
+                 showDialog(
+                  context: context, 
+                  builder: (context) {
+                    return AddPlaylistDialog(
+                      playlistViewModel: playlistViewModel,
+                    );
+                  }
+                );
+              }, 
+              icon: Icon(Icons.add_rounded, color: Colors.white, size: 30,)
+            )
+          ],
+        ),
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -111,20 +129,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () {
-          showDialog(
-            context: context, 
-            builder: (context) {
-              return AddPlaylistDialog(
-                playlistViewModel: playlistViewModel,
-              );
-            }
-          );
-        },
-        child: Icon(Icons.add, size: 30, color: Colors.black,),
       ),
     );
   }
