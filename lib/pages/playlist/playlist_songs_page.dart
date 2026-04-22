@@ -36,11 +36,27 @@ class _PlaylistSongsPageState extends State<PlaylistSongsPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
               onTap: () => Navigator.pop(context),
               child: Icon(Icons.arrow_back, color: Colors.white),
             ),
+            IconButton(
+              onPressed: () {
+                 showModalBottomSheet(
+                  context: context,
+                  backgroundColor: const Color.fromARGB(221, 27, 27, 27),
+                  showDragHandle: true,
+                  builder: (context) {
+                    return AddPlaylistSongDialog(
+                      playlistSongViewModel: context.watch<PlaylistSongViewModel>(),
+                    );
+                  },
+                );
+              }, 
+              icon: Icon(Icons.add_rounded, color: Colors.white, size: 30,)
+            )
           ],
         ),
         automaticallyImplyLeading: false,
@@ -67,22 +83,6 @@ class _PlaylistSongsPageState extends State<PlaylistSongsPage> {
             }
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () {
-           showModalBottomSheet(
-            context: context,
-            backgroundColor: const Color.fromARGB(221, 27, 27, 27),
-            showDragHandle: true,
-            builder: (context) {
-              return AddPlaylistSongDialog(
-                playlistSongViewModel: context.watch<PlaylistSongViewModel>(),
-              );
-            },
-          );
-        },
-        child: Icon(Icons.add, size: 30, color: Colors.black,),
       ),
     );
   }
