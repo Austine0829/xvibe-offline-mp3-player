@@ -10,6 +10,7 @@ import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.da
 import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
+import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 
@@ -76,12 +77,12 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     _successMessage = null;
 
     try {
-      // final bool isDeleted = await MediaStore.deleteSong(songId);
+      final bool isDeleted = await MediaStore.deleteSong(songId);
 
-      // if (!isDeleted) {
-      //   _errorMessage = "Error has occured while deleting the song in your file system";
-      //   return;  
-      // }
+      if (!isDeleted) {
+        _errorMessage = "Error has occured while deleting the song in your file system";
+        return;  
+      }
 
       await _songService.deletSong(songId);
 
