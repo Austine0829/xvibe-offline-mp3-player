@@ -56,15 +56,15 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => MusicPlayerService()),
         Provider(create: (_) => LabelingService()),
         Provider(create: (_) => applicationDatabase),
         Provider(create: (_) => songRepository),
-        Provider(create: (_) => songService),
         Provider(create: (_) => PlaylistRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistService(context.read<PlaylistRepository>())),
         Provider(create: (_) => PlaylistSongRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
+        ChangeNotifierProvider(create: (_) => songService),
+        ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>())),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
           songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
           context.read<PlaylistService>(), context.read<PlaylistSongService>())
@@ -108,6 +108,21 @@ class _MainState extends State<Main> {
     const BrowsePage(),
     const Text("Analytics"),
   ];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!isInitialize) {
+      final ISongService songService = context.read<SongService>();
+      initialize(songService);
+      isInitialize = true;
+    }
+  }
+
+  Future<void> initialize(ISongService songService) async {
+    await songService.initializeAudioSources();
+  }
 
   @override
   Widget build(BuildContext context) {
