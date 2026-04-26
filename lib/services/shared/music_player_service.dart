@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 
 class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   final AudioPlayer _player = AudioPlayer();
+  final ISongService _songService;
 
-  final Map<String, List<AudioSource>> _playlist = {};
-  List<AudioSource>? _currentQueueSongs = [];
+  final Map<String, List<SongDTO>> _playlistsSongsDTO = {};
+  List<Song>? _currentQueueSongs = [];
   
   String _currentPlaylistId = "";
+
+  MusicPlayerService(this._songService);
 
   @override
   LoopMode currentLoopMode = LoopMode.off;
@@ -31,7 +36,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   Future<void> seekIndex(String playlistId, int index) async {
     if (_currentPlaylistId != playlistId) {
       _currentPlaylistId = playlistId;
-      _currentQueueSongs = _copyPlaylist(_playlist[_currentPlaylistId]!);
+      _currentQueueSongs = _getQueueSongs(_playlistsSongsDTO[_currentPlaylistId]!);
       await setAudioSource(playlistId);
     }
 
@@ -42,8 +47,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
       itself.
     */
     if (_currentPlaylistId == playlistId 
-        && !_isSimilar(_currentQueueSongs!, _playlist[_currentPlaylistId]!)) {
-        _currentQueueSongs = _copyPlaylist(_playlist[_currentPlaylistId]!);
+        && !_isSimilar(_currentQueueSongs!, _playlistsSongsDTO[_currentPlaylistId]!)) {
+        _currentQueueSongs = _getQueueSongs(_playlistsSongsDTO[_currentPlaylistId]!);
         await setAudioSource(playlistId);
     }
 
@@ -66,16 +71,22 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   }
 
   @override
-  void setPlaylist(String playlistId, List<AudioSource> playlist) {
-    _playlist[playlistId] = playlist;
+  void setPlaylist(String playlistId, List<SongDTO> playlist) {
+    _playlistsSongsDTO[playlistId] = playlist;
   }
 
   @override
   Future<void> setAudioSource(String playlistId) async {
-    if (!_playlist.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
+    if (!_playlistsSongsDTO.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
+
+    List<AudioSource> audioSources = [];
+
+    for (var playlistSongsDTO in _playlistsSongsDTO[playlistId]!) {
+      audioSources.add(_songService.getAudioSources[playlistSongsDTO.id]!);
+    }
 
     await _player.setAudioSources(
-      _playlist[playlistId]!,
+      audioSources,
       initialIndex: 0,
       initialPosition: Duration.zero,
       shuffleOrder: DefaultShuffleOrder()
@@ -121,7 +132,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   Future<void> removeAudioAt(String playlistId, int index) async {
     if (playlistId.isEmpty) throw Exception("Playlist id is set emtpy!");
     
-    _playlist[playlistId]!.removeAt(index);
+    _playlistsSongsDTO[playlistId]!.removeAt(index);
 
     if (_currentPlaylistId != playlistId) return;
       _currentQueueSongs!.removeAt(index);
@@ -129,48 +140,37 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   }
 
   @override
-  Future<void> addAudioInPlaylist(String playlistId, Song song) async {
+  Future<void> addAudioInPlaylist(String playlistId, SongDTO songDTO) async {
     if (playlistId.isEmpty) throw Exception("Playlist id is set empty!");
 
-    final AudioSource audioSource = AudioSource.file(song.path, tag: song);
-    _playlist[playlistId]!.add(audioSource);
+    final AudioSource audioSource = _songService.getAudioSources[songDTO.id]!;
+    _playlistsSongsDTO[playlistId]!.add(songDTO);
   
     if (_currentPlaylistId != playlistId) return;
-      _currentQueueSongs!.add(audioSource);
+      _currentQueueSongs!.add(_songService.getSongSources[songDTO.id]!);
       await _player.addAudioSource(audioSource);
   }
   
   @override
   Future<void> addAudioToCurrentQueue(Song song) async {
     int foundIndex = _currentQueueSongs!
-      .indexWhere((audioSource) => (audioSource as IndexedAudioSource).tag.id == song.id);
+      .indexWhere((queueSong) => queueSong.id == song.id);
 
     if (foundIndex != -1) {
       _currentQueueSongs!.removeAt(foundIndex);
       await _player.removeAudioSourceAt(foundIndex);
     }
 
-    final audioSource = AudioSource.file(song.path, tag: song);
-    _currentQueueSongs!.add(audioSource);
+    _currentQueueSongs!.add(song);
+    final audioSource = AudioSource.file(song.path, tag: song);    
     await _player.addAudioSource(audioSource);
   }
   
   @override
   List<Song> getCurrentQueue() {
     if (_currentQueueSongs == null) return [];
-    
-    List<Song> songs = _currentQueueSongs!
-    .map((audioSource) {
-      final song = (audioSource as IndexedAudioSource).tag as Song;
-      return Song(
-        id: song.id,
-        title: song.title,
-        vibe: song.vibe,
-        path: song.path,
-      );
-    }).toList();
 
-    return songs;
+    return _currentQueueSongs!;
   }
   
   @override
@@ -189,21 +189,22 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     await play();
   }
 
-  List<AudioSource> _copyPlaylist(List<AudioSource> audioSources) {
-    List<AudioSource> temporayAudioSources = [];
+  List<Song> _getQueueSongs(List<SongDTO> playlistSongsDTO) {
+    List<Song> temporarySongs = [];
     
-    for (var audioSource in audioSources) {
-      temporayAudioSources.add(audioSource);
+    for (var playlistSongDTO in playlistSongsDTO) {
+      final Song song = _songService.getSongSources[playlistSongDTO.id]!;
+      temporarySongs.add(song);
     }
 
-    return temporayAudioSources;
+    return temporarySongs;
   }
 
-  bool _isSimilar(List<AudioSource> audioSourcesOne, List<AudioSource> audioSourcesTwo) {
-    if (audioSourcesOne.length != audioSourcesTwo.length) return false;
+  bool _isSimilar(List<Song> songsOne, List<SongDTO> songsTwo) {
+    if (songsOne.length != songsTwo.length) return false;
 
-    final songsIdSetOne = audioSourcesOne.map((audioSource) => (audioSource as IndexedAudioSource).tag.id).toSet();
-    final songsIdSetTwo = audioSourcesTwo.map((audioSource) => (audioSource as IndexedAudioSource).tag.id).toSet();
+    final songsIdSetOne = songsOne.map((song) => song.id).toSet();
+    final songsIdSetTwo = songsTwo.map((song) => song.id).toSet();
 
     return songsIdSetOne.containsAll(songsIdSetTwo);
   }

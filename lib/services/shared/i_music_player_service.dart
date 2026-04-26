@@ -1,4 +1,5 @@
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
 abstract class IMusicPlayerService {
@@ -16,7 +17,7 @@ abstract class IMusicPlayerService {
   Future<void> seekIndex(String playlistId, int index);
   Future<void> setLoopMode(LoopMode mode);
   Future<void> enableShuffle(bool boolean);
-  void setPlaylist(String playlistId, List<AudioSource> playlist);
+  void setPlaylist(String playlistId, List<SongDTO> playlist);
   Future<void> setAudioSource(String playlistId);
   Stream<PlayerState> playerStateStream();
   Stream<Duration> positionStream();
@@ -26,7 +27,7 @@ abstract class IMusicPlayerService {
   Future<void> seekNext();
   Future<void> seekPrevious();
   Future<void> removeAudioAt(String playlistId, int index);
-  Future<void> addAudioInPlaylist(String playlistId, Song song);
+  Future<void> addAudioInPlaylist(String playlistId, SongDTO songDTO);
   Future<void> addAudioToCurrentQueue(Song song);
   List<Song> getCurrentQueue();
   Future<void> removeCurrentQueueSongAt(int index);
