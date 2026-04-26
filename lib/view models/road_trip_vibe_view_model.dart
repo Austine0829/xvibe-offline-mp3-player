@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
-import 'package:xvibe_offline_mp3_player/constants/vibe.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
@@ -11,7 +10,6 @@ import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.da
 import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
-import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 
@@ -23,8 +21,8 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   late final IPlaylistSongService _playlistSongService;
 
   late final String _playlistId = Playlistid.chill;
-  late List<Song> _songs = [];
   late List<Playlist> _playlists = [];
+  late List<SongDTO> _songsDTO = [];
   String? _errorMessage;
   bool _isLoading = false;
   String? _successMessage;
@@ -35,10 +33,9 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     this._labelingService,
     this._playlistService,
     this._playlistSongService
-  );
-
-  @override
-  List<Song> get getSongs => _songs;
+  ) {
+    _songService.addListener(_onChangeService);
+  }
   
   @override
   String? get errorMessage => _errorMessage;
@@ -51,6 +48,12 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
   @override
   String? get successMessage => _successMessage;
+
+  @override
+  List<SongDTO> get getSongsDTO => _songsDTO;
+
+  @override
+  Map<int, Song> get getSongs => _songService.getSongSources;
 
   String generateLabel() => _labelingService.generate(LabelType.chill);
 
@@ -73,27 +76,22 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     _successMessage = null;
 
     try {
-      final bool isDeleted = await MediaStore.deleteSong(songId);
+      // final bool isDeleted = await MediaStore.deleteSong(songId);
 
-      if (!isDeleted) {
-        _errorMessage = "Error has occured while deleting the song in your file system";
-        return;  
-      }
+      // if (!isDeleted) {
+      //   _errorMessage = "Error has occured while deleting the song in your file system";
+      //   return;  
+      // }
 
       await _songService.deletSong(songId);
 
-      int foundIndex = _songs.indexWhere((song) => song.id == songId);
-      if (foundIndex != -1) {
-        _songs.removeAt(foundIndex);
-        await _musicPlayerService.removeAudioAt(_playlistId, foundIndex);
-      }
+      int foundIndex = _songsDTO.indexWhere((songDTO) => songDTO.id == songId);
+      if (foundIndex != -1) await _musicPlayerService.removeAudioAt(_playlistId, foundIndex);
 
       _successMessage = "Song has been deleted";
     } catch (e) {
       _errorMessage = "Error has occured while deleting the song";
-    } finally {
-      notifyListeners();
-    }
+    } 
   }
 
   @override
@@ -103,15 +101,9 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
     try {
       await _songService.updateSong(songId, song);
-      
-      int foundIndex = _songs.indexWhere((song) => song.id == songId);
-      if (foundIndex != -1) _songs[foundIndex] = song;
-
       _successMessage = "Song has been updated";
     } catch (e) {
       _errorMessage = "Error has occured while updating the song";
-    } finally {
-      notifyListeners(); 
     }
   }
   
@@ -122,11 +114,8 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     notifyListeners();
 
     try {
-      _songs = await _songService.getSongs(vibe: Vibe.chill);
-      final List<AudioSource> playlist = _songs.map((song) => 
-      AudioSource.file(song.path, tag: song)).toList();
-
-      _musicPlayerService.setPlaylist(_playlistId, playlist);
+      _songsDTO = await _songService.getSongsId();
+      _musicPlayerService.setPlaylist(_playlistId, _songsDTO);
     } catch (e) {
       _errorMessage = "Error has occured while getting songs";
     } finally {
@@ -176,5 +165,9 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  void _onChangeService() {
+    notifyListeners();
   }
 }
