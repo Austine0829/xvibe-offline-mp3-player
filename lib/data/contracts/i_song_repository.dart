@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
 abstract class ISongRepository {
@@ -10,4 +11,5 @@ abstract class ISongRepository {
   Future<Song> get(int id);
   Future<void> update(int id, Song song);
   Future<void> delete(int id);
+  Future<List<SongDTO>> getAllId({String? vibe});
 }
