@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
@@ -23,7 +22,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
   late final String _playlistId = Playlistid.chill;
   late List<Playlist> _playlists = [];
-  late List<SongDTO> _songsDTO = [];
+  late List<int> _songsId = [];
   String? _errorMessage;
   bool _isLoading = false;
   String? _successMessage;
@@ -51,7 +50,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   String? get successMessage => _successMessage;
 
   @override
-  List<SongDTO> get getSongsDTO => _songsDTO;
+  List<int> get getSongsId => _songsId;
 
   @override
   Map<int, Song> get getSongs => _songService.getSongSources;
@@ -86,7 +85,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
       await _songService.deletSong(songId);
 
-      int foundIndex = _songsDTO.indexWhere((songDTO) => songDTO.id == songId);
+      int foundIndex = _songsId.indexWhere((songID) => songID == songId);
       if (foundIndex != -1) await _musicPlayerService.removeAudioAt(_playlistId, foundIndex);
 
       _successMessage = "Song has been deleted";
@@ -115,8 +114,8 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     notifyListeners();
 
     try {
-      _songsDTO = await _songService.getSongsId();
-      _musicPlayerService.setPlaylist(_playlistId, _songsDTO);
+      _songsId = await _songService.getSongsId();
+      _musicPlayerService.setPlaylist(_playlistId, _songsId);
     } catch (e) {
       _errorMessage = "Error has occured while getting songs";
     } finally {

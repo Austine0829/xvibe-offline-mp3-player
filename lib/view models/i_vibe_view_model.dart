@@ -1,4 +1,3 @@
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
@@ -8,7 +7,7 @@ abstract class IVibeViewModel {
   String? get errorMessage;
   String? get successMessage;
   bool get isLoading;
-  List<SongDTO> get getSongsDTO; 
+  List<int> get getSongsId; 
 
   Future<void> play(int index);
 
