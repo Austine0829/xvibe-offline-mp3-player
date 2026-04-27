@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
@@ -67,7 +66,7 @@ class SongService extends ChangeNotifier implements ISongService {
   }
 
   @override
-  Future<List<SongDTO>> getSongsId({String? vibe}) async {
+  Future<List<int>> getSongsId({String? vibe}) async {
     return await _songRepository.getAllId(vibe: vibe);
   }
 }

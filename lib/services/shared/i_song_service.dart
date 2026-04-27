@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
@@ -19,5 +18,5 @@ abstract class ISongService extends ChangeNotifier {
   Future<void> updateSong(int songId, Song song);
   Future<void> deletSong(int songId);
   Future<void> initializeAudioSources();
-  Future<List<SongDTO>> getSongsId();
+  Future<List<int>> getSongsId();
 }
