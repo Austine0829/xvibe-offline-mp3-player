@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:xvibe_offline_mp3_player/DTO/playlist_song_dto.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
@@ -67,7 +66,7 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
       _playlistSongs.add(playlistSongDTO);
       await _musicPlayerService.addAudioInPlaylist(
         _currentPlaylistId, 
-       SongDTO(id: playlistSongDTO.songId)
+        playlistSongDTO.songId
       );
 
       int foundIndex = _songs
@@ -114,10 +113,10 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
     try {
       _playlistSongs = await _playlistSongService.getPlaylistSongs(_currentPlaylistId);
 
-      final List<SongDTO> songDTO = _playlistSongs
-        .map((playlistSong) => SongDTO(id: playlistSong.songId))
+      final List<int> songsId = _playlistSongs
+        .map((playlistSong) => playlistSong.songId)
         .toList();
-      _musicPlayerService.setPlaylist(_currentPlaylistId, songDTO);
+      _musicPlayerService.setPlaylist(_currentPlaylistId, songsId);
 
       _songs = _filterPlaylistSong(_playlistSongs, await _songService.getSongs());
       _playlists = _filterPlaylist(_currentPlaylistId, await _playlistService.getPlaylists());
