@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
@@ -34,10 +33,10 @@ class ShowMorePage extends StatelessWidget {
         children: [
           ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            itemCount: viewModel.getSongsDTO.length,
+            itemCount: viewModel.getSongsId.length,
             itemBuilder: (_, index) {
-              final SongDTO songDTO = viewModel.getSongsDTO[index];
-              final Song song = viewModel.getSongs[songDTO.id]!;
+              final int songId = viewModel.getSongsId[index];
+              final Song song = viewModel.getSongs[songId]!;
 
               return Column(
                 children: [
