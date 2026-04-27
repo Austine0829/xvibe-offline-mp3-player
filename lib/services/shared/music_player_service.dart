@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
@@ -9,7 +8,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   final AudioPlayer _player = AudioPlayer();
   final ISongService _songService;
 
-  final Map<String, List<SongDTO>> _playlistsSongsDTO = {};
+  final Map<String, List<int>> _playlistsSongsId = {};
   List<Song>? _currentQueueSongs = [];
   
   String _currentPlaylistId = "";
@@ -36,7 +35,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   Future<void> seekIndex(String playlistId, int index) async {
     if (_currentPlaylistId != playlistId) {
       _currentPlaylistId = playlistId;
-      _currentQueueSongs = _getQueueSongs(_playlistsSongsDTO[_currentPlaylistId]!);
+      _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
       await setAudioSource(playlistId);
     }
 
@@ -47,8 +46,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
       itself.
     */
     if (_currentPlaylistId == playlistId 
-        && !_isSimilar(_currentQueueSongs!, _playlistsSongsDTO[_currentPlaylistId]!)) {
-        _currentQueueSongs = _getQueueSongs(_playlistsSongsDTO[_currentPlaylistId]!);
+        && !_isSimilar(_currentQueueSongs!, _playlistsSongsId[_currentPlaylistId]!)) {
+        _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
         await setAudioSource(playlistId);
     }
 
@@ -71,18 +70,18 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   }
 
   @override
-  void setPlaylist(String playlistId, List<SongDTO> playlist) {
-    _playlistsSongsDTO[playlistId] = playlist;
+  void setPlaylist(String playlistId, List<int> songsId) {
+    _playlistsSongsId[playlistId] = songsId;
   }
 
   @override
   Future<void> setAudioSource(String playlistId) async {
-    if (!_playlistsSongsDTO.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
+    if (!_playlistsSongsId.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
 
     List<AudioSource> audioSources = [];
 
-    for (var playlistSongsDTO in _playlistsSongsDTO[playlistId]!) {
-      audioSources.add(_songService.getAudioSources[playlistSongsDTO.id]!);
+    for (var songId in _playlistsSongsId[playlistId]!) {
+      audioSources.add(_songService.getAudioSources[songId]!);
     }
 
     await _player.setAudioSources(
@@ -132,7 +131,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   Future<void> removeAudioAt(String playlistId, int index) async {
     if (playlistId.isEmpty) throw Exception("Playlist id is set emtpy!");
     
-    _playlistsSongsDTO[playlistId]!.removeAt(index);
+    _playlistsSongsId[playlistId]!.removeAt(index);
 
     if (_currentPlaylistId != playlistId) return;
       _currentQueueSongs!.removeAt(index);
@@ -140,14 +139,14 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   }
 
   @override
-  Future<void> addAudioInPlaylist(String playlistId, SongDTO songDTO) async {
+  Future<void> addAudioInPlaylist(String playlistId, int songId) async {
     if (playlistId.isEmpty) throw Exception("Playlist id is set empty!");
 
-    final AudioSource audioSource = _songService.getAudioSources[songDTO.id]!;
-    _playlistsSongsDTO[playlistId]!.add(songDTO);
+    final AudioSource audioSource = _songService.getAudioSources[songId]!;
+    _playlistsSongsId[playlistId]!.add(songId);
   
     if (_currentPlaylistId != playlistId) return;
-      _currentQueueSongs!.add(_songService.getSongSources[songDTO.id]!);
+      _currentQueueSongs!.add(_songService.getSongSources[songId]!);
       await _player.addAudioSource(audioSource);
   }
   
@@ -189,22 +188,22 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     await play();
   }
 
-  List<Song> _getQueueSongs(List<SongDTO> playlistSongsDTO) {
+  List<Song> _getQueueSongs(List<int> songsId) {
     List<Song> temporarySongs = [];
     
-    for (var playlistSongDTO in playlistSongsDTO) {
-      final Song song = _songService.getSongSources[playlistSongDTO.id]!;
+    for (var songId in songsId) {
+      final Song song = _songService.getSongSources[songId]!;
       temporarySongs.add(song);
     }
 
     return temporarySongs;
   }
 
-  bool _isSimilar(List<Song> songsOne, List<SongDTO> songsTwo) {
-    if (songsOne.length != songsTwo.length) return false;
+  bool _isSimilar(List<Song> songs, List<int> songsId) {
+    if (songs.length != songsId.length) return false;
 
-    final songsIdSetOne = songsOne.map((song) => song.id).toSet();
-    final songsIdSetTwo = songsTwo.map((song) => song.id).toSet();
+    final songsIdSetOne = songs.map((song) => song.id).toSet();
+    final songsIdSetTwo = songsId.map((songId) => songId).toSet();
 
     return songsIdSetOne.containsAll(songsIdSetTwo);
   }
