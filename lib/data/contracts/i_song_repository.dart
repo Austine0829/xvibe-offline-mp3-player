@@ -10,5 +10,5 @@ abstract class ISongRepository {
   Future<Song> get(int id);
   Future<void> update(int id, Song song);
   Future<void> delete(int id);
-  Future<List<String>> getAllId({String? vibe});
+  Future<List<int>> getAllId({String? vibe});
 }

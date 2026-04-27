@@ -75,7 +75,7 @@ class SongRepository implements ISongRepository {
   }
 
   @override
-  Future<List<String>> getAllId({String? vibe}) async {
+  Future<List<int>> getAllId({String? vibe}) async {
     final db = await _db;
     final List<dynamic> songs;
 
@@ -85,6 +85,6 @@ class SongRepository implements ISongRepository {
       songs = await db.rawQuery("SELECT id FROM song WHERE vibe = ?", [vibe]);
     }
 
-    return songs.map((song) => song.toString()).toList();
+    return songs.map((song) => int.parse(song)).toList();
   }
 }
