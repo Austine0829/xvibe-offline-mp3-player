@@ -1,5 +1,4 @@
 import 'package:sqflite_common/sqlite_api.dart';
-import 'package:xvibe_offline_mp3_player/DTO/song_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
@@ -76,7 +75,7 @@ class SongRepository implements ISongRepository {
   }
 
   @override
-  Future<List<SongDTO>> getAllId({String? vibe}) async {
+  Future<List<String>> getAllId({String? vibe}) async {
     final db = await _db;
     final List<dynamic> songs;
 
@@ -86,6 +85,6 @@ class SongRepository implements ISongRepository {
       songs = await db.rawQuery("SELECT id FROM song WHERE vibe = ?", [vibe]);
     }
 
-    return songs.map((song) => SongDTO.toObject(song)).toList();
+    return songs.map((song) => song.toString()).toList();
   }
 }
