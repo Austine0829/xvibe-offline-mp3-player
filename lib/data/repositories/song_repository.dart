@@ -77,14 +77,14 @@ class SongRepository implements ISongRepository {
   @override
   Future<List<int>> getAllId({String? vibe}) async {
     final db = await _db;
-    final List<dynamic> songs;
+    final List<Map<String, Object?>> songs;
 
-    if (vibe == null || vibe == "") {
+    if (vibe == null || vibe.isEmpty) {
       songs = await db.rawQuery("SELECT id FROM song");
     } else {
       songs = await db.rawQuery("SELECT id FROM song WHERE vibe = ?", [vibe]);
     }
 
-    return songs.map((song) => int.parse(song)).toList();
+    return songs.map((song) => song["id"] as int).toList();
   }
 }
