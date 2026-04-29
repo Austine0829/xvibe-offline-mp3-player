@@ -17,6 +17,5 @@ abstract class ISongService extends ChangeNotifier {
   Future<List<Song>> getSongs({String? vibe});
   Future<void> updateSong(int songId, Song song);
   Future<void> deletSong(int songId);
-  Future<void> initializeAudioSources();
   Future<List<int>> getSongsId();
 }

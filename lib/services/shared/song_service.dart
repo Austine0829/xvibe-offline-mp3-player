@@ -9,7 +9,9 @@ class SongService extends ChangeNotifier implements ISongService {
   final Map<int, AudioSource> _audioSources = {};
   final Map<int, Song> _songSources = {};
 
-  SongService(this._songRepository);
+  SongService(this._songRepository) {
+    _initializeAudioSources();
+  }
   
   @override
   Map<int, AudioSource> get getAudioSources => _audioSources;
@@ -53,9 +55,13 @@ class SongService extends ChangeNotifier implements ISongService {
 
     notifyListeners();
   }
-  
+
   @override
-  Future<void> initializeAudioSources() async {
+  Future<List<int>> getSongsId({String? vibe}) async {
+    return await _songRepository.getAllId(vibe: vibe);
+  }
+
+  Future<void> _initializeAudioSources() async {
     final List<Song> songs = await _songRepository.getAll();
 
     for (var song in songs) {
@@ -63,10 +69,5 @@ class SongService extends ChangeNotifier implements ISongService {
         .file(song.path, tag: song);
       _songSources[song.id] = song;
     }
-  }
-
-  @override
-  Future<List<int>> getSongsId({String? vibe}) async {
-    return await _songRepository.getAllId(vibe: vibe);
   }
 }
