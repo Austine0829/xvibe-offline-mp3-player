@@ -74,7 +74,7 @@ void main() async {
         ),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
           songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
-          context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<RecentTrackService>())
+          context.read<PlaylistService>(), context.read<PlaylistSongService>())
         ),
         ChangeNotifierProvider(create: (context) => RecentTracksViewModel(
           context.read<RecentTrackService>(), songService, context.read<PlaylistSongService>(), 
