@@ -18,30 +18,11 @@ class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
     this._recentTrackRepository, 
     this._musicPlayerService) {
     _initRecenTracks();
+    _initBackgroundJobTrackLogger();
   }
 
   @override
   List<int> get getRecenTracksSongId => _recentTracksSongId;
-
-  @override
-  Future<void> logTrack(RecentTrackDTO recentTrackDTO) async {
-   
-    if (_isExist(recentTrackDTO.songId)) return;
-
-    await _recentTrackRepository.add(
-      RecentTrack(
-        id: UuidGenerator.generate(), 
-        songId: recentTrackDTO.songId, 
-        date: recentTrackDTO.date
-      )
-    );
-
-    _recentTracksSongId.add(recentTrackDTO.songId);
-
-    await _musicPlayerService.addAudioInPlaylist(Playlistid.recentTrack, recentTrackDTO.songId);
-
-    notifyListeners();
-  }
   
   Future<void> _initRecenTracks() async {
     _recentTracksSongId = await _recentTrackRepository.getSongsId(date: DateString.now());
@@ -59,5 +40,43 @@ class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
     if (recentTrackSongId != -1) return true;
 
     return false;
+  }
+
+  Future<void> _logTrack(RecentTrackDTO recentTrackDTO) async {
+   
+    if (_isExist(recentTrackDTO.songId)) return;
+
+    await _recentTrackRepository.add(
+      RecentTrack(
+        id: UuidGenerator.generate(), 
+        songId: recentTrackDTO.songId, 
+        date: recentTrackDTO.date
+      )
+    );
+
+    _recentTracksSongId.add(recentTrackDTO.songId);
+
+    await _musicPlayerService.addAudioInPlaylist(Playlistid.recentTrack, recentTrackDTO.songId);
+
+    notifyListeners();
+  }
+
+  void _initBackgroundJobTrackLogger() {
+    _musicPlayerService.positionStream().listen((position) {
+      final duration = _musicPlayerService.currentSongDuration();
+      final int songId = _musicPlayerService.getCurrentPlayingSongId();
+
+      if (songId == -1) return;
+
+      if (duration == null || duration.inSeconds == 0) return;
+
+      if (duration.inSeconds > position.inSeconds) return;
+      
+      _logTrack(RecentTrackDTO(
+          songId: songId,
+          date: DateString.now(),
+        )
+      );
+    });
   }
 }
