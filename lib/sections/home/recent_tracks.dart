@@ -1,17 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:path/path.dart' as path;
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:xvibe_offline_mp3_player/constants/label_name.dart';
-import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
-import 'package:xvibe_offline_mp3_player/pages/show_more_page.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
-import 'package:xvibe_offline_mp3_player/services/scanning_service.dart';
+import 'package:xvibe_offline_mp3_player/pages/home/show_all_page.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/recent_tracks_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_card.dart';
 
 class RecentTracksSection extends StatefulWidget {
   const RecentTracksSection({super.key});
@@ -21,96 +17,69 @@ class RecentTracksSection extends StatefulWidget {
 }
 
 class _RecentTracksSectionState extends State<RecentTracksSection> {
-  late final IMusicPlayerService _musicPlayerService;
-  final String playlistId = Playlistid.recentTrack;
-  // final List<Song> songs = [
-  //   Song(id: 1, title: "AllDay Project - Look at me", vibe: "Chill", path: "assets/music/adp.mp3"),
-  //   Song(id: 1, title: "Kehlani - Folded", vibe: "Chill", path: "assets/music/kehlani.mp3"),
-  //   Song(id: 1, title: "J Tajor - All That Matters", vibe: "Chill", path: "assets/music/j_tajor.mp3"),
-  // ];
-
-  bool isInitialize = false;
-
-  List<Song> songs = [];
-  bool isLoading = true;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if(!isInitialize) {
-      _musicPlayerService = context.read<MusicPlayerService>();
-      initPlaylist();
-      isInitialize = true;
-    }
-  }
-
-  List<Song> formatSongs(List<File> files) {
-    return files.map((file) {
-      return Song(
-        id: 1,
-        title: path.basename(file.path.replaceAll(RegExp(r"_mixed\.mp3$|.mp3"), "")),
-        path: file.path.replaceAll(RegExp(r"_mixed\.mp3$"), "").trim(),
-        vibe: "Chill"
-      );
-    }).toList();
-  }
-
-  Future<void> initPlaylist() async {
-     final songFiles = await ScanningService.scanMp3Songs([
-      "/storage/emulated/0/Download"
-     ]);
-
-    setState(() {
-      songs = formatSongs(songFiles);
-      isLoading = false; 
-    });
-
-    final List<AudioSource> playlist = songs.map((song) => 
-      AudioSource.file(song.path, tag: song)).toList();
-
-    _musicPlayerService.setPlaylist(playlistId, playlist);
+  void initState() {
+    super.initState();
+    final viewModel = context.read<RecentTracksViewModel>();
+    Future.microtask(() async => 
+      await viewModel.initialize());
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        HorizontalTextAndTextButton(
-          textLabel: "Recent Tracks",
-          textButtonLabel: LabelName.showAll,
-          callback: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => ShowMorePage( 
-                  musicPlayerService: _musicPlayerService,
-                  songs: songs, 
-                  playlistId: playlistId
-                ),
-              ),
-            );
-          }
-        ),
-        isLoading ? Text("Loading") : Column(
+    final IRecentTracksViewModel recentTracksViewModel = context.watch<RecentTracksViewModel>();
+
+    return Skeletonizer(
+      enabled: false,
+      child: Column(children: [
+        if (recentTracksViewModel.getRecentTracksSongId.isEmpty)
+          SizedBox.shrink(),
+
+        if (recentTracksViewModel.getRecentTracksSongId.isNotEmpty) 
+          Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-             ...List.generate(
-              3,
-              (index) => Padding(
-                padding: EdgeInsets.only(bottom: 8),
-                child: HorizontalSongCard(
-                  musicPlayerService: _musicPlayerService,
-                  songTitle: songs[index].title,
-                  songVibe: songs[index].vibe,
-                  playlistId: playlistId,
-                  indexId: index,
-                ),
-              ),
+            HorizontalTextAndTextButton(
+              textLabel: "Today's Recent Tracks",
+              textButtonLabel: LabelName.showAll,
+              callback: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ShowAllPage(
+                      recentTracksViewModel: context.watch<RecentTracksViewModel>()
+                    ),
+                  ),
+                );
+              }
             ),
+            Column(
+              children: [
+                ...List.generate(
+                  recentTracksViewModel.getRecentTracksSongId.length >= 5
+                  ? 5 : recentTracksViewModel.getRecentTracksSongId.length,
+                  (index) {
+                    final int songId = recentTracksViewModel.getRecentTracksSongId[index];
+                    final Song song = recentTracksViewModel.getSongs[songId]!;
+
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 8),
+                      child: RecentTrackSongCard(
+                        recentTracksViewModel: recentTracksViewModel, 
+                        songId: song.id, 
+                        songTitle: song.title, 
+                        songVibe: song.vibe, 
+                        indexId: index
+                      )
+                    );
+                  }
+                ),
+              ],
+            )
           ],
         )
-      ],
+      ])
     );
   }
 }
