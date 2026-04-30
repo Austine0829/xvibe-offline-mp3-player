@@ -207,4 +207,13 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     return songsIdSetOne.containsAll(songsIdSetTwo);
   }
+  
+  @override
+  int getCurrentPlayingSongId() {
+    final int? songId = _player.sequenceState.currentSource?.tag.id;
+
+    if (songId == null) return -1;
+
+    return songId;
+  }
 }

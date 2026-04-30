@@ -25,4 +25,5 @@ abstract class IMusicPlayerService {
   List<Song> getCurrentQueue();
   Future<void> removeCurrentQueueSongAt(int index);
   Future<void> seekIndexInCurrentQueue(int index);
+  int getCurrentPlayingSongId();
 }
