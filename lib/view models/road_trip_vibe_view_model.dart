@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/DTO/recent_track_dto.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
@@ -8,7 +9,9 @@ import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_recent_track_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
+import 'package:xvibe_offline_mp3_player/utils/date_string.dart';
 import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
@@ -19,6 +22,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   late final ILabelingService _labelingService;
   late final IPlaylistService _playlistService;
   late final IPlaylistSongService _playlistSongService;
+  late final IRecentTrackService _recentTrackService;
 
   late final String _playlistId = Playlistid.chill;
   late List<Playlist> _playlists = [];
@@ -32,7 +36,8 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     this._musicPlayerService,
     this._labelingService,
     this._playlistService,
-    this._playlistSongService
+    this._playlistSongService,
+    this._recentTrackService
   ) {
     _songService.addListener(_onChangeService);
   }
@@ -63,11 +68,16 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
     try {
       _musicPlayerService.seekIndex(_playlistId, index);
+
+      _recentTrackService.logTrack(
+        RecentTrackDTO(
+          songId: _songsId[index], 
+          date: DateString.now()
+        )        
+      );
     } catch (e) {
       _errorMessage = "Error has occured while playing the song";
-    } finally {
-      notifyListeners();
-    }
+    } 
   }
 
   @override
