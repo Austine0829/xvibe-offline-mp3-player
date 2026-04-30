@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/horizontal_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/vibe_horizontal_song_card.dart';
 
 class ShowMorePage extends StatelessWidget {
   final IVibeViewModel Function(BuildContext context) vibeViewModel;
@@ -40,7 +40,7 @@ class ShowMorePage extends StatelessWidget {
 
               return Column(
                 children: [
-                  HorizontalSongCard(
+                  VibeHorizontalSongCard(
                     vibeViewModel: viewModel,
                     songId: song.id,
                     songTitle: song.title, 
