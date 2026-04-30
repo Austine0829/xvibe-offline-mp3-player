@@ -36,10 +36,53 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
         .watch<MusicPlayerService>();
 
     if (musicPlayerService.getCurrentQueue().isEmpty) {
-      return Card();
+      return Card(
+        margin: EdgeInsets.all(15),
+        color: Colors.grey,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          children: [
+            ListTile(
+              leading: Image.asset("assets/music_card_default.jpeg"),
+              title: Text(
+                "Title",
+                style: TextStyle(color: Colors.white, fontSize: 13)
+              ),
+              subtitle: Text(
+                "Vibe",
+                style: TextStyle(color: Colors.blueGrey, fontSize: 13)
+              ),
+              trailing: SizedBox(
+                width: 100,
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        Icons.menu_rounded,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.play_arrow,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
     }
 
     return Card(
+      margin: EdgeInsets.all(15),
       color: Colors.grey,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Column(
