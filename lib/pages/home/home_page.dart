@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
               // TopListenSection(),
               // AcousticSection(),
               // ChaoticSection(),
-              // SizedBox(height: 50)
+              SizedBox(height: 100)
             ],
           ),
         ),
