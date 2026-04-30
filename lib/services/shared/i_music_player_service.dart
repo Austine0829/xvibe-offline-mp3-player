@@ -2,12 +2,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
 abstract class IMusicPlayerService {
-  // ignore: unused_field
-  late final AudioPlayer _player;
-
-  // ignore: unused_field
-  final Map<String, List<AudioSource>> _playlist = {};
-
   late LoopMode currentLoopMode;
   late bool isShuffle;
 
