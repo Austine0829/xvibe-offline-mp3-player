@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_song_repository.dart';
+import 'package:xvibe_offline_mp3_player/data/repositories/recent_track_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
@@ -17,9 +18,11 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/media_store_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/playlist_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/recent_track_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/recent_tracks_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/mini_music_player/mini_music_player.dart';
 
@@ -63,11 +66,19 @@ void main() async {
         Provider(create: (context) => PlaylistService(context.read<PlaylistRepository>())),
         Provider(create: (_) => PlaylistSongRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
+        Provider(create: (_) => RecentTrackRepository(appDb: applicationDatabase)),
         ChangeNotifierProvider(create: (_) => songService),
         ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>())),
+        ChangeNotifierProvider(create: (context) => RecentTrackService(
+          context.read<RecentTrackRepository>(), context.read<MusicPlayerService>())
+        ),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
           songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
-          context.read<PlaylistService>(), context.read<PlaylistSongService>())
+          context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<RecentTrackService>())
+        ),
+        ChangeNotifierProvider(create: (context) => RecentTracksViewModel(
+          context.read<RecentTrackService>(), songService, context.read<PlaylistSongService>(), 
+          context.read<MusicPlayerService>(), context.read<PlaylistService>())
         ),
         ChangeNotifierProvider(create: (context) => PlaylistViewModel(context.read<PlaylistService>())),
         ChangeNotifierProvider(create: (context) => PlaylistSongViewModel(
@@ -108,21 +119,6 @@ class _MainState extends State<Main> {
     const BrowsePage(),
     const Text("Analytics"),
   ];
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    if (!isInitialize) {
-      final ISongService songService = context.read<SongService>();
-      initialize(songService);
-      isInitialize = true;
-    }
-  }
-
-  Future<void> initialize(ISongService songService) async {
-    await songService.initializeAudioSources();
-  }
 
   @override
   Widget build(BuildContext context) {
