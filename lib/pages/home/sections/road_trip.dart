@@ -7,7 +7,7 @@ import 'package:xvibe_offline_mp3_player/pages/home/show_more_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/no_songs_found.dart';
-import '../../widgets/home/vibe_vertical_song_card.dart';
+import '../../../widgets/home/vibe_vertical_song_card.dart';
 
 class RoadTripSection extends StatefulWidget {
   const RoadTripSection({super.key});
