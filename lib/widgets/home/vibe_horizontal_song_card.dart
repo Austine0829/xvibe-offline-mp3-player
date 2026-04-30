@@ -5,14 +5,14 @@ import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swi
 import 'package:xvibe_offline_mp3_player/widgets/home/song_menu/bottom_swipable_song_menu_sheet.dart';
 import '../../utils/app_text_theme.dart';
 
-class HorizontalSongCard extends StatelessWidget {
+class VibeHorizontalSongCard extends StatelessWidget {
   final IVibeViewModel vibeViewModel;
   final int songId;
   final String songTitle;
   final String songVibe;
   final int indexId;
 
-  const HorizontalSongCard({
+  const VibeHorizontalSongCard({
     super.key,
     required this.vibeViewModel,
     required this.songId,

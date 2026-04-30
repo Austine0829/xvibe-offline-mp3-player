@@ -5,13 +5,13 @@ import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swi
 
 import '../../utils/app_text_theme.dart';
 
-class VerticalSongCard extends StatelessWidget {
+class VibeVerticalSongCard extends StatelessWidget {
   final IVibeViewModel vibeViewModel;
   final String songTitle;
   final String songVibe;
   final int indexId;
 
-  const VerticalSongCard({
+  const VibeVerticalSongCard({
     super.key,
     required this.vibeViewModel,
     required this.songTitle,
