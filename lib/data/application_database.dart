@@ -58,5 +58,14 @@ class ApplicationDatabase {
         FOREIGN KEY(songId) REFERENCES song(id) ON DELETE CASCADE
       )
     """);
+
+      await db.execute("""
+      CREATE TABLE recent_track(
+        id TEXT PRIMARY KEY,
+        songId INTEGER,
+        date TEXT,
+        FOREIGN KEY(songId) REFERENCES song(id) ON DELETE CASCADE
+      )
+    """);
   }
 }
