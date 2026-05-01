@@ -10,6 +10,8 @@ import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart'
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/home_page.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/home_page_view_model.dart';
 import 'package:xvibe_offline_mp3_player/pages/playlist/playlist_page.dart';
 import 'package:xvibe_offline_mp3_player/services/home/labeling_service.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/playlist_song_service.dart';
@@ -20,6 +22,8 @@ import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.da
 import 'package:xvibe_offline_mp3_player/services/playlist/playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/recent_track_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/mix_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/recent_tracks_view_model.dart';
@@ -72,13 +76,26 @@ void main() async {
         ChangeNotifierProvider(create: (context) => RecentTrackService(
           context.read<RecentTrackRepository>(), context.read<MusicPlayerService>())
         ),
+        ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
           songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
-          context.read<PlaylistService>(), context.read<PlaylistSongService>())
+          context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
         ),
         ChangeNotifierProvider(create: (context) => RecentTracksViewModel(
           context.read<RecentTrackService>(), songService, context.read<PlaylistSongService>(), 
           context.read<MusicPlayerService>(), context.read<PlaylistService>())
+        ),
+        ChangeNotifierProvider(create: (context) => EnergeticVibeViewModel(
+          songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
+          context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
+        ),
+        ChangeNotifierProvider(create: (context) => ChillVibeViewModel(
+          songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
+          context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
+        ),
+        ChangeNotifierProvider(create: (context) => MixVibeViewModel(
+          songService, context.read<MusicPlayerService>(), context.read<PlaylistService>(), 
+          context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
         ),
         ChangeNotifierProvider(create: (context) => PlaylistViewModel(context.read<PlaylistService>())),
         ChangeNotifierProvider(create: (context) => PlaylistSongViewModel(
