@@ -64,7 +64,9 @@ class _RoadTripSectionState extends State<RoadTripSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
                     final int songId = roadTripVibeViewModel.getSongsId[index];
-                    final Song song = roadTripVibeViewModel.getSongs[songId]!;
+                    final Song? song = roadTripVibeViewModel.getSongs[songId];
+                    
+                    if (song == null) return SizedBox.shrink();
 
                     return VibeVerticalSongCard(
                       vibeViewModel: roadTripVibeViewModel,
