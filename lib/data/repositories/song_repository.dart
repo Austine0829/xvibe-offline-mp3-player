@@ -87,4 +87,16 @@ class SongRepository implements ISongRepository {
 
     return songs.map((song) => song["id"] as int).toList();
   }
+  
+  @override
+  Future<List<int>> getRandomIdWithLimit(int limit) async {
+    final db = await  _db;
+    final List<Map<String, Object?>> songs = await db.rawQuery("""
+      SELECT id FROM song
+      ORDER BY RANDOM()
+      LIMIT $limit
+    """);
+
+    return songs.map((song) => song["id"] as int).toList();
+  }
 }
