@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xvibe_offline_mp3_player/pages/home/sections/acoustic_vibe_section.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/chill_vibe_section.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/mix_vibe_section.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/home_page_view_model.dart';
@@ -35,6 +37,9 @@ class HomePage extends StatelessWidget {
       // ignore: use_build_context_synchronously
       Future.microtask(() async => await context.read<ChillVibeViewModel>().initialize());
 
+      // ignore: use_build_context_synchronously
+      Future.microtask(() async => await context.read<AcousticVibeViewModel>().initialize());
+
       homePageViewModel.setRefresh(false);
     }
 
@@ -56,7 +61,7 @@ class HomePage extends StatelessWidget {
               ChillVibeSection(),
               MixVibeSection(),
               // TopListenSection(),
-              // AcousticSection(),
+              AcousticVibeSection(),
               // ChaoticSection(),
               SizedBox(height: 110)
             ],
