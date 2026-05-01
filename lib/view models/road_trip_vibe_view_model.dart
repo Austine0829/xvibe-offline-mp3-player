@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
+import 'package:xvibe_offline_mp3_player/constants/vibe.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
@@ -11,6 +12,7 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_home_page_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 
 class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {  
@@ -19,6 +21,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   late final ILabelingService _labelingService;
   late final IPlaylistService _playlistService;
   late final IPlaylistSongService _playlistSongService;
+  late final IHomePageViewModel _homePageViewModel;
 
   late final String _playlistId = Playlistid.chill;
   late List<Playlist> _playlists = [];
@@ -33,6 +36,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     this._labelingService,
     this._playlistService,
     this._playlistSongService,
+    this._homePageViewModel
   ) {
     _songService.addListener(_onChangeService);
   }
@@ -89,7 +93,9 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
       _successMessage = "Song has been deleted";
     } catch (e) {
       _errorMessage = "Error has occured while deleting the song";
-    } 
+    } finally {
+      _homePageViewModel.notify();
+    }
   }
 
   @override
@@ -99,9 +105,17 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
 
     try {
       await _songService.updateSong(songId, song);
+
+      if (song.vibe == Vibe.chill) return;
+
+      int foundIndex = _songsId.indexWhere((songID) => songID == songId);
+      if (foundIndex != -1) _songsId.removeAt(foundIndex);
+
       _successMessage = "Song has been updated";
     } catch (e) {
       _errorMessage = "Error has occured while updating the song";
+    } finally {
+      _homePageViewModel.notify();
     }
   }
   
