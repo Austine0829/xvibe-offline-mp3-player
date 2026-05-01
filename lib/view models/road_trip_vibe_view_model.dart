@@ -23,7 +23,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   late final IPlaylistSongService _playlistSongService;
   late final IHomePageViewModel _homePageViewModel;
 
-  late final String _playlistId = Playlistid.chill;
+  late final String _playlistId = Playlistid.roadTrip;
   late List<Playlist> _playlists = [];
   late List<int> _songsId = [];
   String? _errorMessage;
@@ -59,7 +59,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   @override
   Map<int, Song> get getSongs => _songService.getSongSources;
 
-  String generateLabel() => _labelingService.generate(LabelType.chill);
+  String generateLabel() => _labelingService.generate(LabelType.roadTrip);
 
   @override
   Future<void> play(int index) async {
@@ -106,7 +106,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     try {
       await _songService.updateSong(songId, song);
 
-      if (song.vibe == Vibe.chill) return;
+      if (song.vibe == Vibe.roadTrip) return;
 
       int foundIndex = _songsId.indexWhere((songID) => songID == songId);
       if (foundIndex != -1) _songsId.removeAt(foundIndex);
@@ -126,7 +126,7 @@ class RoadTripVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
     notifyListeners();
 
     try {
-      _songsId = await _songService.getSongsId();
+      _songsId = await _songService.getSongsId(vibe: Vibe.roadTrip);
       _musicPlayerService.setPlaylist(_playlistId, _songsId);
     } catch (e) {
       _errorMessage = "Error has occured while getting songs";
