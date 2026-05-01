@@ -61,7 +61,9 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
                   ? 5 : recentTracksViewModel.getRecentTracksSongId.length,
                   (index) {
                     final int songId = recentTracksViewModel.getRecentTracksSongId[index];
-                    final Song song = recentTracksViewModel.getSongs[songId]!;
+                    final Song? song = recentTracksViewModel.getSongs[songId];
+
+                    if (song == null) return SizedBox.shrink();
 
                     return Padding(
                       padding: EdgeInsets.only(bottom: 8),
