@@ -36,7 +36,9 @@ class ShowMorePage extends StatelessWidget {
             itemCount: viewModel.getSongsId.length,
             itemBuilder: (_, index) {
               final int songId = viewModel.getSongsId[index];
-              final Song song = viewModel.getSongs[songId]!;
+              final Song? song = viewModel.getSongs[songId];
+
+              if (song == null) return SizedBox.shrink();
 
               return Column(
                 children: [
