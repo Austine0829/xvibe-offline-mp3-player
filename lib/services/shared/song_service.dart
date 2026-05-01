@@ -61,6 +61,11 @@ class SongService extends ChangeNotifier implements ISongService {
     return await _songRepository.getAllId(vibe: vibe);
   }
 
+  @override
+  Future<List<int>> getRandomSongsIdWithLimit({int limit = 30}) async {
+    return await _songRepository.getRandomIdWithLimit(limit);
+  }
+
   Future<void> _initializeAudioSources() async {
     final List<Song> songs = await _songRepository.getAll();
 
