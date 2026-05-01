@@ -34,7 +34,9 @@ class ShowAllPage extends StatelessWidget {
             itemCount: recentTracksViewModel.getRecentTracksSongId.length,
             itemBuilder: (_, index) {
               final int songId = recentTracksViewModel.getRecentTracksSongId[index];
-              final Song song = recentTracksViewModel.getSongs[songId]!;
+              final Song? song = recentTracksViewModel.getSongs[songId];
+
+               if (song == null) return SizedBox.shrink();
 
               return Column(
                 children: [
