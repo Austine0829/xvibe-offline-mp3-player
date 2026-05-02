@@ -10,9 +10,9 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_song_log_service.dart
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/date_string.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/i_recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_song_log_view_model.dart';
 
-class RecentTracksViewModel extends ChangeNotifier implements IRecentTracksViewModel {
+class RecentLogSongsViewModel extends ChangeNotifier implements ISongLogViewModel {
   late final ISongLogService _songLogService;
   late final ISongService _songService;
   late final IPlaylistSongService _playlistSongService;
@@ -25,7 +25,7 @@ class RecentTracksViewModel extends ChangeNotifier implements IRecentTracksViewM
   bool _isLoading = false;
   String? _successMessage;
 
-  RecentTracksViewModel(
+  RecentLogSongsViewModel(
     this._songLogService,
     this._songService,
     this._playlistSongService,
