@@ -1,14 +1,14 @@
-class RecentTrackDTO {
+class SongLogDTO {
   final int songId;
   final String date;
 
-  RecentTrackDTO({
+  SongLogDTO({
     required this.songId,
     required this.date
   });
 
-  factory RecentTrackDTO.toObject(Map<String, dynamic> map) {
-    return RecentTrackDTO(
+  factory SongLogDTO.toObject(Map<String, dynamic> map) {
+    return SongLogDTO(
       songId: map["songId"],
       date: map["date"] as String
     );

@@ -1,9 +1,9 @@
-class RecentTrack {
+class SongLog {
   final String id;
   final int songId;
   final String date;
 
-  RecentTrack({
+  SongLog({
     required this.id,
     required this.songId,
     required this.date,
@@ -17,8 +17,8 @@ class RecentTrack {
     };
   }
 
-  factory RecentTrack.toObject(Map<String, dynamic> map) {
-    return RecentTrack(
+  factory SongLog.toObject(Map<String, dynamic> map) {
+    return SongLog(
       id: map["id"], 
       songId: map["songId"],
       date: map["data"] as String
