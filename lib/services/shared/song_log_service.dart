@@ -12,30 +12,35 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   late final ISongLogRepository _songLogRepository;
   late final IMusicPlayerService _musicPlayerService;
 
-  List<int> _recentTracksSongId = [];
-  List<int> _topListenTracksSongId = [];
+  List<int> _recentSongsId = [];
+  List<int> _topListenSongsId = [];
 
   SongLogService(
     this._songLogRepository, 
     this._musicPlayerService) {
     _initRecenTracks();
-    _initBackgroundJobTrackLogger();
+    _initBackgroundJobSongLogger();
   }
 
   @override
-  List<int> get getRecentSongsId => _recentTracksSongId;
+  List<int> get getRecentSongsId => _recentSongsId;
 
   @override
-  List<int> get getTopListenSongsId => _topListenTracksSongId;
-  
-  Future<void> _initRecenTracks() async {
-    _recentTracksSongId = await _songLogRepository.getSongsId(date: DateString.now());
-    _topListenTracksSongId = await _songLogRepository.getTopListenSongsIdWithLimit(limit: 30);
+  List<int> get getTopListenSongsId => _topListenSongsId;
+
+  @override
+  Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25}) {
+    return _songLogRepository.getTopListenSongsIdWithLimit(limit: limit);
   }
 
   @override
-  Future<List<int>> getRecentTracksSongIdByDate(String date) async {
+  Future<List<int>> getRecentSongsIdByDate(String date) async {
     return await _songLogRepository.getSongsId(date: date);
+  }
+
+  Future<void> _initRecenTracks() async {
+    _recentSongsId = await _songLogRepository.getSongsId(date: DateString.now());
+    _topListenSongsId = await _songLogRepository.getTopListenSongsIdWithLimit(limit: 30);
   }
 
   Future<void> _logTrack(SongLogDTO songLogDTO) async {
@@ -48,7 +53,7 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
       )
     );
 
-    _recentTracksSongId.add(songLogDTO.songId);
+    _recentSongsId.add(songLogDTO.songId);
 
     await _musicPlayerService.addAudioInPlaylist(Playlistid.recentTrack, songLogDTO.songId);
 
@@ -57,7 +62,7 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
 
   int _lastLoggedSongId = -1;
 
-  void _initBackgroundJobTrackLogger() {
+  void _initBackgroundJobSongLogger() {
     _musicPlayerService.positionStream().listen((position) {
       final duration = _musicPlayerService.currentSongDuration();
 
