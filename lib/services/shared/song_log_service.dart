@@ -13,6 +13,7 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   late final IMusicPlayerService _musicPlayerService;
 
   List<int> _recentTracksSongId = [];
+  List<int> _topListenTracksSongId = [];
 
   SongLogService(
     this._songLogRepository, 
@@ -22,10 +23,14 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   }
 
   @override
-  List<int> get getRecenTracksSongId => _recentTracksSongId;
+  List<int> get getRecentSongsId => _recentTracksSongId;
+
+  @override
+  List<int> get getTopListenSongsId => _topListenTracksSongId;
   
   Future<void> _initRecenTracks() async {
     _recentTracksSongId = await _songLogRepository.getSongsId(date: DateString.now());
+    _topListenTracksSongId = await _songLogRepository.getTopListenSongsIdWithLimit(limit: 30);
   }
 
   @override
