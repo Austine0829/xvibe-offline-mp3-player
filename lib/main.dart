@@ -30,6 +30,7 @@ import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/recent_log_songs_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/top_listen_log_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/mini_music_player/mini_music_player.dart';
 
 Future<void> permission(ISongService songService, IMusicScanningService musicScanningService) async {
@@ -98,6 +99,10 @@ void main() async {
         ChangeNotifierProvider(create: (context) => MixVibeViewModel(
           songService, context.read<MusicPlayerService>(), context.read<PlaylistService>(), 
           context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
+        ),
+        ChangeNotifierProvider(create: (context) => TopListenLogSongViewModel(
+          context.read<SongLogService>(), songService, context.read<PlaylistSongService>(), 
+          context.read<MusicPlayerService>(), context.read<PlaylistService>())
         ),
         ChangeNotifierProvider(create: (context) => AcousticVibeViewModel(
           songService, context.read<MusicPlayerService>(),  context.read<LabelingService>() ,
