@@ -1,21 +1,21 @@
 import 'package:flutter/foundation.dart';
-import 'package:xvibe_offline_mp3_player/DTO/recent_track_dto.dart';
+import 'package:xvibe_offline_mp3_player/DTO/song_log_dto.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
-import 'package:xvibe_offline_mp3_player/data/contracts/i_recent_track_repository.dart';
-import 'package:xvibe_offline_mp3_player/models/recent_track.dart';
+import 'package:xvibe_offline_mp3_player/data/contracts/i_song_log_repository.dart';
+import 'package:xvibe_offline_mp3_player/models/song_log.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_recent_track_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_song_log_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/date_string.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 
-class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
-  late final IRecentTrackRepository _recentTrackRepository;
+class SongLogService extends ChangeNotifier implements ISongLogService {
+  late final ISongLogRepository _songLogRepository;
   late final IMusicPlayerService _musicPlayerService;
 
   List<int> _recentTracksSongId = [];
 
-  RecentTrackService(
-    this._recentTrackRepository, 
+  SongLogService(
+    this._songLogRepository, 
     this._musicPlayerService) {
     _initRecenTracks();
     _initBackgroundJobTrackLogger();
@@ -25,27 +25,27 @@ class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
   List<int> get getRecenTracksSongId => _recentTracksSongId;
   
   Future<void> _initRecenTracks() async {
-    _recentTracksSongId = await _recentTrackRepository.getSongsId(date: DateString.now());
+    _recentTracksSongId = await _songLogRepository.getSongsId(date: DateString.now());
   }
 
   @override
   Future<List<int>> getRecentTracksSongIdByDate(String date) async {
-    return await _recentTrackRepository.getSongsId(date: date);
+    return await _songLogRepository.getSongsId(date: date);
   }
 
-  Future<void> _logTrack(RecentTrackDTO recentTrackDTO) async {
+  Future<void> _logTrack(SongLogDTO songLogDTO) async {
    
-    await _recentTrackRepository.add(
-      RecentTrack(
+    await _songLogRepository.add(
+      SongLog(
         id: UuidGenerator.generate(), 
-        songId: recentTrackDTO.songId, 
-        date: recentTrackDTO.date
+        songId: songLogDTO.songId, 
+        date: songLogDTO.date
       )
     );
 
-    _recentTracksSongId.add(recentTrackDTO.songId);
+    _recentTracksSongId.add(songLogDTO.songId);
 
-    await _musicPlayerService.addAudioInPlaylist(Playlistid.recentTrack, recentTrackDTO.songId);
+    await _musicPlayerService.addAudioInPlaylist(Playlistid.recentTrack, songLogDTO.songId);
 
     notifyListeners();
   }
@@ -66,7 +66,7 @@ class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
 
       _lastLoggedSongId = songId;
 
-      _logTrack(RecentTrackDTO(
+      _logTrack(SongLogDTO(
         songId: songId,
         date: DateString.now(),
       ));
