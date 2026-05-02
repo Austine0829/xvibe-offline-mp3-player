@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/i_recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_song_log_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_card.dart';
 
 class ShowAllPage extends StatelessWidget {
-  final IRecentTracksViewModel recentTracksViewModel;
+  final ISongLogViewModel songLogViewModel;
 
   const ShowAllPage({
     super.key, 
-    required this.recentTracksViewModel,
+    required this.songLogViewModel,
   });
 
   @override
@@ -31,17 +31,17 @@ class ShowAllPage extends StatelessWidget {
         children: [
           ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            itemCount: recentTracksViewModel.getRecentTracksSongId.length,
+            itemCount: songLogViewModel.getRecentTracksSongId.length,
             itemBuilder: (_, index) {
-              final int songId = recentTracksViewModel.getRecentTracksSongId[index];
-              final Song? song = recentTracksViewModel.getSongs[songId];
+              final int songId = songLogViewModel.getRecentTracksSongId[index];
+              final Song? song = songLogViewModel.getSongs[songId];
 
                if (song == null) return SizedBox.shrink();
 
               return Column(
                 children: [
                   RecentTrackSongCard(
-                    recentTracksViewModel: recentTracksViewModel,
+                    songLogViewModel: songLogViewModel,
                     songId: song.id,
                     songTitle: song.title, 
                     songVibe: song.vibe, 
