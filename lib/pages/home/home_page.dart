@@ -11,7 +11,7 @@ import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model
 import 'package:xvibe_offline_mp3_player/view%20models/home_page_view_model.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/energetic_section.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_home_page_view_model.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/recent_log_songs_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 import 'sections/recent_tracks.dart';
 import 'sections/road_trip.dart';
@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
       Future.microtask(() async => await context.read<RoadTripVibeViewModel>().initialize());
 
       // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<RecentTracksViewModel>().initialize());
+      Future.microtask(() async => await context.read<RecentLogSongsViewModel>().initialize());
 
       // ignore: use_build_context_synchronously
       Future.microtask(() async => await context.read<EnergeticVibeViewModel>().initialize());
