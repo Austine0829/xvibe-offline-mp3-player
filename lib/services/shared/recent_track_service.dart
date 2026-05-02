@@ -33,19 +33,8 @@ class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
     return await _recentTrackRepository.getSongsId(date: date);
   }
 
-  bool _isExist(int songId) {
-    final int recentTrackSongId = _recentTracksSongId
-      .firstWhere((recentTrackSongId) => recentTrackSongId == songId, orElse: () => -1);
-
-    if (recentTrackSongId != -1) return true;
-
-    return false;
-  }
-
   Future<void> _logTrack(RecentTrackDTO recentTrackDTO) async {
    
-    if (_isExist(recentTrackDTO.songId)) return;
-
     await _recentTrackRepository.add(
       RecentTrack(
         id: UuidGenerator.generate(), 
@@ -61,22 +50,26 @@ class RecentTrackService extends ChangeNotifier implements IRecentTrackService {
     notifyListeners();
   }
 
+  int _lastLoggedSongId = -1;
+
   void _initBackgroundJobTrackLogger() {
     _musicPlayerService.positionStream().listen((position) {
       final duration = _musicPlayerService.currentSongDuration();
+
+      if (duration == null || duration.inSeconds == 0) return;
+      if (duration.inSeconds > position.inSeconds ) return;
+
       final int songId = _musicPlayerService.getCurrentPlayingSongId();
 
       if (songId == -1) return;
+      if (songId == _lastLoggedSongId) return;
 
-      if (duration == null || duration.inSeconds == 0) return;
+      _lastLoggedSongId = songId;
 
-      if (duration.inSeconds > position.inSeconds) return;
-      
       _logTrack(RecentTrackDTO(
-          songId: songId,
-          date: DateString.now(),
-        )
-      );
+        songId: songId,
+        date: DateString.now(),
+      ));
     });
   }
 }
