@@ -28,7 +28,7 @@ import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model
 import 'package:xvibe_offline_mp3_player/view%20models/mix_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/recent_log_songs_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/mini_music_player/mini_music_player.dart';
 
@@ -83,7 +83,7 @@ void main() async {
           songService, context.read<MusicPlayerService>(), context.read<LabelingService>(), 
           context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
         ),
-        ChangeNotifierProvider(create: (context) => RecentTracksViewModel(
+        ChangeNotifierProvider(create: (context) => RecentLogSongsViewModel(
           context.read<SongLogService>(), songService, context.read<PlaylistSongService>(), 
           context.read<MusicPlayerService>(), context.read<PlaylistService>())
         ),
