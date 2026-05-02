@@ -31,9 +31,9 @@ class ShowAllPage extends StatelessWidget {
         children: [
           ListView.builder(
             padding: EdgeInsets.symmetric(horizontal: 15),
-            itemCount: songLogViewModel.getRecentTracksSongId.length,
+            itemCount: songLogViewModel.getLogSongsId.length,
             itemBuilder: (_, index) {
-              final int songId = songLogViewModel.getRecentTracksSongId[index];
+              final int songId = songLogViewModel.getLogSongsId[index];
               final Song? song = songLogViewModel.getSongs[songId];
 
                if (song == null) return SizedBox.shrink();
