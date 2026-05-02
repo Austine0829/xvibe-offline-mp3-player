@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/i_recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_song_log_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_menu/add_to_playlist_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
@@ -10,13 +10,13 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
   static const double iconSize = 35;
   static const Color iconColor = Colors.white;
   
-  final IRecentTracksViewModel recentTracksViewModel;
+  final ISongLogViewModel songLogViewModel;
   final int songId;
   final int indexId;
 
   const BottomSwipableSongMenuSheet({
     super.key,
-    required this.recentTracksViewModel,
+    required this.songLogViewModel,
     required this.songId,
     required this.indexId
   });
@@ -34,7 +34,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
             children: [
               ListTile(
                 onTap: () {
-                  recentTracksViewModel.play(indexId);
+                  songLogViewModel.play(indexId);
                   Navigator.pop(context);
                 },
                 leading: Icon(
@@ -50,12 +50,12 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
               ListTile(
                 onTap: () async {
                   Navigator.pop(context);
-                  await recentTracksViewModel.getAllPlaylist();
+                  await songLogViewModel.getAllPlaylist();
                   if (!context.mounted) return;
 
-                  if (recentTracksViewModel.errorMessage != null) {
+                  if (songLogViewModel.errorMessage != null) {
                     ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(recentTracksViewModel.errorMessage!)));
+                      .showSnackBar(SnackBar(content: Text(songLogViewModel.errorMessage!)));
                     return ;
                   }
 
@@ -63,7 +63,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                     context: context, 
                     builder: (context) {
                       return AddToPlaylistDialog(
-                        recentTracksViewModel: recentTracksViewModel, 
+                        songLogViewModel: songLogViewModel, 
                         songId: songId
                       );
                     }
@@ -80,19 +80,19 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                 ),
               ), ListTile(
                 onTap: () async {
-                  await recentTracksViewModel
+                  await songLogViewModel
                     .addSongToCurrentQueue(songId);
 
                   if (!context.mounted) return;
 
 
-                  final String? successMessage = recentTracksViewModel.successMessage;
+                  final String? successMessage = songLogViewModel.successMessage;
                   if (successMessage != null) {
                     ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(successMessage)));
                   }
 
-                  final String? errorMessage = recentTracksViewModel.errorMessage;
+                  final String? errorMessage = songLogViewModel.errorMessage;
                   if (errorMessage != null) {
                     ScaffoldMessenger.of(context)
                       .showSnackBar(SnackBar(content: Text(errorMessage)));

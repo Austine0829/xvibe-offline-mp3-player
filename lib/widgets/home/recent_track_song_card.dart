@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/i_recent_tracks_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/i_song_log_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_menu/bottom_swipable_song_menu_sheet.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player_handler.dart';
 import '../../utils/app_text_theme.dart';
 
 class RecentTrackSongCard extends StatelessWidget {
-  final IRecentTracksViewModel recentTracksViewModel;
+  final ISongLogViewModel songLogViewModel;
   final int songId;
   final String songTitle;
   final String songVibe;
@@ -14,7 +14,7 @@ class RecentTrackSongCard extends StatelessWidget {
 
   const RecentTrackSongCard({
     super.key,
-    required this.recentTracksViewModel,
+    required this.songLogViewModel,
     required this.songId,
     required this.songTitle,
     required this.songVibe,
@@ -25,7 +25,7 @@ class RecentTrackSongCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        recentTracksViewModel.play(indexId);
+        songLogViewModel.play(indexId);
         SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
       },
       child: SizedBox(
@@ -75,8 +75,7 @@ class RecentTrackSongCard extends StatelessWidget {
                   showDragHandle: true,
                   builder: (context) {
                     return BottomSwipableSongMenuSheet(
-                      recentTracksViewModel: 
-                      recentTracksViewModel, 
+                      songLogViewModel: songLogViewModel, 
                       songId: songId, 
                       indexId: indexId
                     );
