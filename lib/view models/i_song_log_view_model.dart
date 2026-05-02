@@ -7,7 +7,7 @@ abstract class ISongLogViewModel {
   String? get errorMessage;
   String? get successMessage;
   bool get isLoading;
-  List<int> get getRecentTracksSongId; 
+  List<int> get getLogSongsId; 
 
   Future<void> play(int index);
 
