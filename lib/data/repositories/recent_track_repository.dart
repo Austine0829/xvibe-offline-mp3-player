@@ -22,7 +22,7 @@ class RecentTrackRepository implements IRecentTrackRepository {
   Future<List<int>> getSongsId({required String date}) async {
     final db = await _db;
     List<Map<String, Object?>> recentTracks = await db
-      .rawQuery("SELECT songId FROM $_tableRecentTrack WHERE date = ?", [date]);
+      .rawQuery("SELECT DISTINCT songId FROM $_tableRecentTrack WHERE date = ?", [date]);
     
     return recentTracks.map((recentTrack) => recentTrack["songId"] as int).toList();
   }
