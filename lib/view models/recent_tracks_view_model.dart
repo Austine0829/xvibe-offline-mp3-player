@@ -6,14 +6,14 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_service.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/i_playlist_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/i_recent_track_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_song_log_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/date_string.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_recent_tracks_view_model.dart';
 
 class RecentTracksViewModel extends ChangeNotifier implements IRecentTracksViewModel {
-  late final IRecentTrackService _recentTrackService;
+  late final ISongLogService _songLogService;
   late final ISongService _songService;
   late final IPlaylistSongService _playlistSongService;
   late final IMusicPlayerService _musicPlayerService;
@@ -26,20 +26,20 @@ class RecentTracksViewModel extends ChangeNotifier implements IRecentTracksViewM
   String? _successMessage;
 
   RecentTracksViewModel(
-    this._recentTrackService,
+    this._songLogService,
     this._songService,
     this._playlistSongService,
     this._musicPlayerService,
     this._playlistService
   ) {
-    _recentTrackService.addListener(_onChangeService);
+    _songLogService.addListener(_onChangeService);
   }
 
   @override
   List<Playlist> get getPlaylists => _playlists;
 
   @override
-  List<int> get getRecentTracksSongId => _recentTrackService.getRecenTracksSongId;
+  List<int> get getRecentTracksSongId => _songLogService.getRecenTracksSongId;
 
   @override
   Map<int, Song> get getSongs => _songService.getSongSources;
@@ -128,7 +128,7 @@ class RecentTracksViewModel extends ChangeNotifier implements IRecentTracksViewM
     notifyListeners();
 
     try {
-      final List<int> songsId = await _recentTrackService.getRecentTracksSongIdByDate(DateString.now());
+      final List<int> songsId = await _songLogService.getRecentTracksSongIdByDate(DateString.now());
       _musicPlayerService.setPlaylist(_playlistId, songsId);
     } catch (e) {
       _errorMessage = "Error has occured while getting songs";
