@@ -128,7 +128,7 @@ class RecentLogSongsViewModel extends ChangeNotifier implements ISongLogViewMode
     notifyListeners();
 
     try {
-      final List<int> songsId = await _songLogService.getRecentTracksSongIdByDate(DateString.now());
+      final List<int> songsId = await _songLogService.getRecentSongsIdByDate(DateString.now());
       _musicPlayerService.setPlaylist(_playlistId, songsId);
     } catch (e) {
       _errorMessage = "Error has occured while getting songs";
