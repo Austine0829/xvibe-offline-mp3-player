@@ -60,7 +60,7 @@ class ApplicationDatabase {
     """);
 
       await db.execute("""
-      CREATE TABLE recent_track(
+      CREATE TABLE song_log(
         id TEXT PRIMARY KEY,
         songId INTEGER,
         date TEXT,
