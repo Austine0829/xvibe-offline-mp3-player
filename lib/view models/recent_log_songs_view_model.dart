@@ -39,7 +39,7 @@ class RecentLogSongsViewModel extends ChangeNotifier implements ISongLogViewMode
   List<Playlist> get getPlaylists => _playlists;
 
   @override
-  List<int> get getRecentTracksSongId => _songLogService.getRecenTracksSongId;
+  List<int> get getLogSongsId => _songLogService.getRecenTracksSongId;
 
   @override
   Map<int, Song> get getSongs => _songService.getSongSources;
