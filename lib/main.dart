@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_song_repository.dart';
-import 'package:xvibe_offline_mp3_player/data/repositories/recent_track_repository.dart';
+import 'package:xvibe_offline_mp3_player/data/repositories/song_log_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
@@ -22,7 +22,7 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/media_store_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/playlist/playlist_service.dart';
-import 'package:xvibe_offline_mp3_player/services/shared/recent_track_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/song_log_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/song_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/mix_vibe_view_model.dart';
@@ -72,11 +72,11 @@ void main() async {
         Provider(create: (context) => PlaylistService(context.read<PlaylistRepository>())),
         Provider(create: (_) => PlaylistSongRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
-        Provider(create: (_) => RecentTrackRepository(appDb: applicationDatabase)),
+        Provider(create: (_) => SongLogRepository(appDb: applicationDatabase)),
         ChangeNotifierProvider(create: (_) => songService),
         ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>())),
-        ChangeNotifierProvider(create: (context) => RecentTrackService(
-          context.read<RecentTrackRepository>(), context.read<MusicPlayerService>())
+        ChangeNotifierProvider(create: (context) => SongLogService(
+          context.read<SongLogRepository>(), context.read<MusicPlayerService>())
         ),
         ChangeNotifierProvider(create: (_) => HomePageViewModel()),
         ChangeNotifierProvider(create: (context) => RoadTripVibeViewModel(
@@ -84,7 +84,7 @@ void main() async {
           context.read<PlaylistService>(), context.read<PlaylistSongService>(), context.read<HomePageViewModel>())
         ),
         ChangeNotifierProvider(create: (context) => RecentTracksViewModel(
-          context.read<RecentTrackService>(), songService, context.read<PlaylistSongService>(), 
+          context.read<SongLogService>(), songService, context.read<PlaylistSongService>(), 
           context.read<MusicPlayerService>(), context.read<PlaylistService>())
         ),
         ChangeNotifierProvider(create: (context) => EnergeticVibeViewModel(
