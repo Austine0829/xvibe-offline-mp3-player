@@ -1,7 +1,7 @@
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
-abstract class IRecentTracksViewModel {
+abstract class ISongLogViewModel {
   Map<int, Song> get getSongs;
   List<Playlist> get getPlaylists;
   String? get errorMessage;
