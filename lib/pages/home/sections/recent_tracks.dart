@@ -32,10 +32,10 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
     return Skeletonizer(
       enabled: false,
       child: Column(children: [
-        if (recentLogSongsViewModel.getRecentTracksSongId.isEmpty)
+        if (recentLogSongsViewModel.getLogSongsId.isEmpty)
           SizedBox.shrink(),
 
-        if (recentLogSongsViewModel.getRecentTracksSongId.isNotEmpty) 
+        if (recentLogSongsViewModel.getLogSongsId.isNotEmpty) 
           Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,10 +56,10 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
             Column(
               children: [
                 ...List.generate(
-                  recentLogSongsViewModel.getRecentTracksSongId.length >= 5
-                  ? 5 : recentLogSongsViewModel.getRecentTracksSongId.length,
+                  recentLogSongsViewModel.getLogSongsId.length >= 5
+                  ? 5 : recentLogSongsViewModel.getLogSongsId.length,
                   (index) {
-                    final int songId = recentLogSongsViewModel.getRecentTracksSongId[index];
+                    final int songId = recentLogSongsViewModel.getLogSongsId[index];
                     final Song? song = recentLogSongsViewModel.getSongs[songId];
 
                     if (song == null) return SizedBox.shrink();
