@@ -4,6 +4,7 @@ import 'package:xvibe_offline_mp3_player/pages/home/sections/acoustic_vibe_secti
 import 'package:xvibe_offline_mp3_player/pages/home/sections/chaotic_vibe_section.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/chill_vibe_section.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/mix_vibe_section.dart';
+import 'package:xvibe_offline_mp3_player/pages/home/sections/top_listen_section.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chaotic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
@@ -16,8 +17,6 @@ import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model
 import 'sections/recent_tracks.dart';
 import 'sections/road_trip.dart';
 import '../../utils/app_text_theme.dart';
-
-// TODO: Remove the comment of other components after fixing the UI
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -65,7 +64,7 @@ class HomePage extends StatelessWidget {
               EnergeticSection(),
               ChillVibeSection(),
               MixVibeSection(),
-              // TopListenSection(),
+              TopListenSection(),
               AcousticVibeSection(),
               ChaoticVibeSection(),
               SizedBox(height: 110)
