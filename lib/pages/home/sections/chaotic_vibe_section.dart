@@ -6,7 +6,6 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/show_more_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chaotic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/no_songs_found.dart';
 import '../../../widgets/home/vibe_vertical_song_card.dart';
 
 class ChaoticVibeSection extends StatefulWidget {
@@ -32,14 +31,14 @@ class _ChaoticVibeSectionState extends State<ChaoticVibeSection> {
   Widget build(BuildContext context) {
     final ChaoticVibeViewModel chaoticVibeViewModel = context.watch<ChaoticVibeViewModel>();
 
+    if (chaoticVibeViewModel.getSongsId.isEmpty && !chaoticVibeViewModel.isLoading) {
+      return SizedBox.shrink();
+    }
+
     return Skeletonizer(
       enabled: chaoticVibeViewModel.isLoading,
       child: Column(
         children: [
-          if (chaoticVibeViewModel.getSongsId.isEmpty)
-            NoSongsFound(),
-          
-          if (chaoticVibeViewModel.getSongsId.isNotEmpty)
             Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
