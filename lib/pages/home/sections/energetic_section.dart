@@ -6,7 +6,6 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/show_more_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/no_songs_found.dart';
 import '../../../widgets/home/vibe_vertical_song_card.dart';
 
 class EnergeticSection extends StatefulWidget {
@@ -30,14 +29,14 @@ class _EnergeticSectionState extends State<EnergeticSection> {
   Widget build(BuildContext context) {
     final EnergeticVibeViewModel energeticVibeViewModel = context.watch<EnergeticVibeViewModel>();
 
+    if (energeticVibeViewModel.getSongsId.isEmpty && !energeticVibeViewModel.isLoading) {
+      return SizedBox.shrink();
+    }
+
     return Skeletonizer(
       enabled: energeticVibeViewModel.isLoading,
       child: Column(
         children: [
-          if (energeticVibeViewModel.getSongsId.isEmpty)
-            NoSongsFound(),
-          
-          if (energeticVibeViewModel.getSongsId.isNotEmpty)
             Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
