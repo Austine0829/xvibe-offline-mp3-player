@@ -29,13 +29,13 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
   Widget build(BuildContext context) {
     final RecentLogSongsViewModel recentLogSongsViewModel = context.watch<RecentLogSongsViewModel>();
 
-    return Skeletonizer(
-      enabled: false,
-      child: Column(children: [
-        if (recentLogSongsViewModel.getLogSongsId.isEmpty)
-          SizedBox.shrink(),
+    if (recentLogSongsViewModel.getLogSongsId.isEmpty && !recentLogSongsViewModel.isLoading) {
+      return SizedBox.shrink();
+    }
 
-        if (recentLogSongsViewModel.getLogSongsId.isNotEmpty) 
+    return Skeletonizer(
+      enabled: recentLogSongsViewModel.isLoading,
+      child: Column(children: [ 
           Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
