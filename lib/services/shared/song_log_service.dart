@@ -29,8 +29,8 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   List<int> get getTopListenSongsId => _topListenSongsId;
 
   @override
-  Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25}) {
-    return _songLogRepository.getTopListenSongsIdWithLimit(limit: limit);
+  Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25}) async {
+    return await _songLogRepository.getTopListenSongsIdWithLimit(limit: limit);
   }
 
   @override
@@ -41,6 +41,7 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   Future<void> _initSongsId() async {
     _topListenSongsId = await _songLogRepository.getTopListenSongsIdWithLimit(limit: 30);
     _recentSongsId = await _songLogRepository.getSongsId(date: DateString.now());
+    notifyListeners();
   }
 
   Future<void> _logTrack(SongLogDTO songLogDTO) async {
