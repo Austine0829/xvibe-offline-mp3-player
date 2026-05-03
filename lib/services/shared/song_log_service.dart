@@ -18,7 +18,7 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   SongLogService(
     this._songLogRepository, 
     this._musicPlayerService) {
-    _initRecenTracks();
+    _initSongsId();
     _initBackgroundJobSongLogger();
   }
 
@@ -38,9 +38,9 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
     return await _songLogRepository.getSongsId(date: date);
   }
 
-  Future<void> _initRecenTracks() async {
-    _recentSongsId = await _songLogRepository.getSongsId(date: DateString.now());
+  Future<void> _initSongsId() async {
     _topListenSongsId = await _songLogRepository.getTopListenSongsIdWithLimit(limit: 30);
+    _recentSongsId = await _songLogRepository.getSongsId(date: DateString.now());
   }
 
   Future<void> _logTrack(SongLogDTO songLogDTO) async {
