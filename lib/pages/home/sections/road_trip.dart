@@ -30,14 +30,14 @@ class _RoadTripSectionState extends State<RoadTripSection> {
   Widget build(BuildContext context) {
     final RoadTripVibeViewModel roadTripVibeViewModel = context.watch<RoadTripVibeViewModel>();
 
+    if (roadTripVibeViewModel.getSongsId.isEmpty && !roadTripVibeViewModel.isLoading){
+      return NoSongsFound();
+    }
+
     return Skeletonizer(
       enabled: roadTripVibeViewModel.isLoading,
       child: Column(
-        children: [
-          if (roadTripVibeViewModel.getSongsId.isEmpty)
-            NoSongsFound(),
-          
-          if (roadTripVibeViewModel.getSongsId.isNotEmpty)
+        children: [ 
             Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
