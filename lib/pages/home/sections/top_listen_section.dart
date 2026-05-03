@@ -29,13 +29,13 @@ class _TopListenSectionState extends State<TopListenSection> {
   Widget build(BuildContext context) {
     final TopListenLogSongViewModel topListenLogSongViewModel = context.watch<TopListenLogSongViewModel>();
 
-    return Skeletonizer(
-      enabled: false,
-      child: Column(children: [
-        if (topListenLogSongViewModel.getLogSongsId.isEmpty)
-          SizedBox.shrink(),
+    if (topListenLogSongViewModel.getLogSongsId.isEmpty && !topListenLogSongViewModel.isLoading){
+      return SizedBox.shrink();
+    }
 
-        if (topListenLogSongViewModel.getLogSongsId.isNotEmpty) 
+    return Skeletonizer(
+      enabled: topListenLogSongViewModel.isLoading,
+      child: Column(children: [ 
           Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
