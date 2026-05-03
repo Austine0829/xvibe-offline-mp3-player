@@ -163,6 +163,9 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     _currentQueueSongs!.add(song);
     final audioSource = AudioSource.file(song.path, tag: song);    
     await _player.addAudioSource(audioSource);
+
+    if (_currentPlaylistId.isNotEmpty) return;
+    _player.play();
   }
   
   @override
