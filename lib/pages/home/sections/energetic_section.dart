@@ -16,13 +16,15 @@ class EnergeticSection extends StatefulWidget {
 }
 
 class _EnergeticSectionState extends State<EnergeticSection> {
-  
+  late final String _label;
+
   @override
   void initState() {
     super.initState();
     final viewModel = context.read<EnergeticVibeViewModel>();
     Future.microtask(() async => 
       await viewModel.initialize());
+    _label = viewModel.generateLabel();
   }
 
    @override
@@ -41,7 +43,7 @@ class _EnergeticSectionState extends State<EnergeticSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HorizontalTextAndTextButton(
-                textLabel: energeticVibeViewModel.generateLabel(),
+                textLabel: _label,
                 textButtonLabel: LabelName.showMore,
                 callback: () {
                   Navigator.push(
