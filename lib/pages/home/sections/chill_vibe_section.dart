@@ -6,7 +6,6 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/show_more_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
-import 'package:xvibe_offline_mp3_player/widgets/shared/no_songs_found.dart';
 import '../../../widgets/home/vibe_vertical_song_card.dart';
 
 class ChillVibeSection extends StatefulWidget {
@@ -31,15 +30,15 @@ class _ChillVibeSectionState extends State<ChillVibeSection> {
    @override
   Widget build(BuildContext context) {
     final ChillVibeViewModel chillVibeViewModel = context.watch<ChillVibeViewModel>();
+  
+    if (chillVibeViewModel.getSongsId.isEmpty && !chillVibeViewModel.isLoading) {
+      return SizedBox.shrink();
+    }
 
     return Skeletonizer(
       enabled: chillVibeViewModel.isLoading,
       child: Column(
         children: [
-          if (chillVibeViewModel.getSongsId.isEmpty)
-            NoSongsFound(),
-          
-          if (chillVibeViewModel.getSongsId.isNotEmpty)
             Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
