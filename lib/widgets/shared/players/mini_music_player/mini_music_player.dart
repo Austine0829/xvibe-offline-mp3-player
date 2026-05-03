@@ -39,7 +39,7 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
         final playerState = snapshot.data;
         final isPlaying = playerState?.playing ?? false;
 
-        if (!isPlaying) {
+        if (!isPlaying && _musicPlayerService.getCurrentQueue().isEmpty) {
           return Card(
             margin: EdgeInsets.all(15),
             color: Colors.grey,
