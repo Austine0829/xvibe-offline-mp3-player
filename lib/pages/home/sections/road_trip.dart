@@ -16,13 +16,15 @@ class RoadTripSection extends StatefulWidget {
 }
 
 class _RoadTripSectionState extends State<RoadTripSection> {
-  
+   late final String _label;
+
   @override
   void initState() {
     super.initState();
     final viewModel = context.read<RoadTripVibeViewModel>();
     Future.microtask(() async => 
       await viewModel.initialize());
+    _label = viewModel.generateLabel();
   }
 
    @override
@@ -41,7 +43,7 @@ class _RoadTripSectionState extends State<RoadTripSection> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               HorizontalTextAndTextButton(
-                textLabel: roadTripVibeViewModel.generateLabel(),
+                textLabel: _label,
                 textButtonLabel: LabelName.showMore,
                 callback: () {
                   Navigator.push(
