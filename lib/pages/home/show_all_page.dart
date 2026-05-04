@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_song_log_view_model.dart';
-import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/song_log_card.dart';
 
 class ShowAllPage extends StatelessWidget {
   final ISongLogViewModel songLogViewModel;
@@ -40,7 +40,7 @@ class ShowAllPage extends StatelessWidget {
 
               return Column(
                 children: [
-                  RecentTrackSongCard(
+                  SongLogCard(
                     songLogViewModel: songLogViewModel,
                     songId: song.id,
                     songTitle: song.title, 
