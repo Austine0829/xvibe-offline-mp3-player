@@ -23,7 +23,8 @@ class SongLogCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
+      highlightColor: Colors.black,
       onTap: () {
         songLogViewModel.play(indexId);
         SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
