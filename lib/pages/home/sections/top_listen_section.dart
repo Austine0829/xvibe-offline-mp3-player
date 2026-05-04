@@ -6,7 +6,7 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/show_all_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/top_listen_log_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/horizontal_text_and_text_button.dart';
-import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_card.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/song_log_card.dart';
 
 class TopListenSection extends StatefulWidget {
   const TopListenSection({super.key});
@@ -66,7 +66,7 @@ class _TopListenSectionState extends State<TopListenSection> {
 
                     return Padding(
                       padding: EdgeInsets.only(bottom: 8),
-                      child: RecentTrackSongCard(
+                      child: SongLogCard(
                         songLogViewModel: topListenLogSongViewModel, 
                         songId: song.id, 
                         songTitle: song.title, 
