@@ -5,6 +5,8 @@ import 'package:xvibe_offline_mp3_player/pages/home/sections/chaotic_vibe_sectio
 import 'package:xvibe_offline_mp3_player/pages/home/sections/chill_vibe_section.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/mix_vibe_section.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/top_listen_section.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chaotic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
@@ -24,6 +26,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IHomePageViewModel homePageViewModel = context.watch<HomePageViewModel>();
+    final IMusicPlayerService musicPlayerService = context.watch<MusicPlayerService>();
 
     if (homePageViewModel.refresh() && context.mounted) {
       // ignore: use_build_context_synchronously
@@ -53,21 +56,24 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              RoadTripSection(),
-              SizedBox(height: 15),
-              RecentTracksSection(),
-              EnergeticSection(),
-              ChillVibeSection(),
-              MixVibeSection(),
-              TopListenSection(),
-              AcousticVibeSection(),
-              ChaoticVibeSection(),
-              SizedBox(height: 110)
+              const  RoadTripSection(),
+              const SizedBox(height: 15),
+              const RecentTracksSection(),
+              const EnergeticSection(),
+              const ChillVibeSection(),
+              const MixVibeSection(),
+              const TopListenSection(),
+              const AcousticVibeSection(),
+              const ChaoticVibeSection(),
+              SizedBox(
+                height: musicPlayerService
+                  .getCurrentQueue().isNotEmpty ? 110 : 25
+              )
             ],
           ),
         ),
