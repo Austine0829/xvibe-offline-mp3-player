@@ -25,7 +25,8 @@ class PlaylistSongCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   return GestureDetector(
+    return InkWell(
+      highlightColor: Colors.black,
       onTap: () {
         playlistSongViewModel.play(indexId);
         SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);                                                                                              
