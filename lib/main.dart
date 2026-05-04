@@ -157,12 +157,9 @@ class _MainState extends State<Main> {
     return Scaffold(
       backgroundColor: Colors.black,
         extendBody: true,
-        body: Padding(
-          padding: EdgeInsetsGeometry.only(bottom: 45),
-          child: IndexedStack(
-            index: _currentPageIndex,
-            children: _pages,
-          ),
+        body: IndexedStack(
+          index: _currentPageIndex,
+          children: _pages,
         ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
