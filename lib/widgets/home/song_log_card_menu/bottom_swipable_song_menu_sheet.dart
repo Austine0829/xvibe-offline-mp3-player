@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_song_log_view_model.dart';
-import 'package:xvibe_offline_mp3_player/widgets/home/recent_track_song_menu/add_to_playlist_dialog.dart';
+import 'package:xvibe_offline_mp3_player/widgets/home/song_log_card_menu/add_to_playlist_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
