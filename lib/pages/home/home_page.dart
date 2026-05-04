@@ -72,7 +72,7 @@ class HomePage extends StatelessWidget {
               const ChaoticVibeSection(),
               SizedBox(
                 height: musicPlayerService
-                  .getCurrentQueue().isNotEmpty ? 110 : 25
+                  .getCurrentQueue().isNotEmpty ? 110 : 55
               )
             ],
           ),
