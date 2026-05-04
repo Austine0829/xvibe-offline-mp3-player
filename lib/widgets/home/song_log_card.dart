@@ -5,14 +5,14 @@ import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swi
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player_handler.dart';
 import '../../utils/app_text_theme.dart';
 
-class RecentTrackSongCard extends StatelessWidget {
+class SongLogCard extends StatelessWidget {
   final ISongLogViewModel songLogViewModel;
   final int songId;
   final String songTitle;
   final String songVibe;
   final int indexId;
 
-  const RecentTrackSongCard({
+  const SongLogCard({
     super.key,
     required this.songLogViewModel,
     required this.songId,
