@@ -8,7 +8,7 @@ import 'package:xvibe_offline_mp3_player/data/repositories/playlist_song_reposit
 import 'package:xvibe_offline_mp3_player/data/repositories/song_log_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
-import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
+import 'package:xvibe_offline_mp3_player/pages/browse/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/home_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/browse_vibe_view_model.dart';
