@@ -16,7 +16,7 @@ import 'package:xvibe_offline_mp3_player/pages/home/sections/energetic_section.d
 import 'package:xvibe_offline_mp3_player/view%20models/i_home_page_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/recent_log_songs_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
-import 'sections/recent_tracks.dart';
+import 'sections/recent_tracks_section.dart';
 import 'sections/road_trip.dart';
 import '../../utils/app_text_theme.dart';
 
@@ -74,7 +74,11 @@ class HomePage extends StatelessWidget {
                 stream: musicPlayerService.playerSequenceStateStream(), 
                 builder: (context, snapshot) {
                   final state = snapshot.data;
-                  final index = state!.currentIndex;
+                  int? index;
+
+                  if (state != null) {
+                    index = state.currentIndex;
+                  }
 
                   return SizedBox(height: index != null ? 170 : 70);
                 }
