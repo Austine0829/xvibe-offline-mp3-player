@@ -99,4 +99,15 @@ class SongRepository implements ISongRepository {
 
     return songs.map((song) => song["id"] as int).toList();
   }
+  
+  @override
+  Future<List<int>> getIdWithTitle(String title) async {
+    final db = await  _db;
+    final List<Map<String, Object?>> songs = await db.rawQuery("""
+      SELECT id FROM song
+      WHERE title LIKE ?
+    """, ['$title%']);
+
+    return songs.map((song) => song["id"] as int).toList();
+  }
 }

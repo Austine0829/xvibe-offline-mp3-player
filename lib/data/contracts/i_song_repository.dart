@@ -12,4 +12,5 @@ abstract class ISongRepository {
   Future<void> delete(int id);
   Future<List<int>> getAllId({String? vibe});
   Future<List<int>> getRandomIdWithLimit(int limit);
+  Future<List<int>> getIdWithTitle(String title);
 }
