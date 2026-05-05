@@ -11,6 +11,7 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/home_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/browse_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chaotic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/home_page_view_model.dart';
@@ -115,6 +116,10 @@ void main() async {
         ChangeNotifierProvider(create: (context) => PlaylistViewModel(context.read<PlaylistService>())),
         ChangeNotifierProvider(create: (context) => PlaylistSongViewModel(
           context.read<MusicPlayerService>(), context.read<PlaylistSongService>(), songService, context.read<PlaylistService>())
+        ),
+        ChangeNotifierProvider(create: (context) => BrowseVibeViewModel(
+          context.read<MusicPlayerService>(), context.read<PlaylistSongService>(), songService, 
+          context.read<PlaylistService>())
         )
       ],
       child: MyApp(),
