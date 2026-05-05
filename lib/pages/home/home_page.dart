@@ -70,9 +70,14 @@ class HomePage extends StatelessWidget {
               const TopListenSection(),
               const AcousticVibeSection(),
               const ChaoticVibeSection(),
-              SizedBox(
-                height: musicPlayerService
-                  .getCurrentQueue().isNotEmpty ? 110 : 55
+              StreamBuilder(
+                stream: musicPlayerService.playerSequenceStateStream(), 
+                builder: (context, snapshot) {
+                  final state = snapshot.data;
+                  final index = state!.currentIndex;
+
+                  return SizedBox(height: index != null ? 170 : 70);
+                }
               )
             ],
           ),
