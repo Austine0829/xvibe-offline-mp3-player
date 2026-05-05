@@ -219,4 +219,22 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     return songId;
   }
+  
+  @override
+  Future<void> addAudioToCurrentQueueAndPlay(Song song) async {
+    int foundIndex = _currentQueueSongs!
+      .indexWhere((queueSong) => queueSong.id == song.id);
+
+    if (foundIndex != -1) {
+      _currentQueueSongs!.removeAt(foundIndex);
+      await _player.removeAudioSourceAt(foundIndex);
+    }
+
+    _currentQueueSongs!.add(song);
+    final audioSource = AudioSource.file(song.path, tag: song);    
+    await _player.addAudioSource(audioSource);
+
+    await _player.play();
+    await _player.seek(Duration(), index: _currentQueueSongs!.length - 1);
+  }
 }
