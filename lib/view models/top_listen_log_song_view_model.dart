@@ -18,7 +18,7 @@ class TopListenLogSongViewModel extends ChangeNotifier implements ISongLogViewMo
   late final IMusicPlayerService _musicPlayerService;
   late final IPlaylistService _playlistService;
 
-  late final String _playlistId = Playlistid.recentTrack;
+  late final String _playlistId = Playlistid.topListen;
   late List<Playlist> _playlists = [];
   String? _errorMessage;
   bool _isLoading = false;
