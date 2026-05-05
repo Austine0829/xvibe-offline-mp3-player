@@ -17,7 +17,7 @@ import 'package:xvibe_offline_mp3_player/view%20models/i_home_page_view_model.da
 import 'package:xvibe_offline_mp3_player/view%20models/recent_log_songs_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 import 'sections/recent_tracks_section.dart';
-import 'sections/road_trip.dart';
+import 'sections/road_trip_section.dart';
 import '../../utils/app_text_theme.dart';
 
 class HomePage extends StatelessWidget {
