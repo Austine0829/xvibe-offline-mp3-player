@@ -19,4 +19,5 @@ abstract class ISongService extends ChangeNotifier {
   Future<void> deletSong(int songId);
   Future<List<int>> getSongsId({String? vibe});
   Future<List<int>> getRandomSongsIdWithLimit({int limit = 30});
+  Future<List<int>> getSongsIdWithTitle({String title = ""});
 }
