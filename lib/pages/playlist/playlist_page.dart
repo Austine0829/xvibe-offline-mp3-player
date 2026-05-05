@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/playlist_view_model.dart';
@@ -26,6 +28,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
     final IPlaylistViewModel playlistViewModel = context.watch<PlaylistViewModel>();
+    final IMusicPlayerService musicPlayerService = context.watch<MusicPlayerService>();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -124,6 +127,19 @@ class _PlaylistPageState extends State<PlaylistPage> {
                       );
                     }
                   ),
+                   StreamBuilder(
+                    stream: musicPlayerService.playerSequenceStateStream(), 
+                    builder: (context, snapshot) {
+                      final state = snapshot.data;
+                      int? index;
+
+                      if (state != null) {
+                        index = state.currentIndex;
+                      }
+
+                      return SizedBox(height: index != null ? 150 : 50);
+                    }
+                  )
                 ],
               )
             ),
