@@ -40,7 +40,7 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             HorizontalTextAndTextButton(
-              textLabel: "Today's Recent Tracks",
+              textLabel: "Recent Tracks",
               textButtonLabel: LabelName.showAll,
               callback: () {
                 Navigator.push(
