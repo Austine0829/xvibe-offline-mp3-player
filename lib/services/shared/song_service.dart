@@ -83,6 +83,6 @@ class SongService extends ChangeNotifier implements ISongService {
   
   @override
   Future<String> getSongsCount() async {
-    return _songRepository.getCount();
+    return await _songRepository.getCount();
   }
 }
