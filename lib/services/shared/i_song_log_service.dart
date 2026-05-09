@@ -6,4 +6,5 @@ abstract class ISongLogService extends ChangeNotifier {
 
   Future<List<int>> getRecentSongsIdByDate(String date);
   Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25});
+  Future<String> getListenCount();
 }

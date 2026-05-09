@@ -83,4 +83,9 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
       ));
     });
   }
+  
+  @override
+  Future<String> getListenCount() async {
+    return await _songLogRepository.getCount();
+  }
 }
