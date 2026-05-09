@@ -8,9 +8,11 @@ import 'package:xvibe_offline_mp3_player/data/repositories/playlist_song_reposit
 import 'package:xvibe_offline_mp3_player/data/repositories/song_log_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
+import 'package:xvibe_offline_mp3_player/pages/analytics/analytics_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/home_page.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/analytics_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/browse_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chaotic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dart';
@@ -120,6 +122,9 @@ void main() async {
         ChangeNotifierProvider(create: (context) => BrowseVibeViewModel(
           context.read<MusicPlayerService>(), context.read<PlaylistSongService>(), songService, 
           context.read<PlaylistService>())
+        ),
+        ChangeNotifierProvider(create: (context) => AnalyticsViewModel(
+          songService, context.read<PlaylistService>(), context.read<SongLogService>())
         )
       ],
       child: MyApp(),
@@ -149,13 +154,7 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _currentPageIndex = 0;
   bool isInitialize = false;
-
-  final List<Widget> _pages = [
-    const HomePage(),
-    const PlaylistPage(),
-    const BrowsePage(),
-    const Text("Analytics"),
-  ];
+  int analyticsKey = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +163,12 @@ class _MainState extends State<Main> {
         extendBody: true,
         body: IndexedStack(
           index: _currentPageIndex,
-          children: _pages,
+          children: [
+            const HomePage(),
+            const PlaylistPage(),
+            const BrowsePage(),
+            AnalyticsPage(key: ValueKey(analyticsKey),),
+          ],
         ),
       bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
@@ -188,7 +192,13 @@ class _MainState extends State<Main> {
               elevation: 15,
               currentIndex: _currentPageIndex,
               onTap: (index) {
+                const analyticsPageIndex = 3;
+
                 setState(() {
+                  if (index == analyticsPageIndex) {
+                    analyticsKey++;
+                  }
+
                   _currentPageIndex = index;
                 });
               },
