@@ -13,4 +13,5 @@ abstract class ISongRepository {
   Future<List<int>> getAllId({String? vibe});
   Future<List<int>> getRandomIdWithLimit(int limit);
   Future<List<int>> getIdWithTitle(String title);
+  Future<String> getCount();
 }

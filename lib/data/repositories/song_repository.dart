@@ -110,4 +110,12 @@ class SongRepository implements ISongRepository {
 
     return songs.map((song) => song["id"] as int).toList();
   }
+  
+  @override
+  Future<String> getCount() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM song");
+
+    return result.first['count'].toString();
+  }
 }
