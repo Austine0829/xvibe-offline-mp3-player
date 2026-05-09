@@ -5,4 +5,5 @@ abstract class ISongLogRepository {
   Future<List<int>> getSongsId({required String date});
   Future<List<SongLog>> getRecentTracks();
   Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25});
+  Future<String> getCount();
 }

@@ -48,4 +48,12 @@ class SongLogRepository implements ISongLogRepository {
     
     return recentTracks.map((recentTrack) => recentTrack["songId"] as int).toList();
   }
+  
+  @override
+  Future<String> getCount() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM $_tableSongLog");
+
+    return result.first['count'].toString();
+  }
 }
