@@ -7,4 +7,5 @@ abstract class IPlaylistService {
   Future<List<Playlist>> getPlaylists();
   Future<void> updatePlaylist(String id, Playlist playlist);
   Future<void> deletePlaylist(String id);
+  Future<String> getPlaylistCount();
 }

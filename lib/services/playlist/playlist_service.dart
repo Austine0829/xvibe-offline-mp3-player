@@ -31,4 +31,9 @@ class PlaylistService implements IPlaylistService {
   Future<void> updatePlaylist(String id, Playlist playlist) async {
     await _playlistRepository.update(id, playlist);
   }
+  
+  @override
+  Future<String> getPlaylistCount() async {
+    return await _playlistRepository.getCount();
+  }
 }
