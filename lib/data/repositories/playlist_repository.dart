@@ -67,4 +67,12 @@ class PlaylistRepository implements IPlaylistRepository {
       whereArgs: [id]
     );
   }
+  
+  @override
+  Future<String> getCount() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM playlists");
+
+    return result.first['count'].toString();
+  }
 }

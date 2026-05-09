@@ -10,4 +10,5 @@ abstract class IPlaylistRepository {
   Future<Playlist> get(String id);
   Future<void> update(String id, Playlist playlist);
   Future<void> delete(String id);
+  Future<String> getCount();
 }
