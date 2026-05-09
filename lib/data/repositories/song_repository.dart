@@ -1,4 +1,5 @@
 import 'package:sqflite_common/sqlite_api.dart';
+import 'package:xvibe_offline_mp3_player/DTO/vibe_count_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
@@ -117,5 +118,13 @@ class SongRepository implements ISongRepository {
     final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM song");
 
     return result.first['count'].toString();
+  }
+
+  @override
+  Future<List<VibeCountDTO>> getVibesCount() async {
+    final db = await _db;
+    final List<Map<String, dynamic>> vibesCount = await db.rawQuery("SELECT vibe, COUNT(*) as count FROM song GROUP BY vibe");
+
+    return vibesCount.map((vibeCount) => VibeCountDTO.toObject(vibeCount)).toList();
   }
 }

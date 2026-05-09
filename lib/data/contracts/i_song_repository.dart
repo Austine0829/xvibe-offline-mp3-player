@@ -1,4 +1,5 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:xvibe_offline_mp3_player/DTO/vibe_count_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
 abstract class ISongRepository {
@@ -14,4 +15,5 @@ abstract class ISongRepository {
   Future<List<int>> getRandomIdWithLimit(int limit);
   Future<List<int>> getIdWithTitle(String title);
   Future<String> getCount();
+  Future<List<VibeCountDTO>> getVibesCount();
 }
