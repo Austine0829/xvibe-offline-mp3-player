@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/DTO/vibe_count_dto.dart';
+import 'package:xvibe_offline_mp3_player/DTO/vibe_percentage_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
@@ -84,5 +86,25 @@ class SongService extends ChangeNotifier implements ISongService {
   @override
   Future<String> getSongsCount() async {
     return await _songRepository.getCount();
+  }
+
+  @override
+  Future<List<VibePercentageDTO>> getVibesPercentages() async {
+    final String songsCount = await _songRepository.getCount();  
+    final List<VibeCountDTO> vibesCount = await _songRepository.getVibesCount();
+    List<VibePercentageDTO> vibesPercentagesDTO = [];
+
+    for (var vibeCount in vibesCount) {
+      const int oneHundred = 100;
+
+      final vibePercentageDTO = VibePercentageDTO(
+        vibe: vibeCount.vibe, 
+        percentage: (vibeCount.count / int.parse(songsCount) * oneHundred)
+      );
+
+      vibesPercentagesDTO.add(vibePercentageDTO);
+    }
+
+    return vibesPercentagesDTO;
   }
 }

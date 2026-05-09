@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/DTO/vibe_percentage_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 
@@ -21,4 +22,5 @@ abstract class ISongService extends ChangeNotifier {
   Future<List<int>> getRandomSongsIdWithLimit({int limit = 30});
   Future<List<int>> getSongsIdWithTitle({String title = ""});
   Future<String> getSongsCount();
+  Future<List<VibePercentageDTO>> getVibesPercentages();
 }
