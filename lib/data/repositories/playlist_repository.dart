@@ -71,7 +71,7 @@ class PlaylistRepository implements IPlaylistRepository {
   @override
   Future<String> getCount() async {
     final db = await _db;
-    final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM playlists");
+    final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM playlist");
 
     return result.first['count'].toString();
   }
