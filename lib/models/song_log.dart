@@ -2,11 +2,13 @@ class SongLog {
   final String id;
   final int songId;
   final String date;
+  final String weekDay;
 
   SongLog({
     required this.id,
     required this.songId,
     required this.date,
+    required this.weekDay
   });
 
   Map<String, dynamic> toMap() {
@@ -21,7 +23,8 @@ class SongLog {
     return SongLog(
       id: map["id"], 
       songId: map["songId"],
-      date: map["data"] as String
+      date: map["data"] as String,
+      weekDay: map["weekDay"] as String
     );
   }
 }
