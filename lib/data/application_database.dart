@@ -64,6 +64,7 @@ class ApplicationDatabase {
         id TEXT PRIMARY KEY,
         songId INTEGER,
         date TEXT,
+        weekDay TEXT,
         FOREIGN KEY(songId) REFERENCES song(id) ON DELETE CASCADE
       )
     """);
