@@ -7,6 +7,7 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_log_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/date_string.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
+import 'package:xvibe_offline_mp3_player/utils/weekday_string.dart';
 
 class SongLogService extends ChangeNotifier implements ISongLogService {
   late final ISongLogRepository _songLogRepository;
@@ -50,7 +51,8 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
       SongLog(
         id: UuidGenerator.generate(), 
         songId: songLogDTO.songId, 
-        date: songLogDTO.date
+        date: songLogDTO.date,
+        weekDay: WeekdayString.now()
       )
     );
 
