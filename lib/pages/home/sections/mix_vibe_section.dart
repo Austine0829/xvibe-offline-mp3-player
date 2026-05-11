@@ -63,7 +63,9 @@ class _MixVibeSectionState extends State<MixVibeSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
                     final int songId = mixVibeViewModel.getSongsId[index];
-                    final Song song = mixVibeViewModel.getSongs[songId]!;
+                    final Song? song = mixVibeViewModel.getSongs[songId];
+
+                    if (song == null) return SizedBox.shrink();
 
                     return VibeVerticalSongCard(
                       vibeViewModel: mixVibeViewModel,

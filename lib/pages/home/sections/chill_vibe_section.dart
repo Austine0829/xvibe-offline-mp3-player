@@ -65,7 +65,9 @@ class _ChillVibeSectionState extends State<ChillVibeSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
                     final int songId = chillVibeViewModel.getSongsId[index];
-                    final Song song = chillVibeViewModel.getSongs[songId]!;
+                    final Song? song = chillVibeViewModel.getSongs[songId];
+
+                    if (song == null) return SizedBox.shrink();
 
                     return VibeVerticalSongCard(
                       vibeViewModel: chillVibeViewModel,
