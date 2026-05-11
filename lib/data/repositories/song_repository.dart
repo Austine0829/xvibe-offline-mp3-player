@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 import 'package:xvibe_offline_mp3_player/DTO/vibe_count_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
@@ -48,7 +49,8 @@ class SongRepository implements ISongRepository {
       id: 0,
       title: "No Title", 
       vibe: "No Vibe", 
-      path: "No Path"
+      path: "No Path",
+      backgroundColor: Colors.white
     );
   }
 
