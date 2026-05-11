@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
-import 'package:xvibe_offline_mp3_player/utils/random_color_picker.dart';
 import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_view_model.dart';
 
@@ -64,7 +64,11 @@ class _AddPlaylistDialogState extends State<AddPlaylistDialog> {
                 Playlist(
                   id: UuidGenerator.generate(),
                   name: _name.text, 
-                  backgroundColor: RandomColorPicker.generate()
+                  backgroundColor: RandomColor.getColorObject(
+                    Options(
+                      luminosity: Luminosity.light
+                    )
+                  )
                 )
               );
             }
