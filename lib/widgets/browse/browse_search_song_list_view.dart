@@ -32,6 +32,7 @@ class BrowseSearchSongListView extends StatelessWidget {
                     songTitle: browseVibeViewModel.getSongs[index].title,
                     songVibe: browseVibeViewModel.getSongs[index].vibe,
                     indexId: index,
+                    backgroundColor: browseVibeViewModel.getSongs[index].backgroundColor,
                     callback: () {
                       final int songId = browseVibeViewModel.getSongs[index].id;
                       browseVibeViewModel.addSongToCurrentQueuePlay(songId);
