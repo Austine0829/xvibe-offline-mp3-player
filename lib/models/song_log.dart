@@ -16,6 +16,7 @@ class SongLog {
       "id": id,
       "songId": songId,
       "date": date,
+      "weekDay": weekDay
     };
   }
 
