@@ -50,6 +50,9 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
               ListTile(
                 onTap: () async {
                   Navigator.pop(context);
+
+                  if (browseVibeViewModel.getPlaylists.isEmpty) return;
+
                   showDialog(
                     context: context, 
                     builder: (context) {
