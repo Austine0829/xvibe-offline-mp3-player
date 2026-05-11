@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/current_queue_dialog.dart';
@@ -53,12 +54,39 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 40, bottom: 25),
-                child: Image.asset(
-                  "assets/music_card_default.jpeg",
-                  fit: BoxFit.cover,
-                ),
+              StreamBuilder(
+                stream: _musicPlayerService.playerSequenceStateStream(), 
+                builder: (context, snapshot) {
+                  final state = snapshot.data;
+
+                  if (state == null || state.currentSource == null) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      height: 330,
+                      child: Icon(
+                        Icons.music_note_rounded, 
+                        size: 150,
+                      )
+                    );
+                  }
+
+                  Song song = state.currentSource?.tag as Song;
+
+                  return  Padding(
+                    padding: EdgeInsets.only(top: 40, bottom: 25),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: song.backgroundColor,
+                        borderRadius: BorderRadius.circular(8)
+                      ),
+                      height: 330,
+                      child: Icon(Icons.music_note_rounded, size: 150,),
+                    )
+                  );
+                }
               ),
               TitleSubtitle(musicPlayerService: _musicPlayerService,),
               DurationSlider(musicPlayerService: _musicPlayerService,),
