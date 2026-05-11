@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
@@ -58,11 +59,15 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
                       SwipableMusicPlayer(),
                       context,
                     ),
-                    leading: Image.asset("assets/music_card_default.jpeg"),
-                    title: Text(
-                      song.title,
-                      style: TextStyle(color: Colors.white, fontSize: 13),
-                      maxLines: 1,
+                    title: SizedBox(
+                      height: 20,
+                      child: Marquee(
+                        text: song.title,
+                        style: TextStyle(color: Colors.white, fontSize: 13),
+                        velocity: 40.0,
+                        blankSpace: 40.0,
+                        pauseAfterRound: Duration(seconds: 1),
+                      ),
                     ),
                     subtitle: Text(
                       song.vibe,
