@@ -8,6 +8,7 @@ class AddPlaylistSongCard extends StatelessWidget {
   final String title;
   final String vibe;
   final String path;
+  final Color backgroundColor;
 
   const AddPlaylistSongCard({
     super.key,
@@ -15,7 +16,8 @@ class AddPlaylistSongCard extends StatelessWidget {
     required this.songId,
     required this.title,
     required this.vibe,
-    required this.path
+    required this.path,
+    required this.backgroundColor
   });
 
   @override
@@ -29,12 +31,10 @@ class AddPlaylistSongCard extends StatelessWidget {
             width: 50,
             height: 50,
             decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/music_card_default.jpeg"),
-                fit: BoxFit.cover,
-              ),
+              color: backgroundColor,
               borderRadius: BorderRadius.circular(6),
             ),
+            child: Icon(Icons.music_note_rounded),
           ),
           SizedBox(width: 8),
           Expanded(
