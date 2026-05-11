@@ -45,7 +45,8 @@ class ShowAllPage extends StatelessWidget {
                     songId: song.id,
                     songTitle: song.title, 
                     songVibe: song.vibe, 
-                    indexId: index
+                    indexId: index,
+                    backgroundColor: song.backgroundColor,
                   ),
                   SizedBox(height: 5)
                 ],
