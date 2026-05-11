@@ -33,6 +33,7 @@ class _AddPlaylistDialogState extends State<AddPlaylistDialog> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
+              autofocus: true,
               controller: _name,
               decoration: InputDecoration(
                 label: Text("Name",),
