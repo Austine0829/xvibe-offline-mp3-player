@@ -46,6 +46,7 @@ dependencies:
   uuid: ^4.5.3
   fl_chart: ^1.2.0
   flutter_randomcolor: ^1.0.18
+  marquee: ^2.3.0
 
 dev_dependencies:
   flutter_test:
