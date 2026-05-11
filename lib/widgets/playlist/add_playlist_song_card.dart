@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:xvibe_offline_mp3_player/DTO/playlist_song_dto.dart';
-import 'package:xvibe_offline_mp3_player/utils/uuid_generator.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_song_view_model.dart';
 import '../../utils/app_text_theme.dart';
 
@@ -63,15 +61,7 @@ class AddPlaylistSongCard extends StatelessWidget {
           ),
           IconButton(
             onPressed: () async {
-              await playlistSongViewModel.addPlaylistSong(
-                  PlaylistSongDTO(
-                  playlistSongId: UuidGenerator.generate(), 
-                  songId: songId, 
-                  title: title, 
-                  vibe: vibe, 
-                  path: path
-                )
-              );
+              await playlistSongViewModel.addPlaylistSong(songId);
 
               if (playlistSongViewModel.errorMessage != null
                   && context.mounted) {
