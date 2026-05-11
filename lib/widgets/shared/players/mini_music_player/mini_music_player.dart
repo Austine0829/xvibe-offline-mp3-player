@@ -66,7 +66,6 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
                         style: TextStyle(color: Colors.white, fontSize: 13),
                         velocity: 40.0,
                         blankSpace: 40.0,
-                        pauseAfterRound: Duration(seconds: 1),
                       ),
                     ),
                     subtitle: Text(
