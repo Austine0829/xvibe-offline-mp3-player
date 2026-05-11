@@ -1,3 +1,4 @@
+import 'package:xvibe_offline_mp3_player/DTO/listen_dto.dart';
 import 'package:xvibe_offline_mp3_player/models/song_log.dart';
 
 abstract class ISongLogRepository {
@@ -6,4 +7,5 @@ abstract class ISongLogRepository {
   Future<List<SongLog>> getRecentTracks();
   Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25});
   Future<String> getCount();
+  Future<List<ListenDTO>> getListenLogs();
 }

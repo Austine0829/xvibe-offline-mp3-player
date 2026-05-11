@@ -1,4 +1,5 @@
 import 'package:sqflite_common/sqlite_api.dart';
+import 'package:xvibe_offline_mp3_player/DTO/listen_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_log_repository.dart';
 import 'package:xvibe_offline_mp3_player/models/song_log.dart';
@@ -55,5 +56,19 @@ class SongLogRepository implements ISongLogRepository {
     final List<Map<String, dynamic>> result = await db.rawQuery("SELECT COUNT(*) as count FROM $_tableSongLog");
 
     return result.first['count'].toString();
+  }
+
+  @override
+  Future<List<ListenDTO>> getListenLogs() async {
+    final db = await _db;
+    List<Map<String, dynamic>> listens = await db
+      .rawQuery("""
+        SELECT date, weekDay, COUNT(*) AS count 
+        FROM $_tableSongLog 
+        GROUP BY date
+        ORDER BY id ASC;
+      """);
+    
+    return listens.map((listen) => ListenDTO.toObject(listen)).toList();
   }
 }
