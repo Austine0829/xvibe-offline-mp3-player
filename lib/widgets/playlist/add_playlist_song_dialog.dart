@@ -31,6 +31,7 @@ class AddPlaylistSongDialog extends StatelessWidget {
                     title: playlistSongViewModel.getSongs[index].title, 
                     vibe: playlistSongViewModel.getSongs[index].vibe,
                     path: playlistSongViewModel.getSongs[index].path,
+                    backgroundColor: playlistSongViewModel.getSongs[index].backgroundColor
                   ),
                   SizedBox(height: 5,)
                 ],
