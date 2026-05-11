@@ -5,12 +5,12 @@ import 'package:xvibe_offline_mp3_player/view%20models/i_analytics_view_model.da
 class VibesPercentagesPieChart extends StatelessWidget {
   final IAnalyticsViewModel analyticsViewModel;
 
-   VibesPercentagesPieChart({
+  const VibesPercentagesPieChart({
     super.key,
     required this.analyticsViewModel
   });
 
-  final List<Color> _color = [
+  static final List<Color> _color = [
     Color.fromARGB(255, 255, 167, 126),
     Color.fromARGB(255, 255, 223, 116),
     Color.fromARGB(255, 217, 255, 114),
