@@ -9,6 +9,7 @@ class BrowseSongCard extends StatelessWidget {
   final String songTitle;
   final String songVibe;
   final int indexId;
+  final Color backgroundColor;
   final VoidCallback callback;
 
   const BrowseSongCard({
@@ -18,6 +19,7 @@ class BrowseSongCard extends StatelessWidget {
     required this.songTitle,
     required this.songVibe,
     required this.indexId,
+    required this.backgroundColor,
     required this.callback
   });
 
@@ -35,12 +37,10 @@ class BrowseSongCard extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/music_card_default.jpeg"),
-                  fit: BoxFit.cover,
-                ),
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(6),
               ),
+              child: Icon(Icons.music_note_rounded),
             ),
             SizedBox(width: 8),
             Expanded(
