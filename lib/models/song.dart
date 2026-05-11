@@ -1,16 +1,20 @@
+import 'dart:ui';
+
 class Song {
   final int id;
   final String title;
   final String vibe;
   final String path;
   final bool isFavorite;
+  final Color backgroundColor;
 
   Song({
     required this.id,
     required this.title,
     required this.vibe,
     required this.path,
-    this.isFavorite = false
+    this.isFavorite = false,
+    required this.backgroundColor
   });
 
   Map<String, dynamic> toMap() {
@@ -19,7 +23,8 @@ class Song {
       "title": title,
       "vibe": vibe,
       "path": path,
-      "isFavorite": isFavorite ? 1 : 0
+      "isFavorite": isFavorite ? 1 : 0,
+      "backgroundColor": backgroundColor.toARGB32()
     };
   }
 
@@ -29,7 +34,8 @@ class Song {
       title: map["title"] as String,
       vibe: map["vibe"] as String, 
       path: map["path"] as String,
-      isFavorite: map["isFavorite"] == 1 ? true : false
+      isFavorite: map["isFavorite"] == 1 ? true : false,
+      backgroundColor: Color(map["backgroundColor"] as int)
     );
   }
 
@@ -40,6 +46,8 @@ class Song {
       title: title, 
       vibe: vibe, 
       path: path,
-      isFavorite: isFavorite);
+      isFavorite: isFavorite,
+      backgroundColor: backgroundColor
+    );
   }
 }
