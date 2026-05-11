@@ -59,6 +59,8 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                     return ;
                   }
 
+                  if (songLogViewModel.getPlaylists.isEmpty) return; 
+
                   showDialog(
                     context: context, 
                     builder: (context) {
