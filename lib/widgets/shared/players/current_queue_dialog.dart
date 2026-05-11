@@ -38,6 +38,7 @@ class CurrentQueueDialog extends StatelessWidget {
                     vibe: musicPlayerService.getCurrentQueue()[index].vibe, 
                     path: musicPlayerService.getCurrentQueue()[index].path,
                     indexId: index,
+                    backgroundColor: musicPlayerService.getCurrentQueue()[index].backgroundColor,
                 ),
                   SizedBox(height: 5,)
                 ],
