@@ -7,11 +7,11 @@ import '../../utils/app_text_theme.dart';
 
 class BrowseCatalogGridView extends StatelessWidget {
   static final List<Color> _colors = [
-    Colors.teal,
-    Colors.lightBlue,
-    Colors.deepOrangeAccent,
-    Colors.indigoAccent,
-    Colors.yellowAccent
+    const Color.fromARGB(255, 255, 216, 184),
+    const Color.fromARGB(255, 255, 205, 240),
+    const Color.fromARGB(255, 255, 141, 133),
+    const Color.fromARGB(255, 159, 255, 247),
+    const Color.fromARGB(255, 231, 135, 255)
   ];
 
   const BrowseCatalogGridView({super.key});
