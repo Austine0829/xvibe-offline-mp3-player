@@ -72,6 +72,7 @@ class _AcousticVibeSectionState extends State<AcousticVibeSection> {
                       songTitle: song.title,
                       songVibe: song.vibe,
                       indexId: index,
+                      backgroundColor: song.backgroundColor,
                     );
                   },
                   separatorBuilder: (_, _) => SizedBox(width: 8),
