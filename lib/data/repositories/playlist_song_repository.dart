@@ -27,7 +27,8 @@ class PlaylistSongRepository implements IPlaylistSongRepository {
         song.id AS song_id, 
         song.title, 
         song.vibe, 
-        song.path
+        song.path,
+        song.backgroundColor
       FROM playlist_song
       INNER JOIN song ON song.id = playlist_song.songId
       INNER JOIN playlist ON playlist.id = playlist_song.playlistId
