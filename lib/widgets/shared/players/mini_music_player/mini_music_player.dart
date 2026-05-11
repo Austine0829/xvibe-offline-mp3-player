@@ -46,7 +46,7 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
         
         return Card(
           margin: EdgeInsets.all(15),
-          color: const Color.fromARGB(255, 36, 82, 104),
+          color: song.backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
