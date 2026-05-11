@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/DTO/listen_dto.dart';
 import 'package:xvibe_offline_mp3_player/DTO/song_log_dto.dart';
 import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_log_repository.dart';
@@ -89,5 +91,20 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   @override
   Future<String> getListenCount() async {
     return await _songLogRepository.getCount();
+  }
+
+  @override
+  Future<List<ListenDTO>> getRecentListensWithWindow({int window = 0}) async {
+    final List<ListenDTO> listens = await _songLogRepository.getListenLogs();
+    final int sizeStartingLastSevenLogs = listens.length < window ? 0 : listens.length - window;
+
+    final List<ListenDTO> lastSevenLogs = [];
+
+    for (var i = sizeStartingLastSevenLogs;
+         i < listens.length; i++) {
+      lastSevenLogs.add(listens[i]);
+    }    
+    
+    return listens.reversed.toList();
   }
 }

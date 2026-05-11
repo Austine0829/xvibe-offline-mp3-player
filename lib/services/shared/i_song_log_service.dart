@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:xvibe_offline_mp3_player/DTO/listen_dto.dart';
 
 abstract class ISongLogService extends ChangeNotifier {
   List<int> get getRecentSongsId;
@@ -7,4 +8,5 @@ abstract class ISongLogService extends ChangeNotifier {
   Future<List<int>> getRecentSongsIdByDate(String date);
   Future<List<int>> getTopListenSongsIdWithLimit({int limit = 25});
   Future<String> getListenCount();
+  Future<List<ListenDTO>> getRecentListensWithWindow({int window = 0});
 }
