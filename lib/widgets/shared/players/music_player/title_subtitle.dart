@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
@@ -20,37 +21,53 @@ class TitleSubtitle extends StatelessWidget {
     if (musicPlayerService.getCurrentQueue().isEmpty) {
       return Column(
         children: [
-          Text(
-            "No Title",
-            style: TextStyle(color: Colors.white, fontSize: 18),
-          ),
-          Text(
-            "No Vibe", 
-            style: TextStyle(color: Colors.grey, fontSize: 14)),
+          Text("No Title", style: TextStyle(color: Colors.white, fontSize: 18)),
+          Text("No Vibe", style: TextStyle(color: Colors.grey, fontSize: 14)),
         ],
       );
     }
 
     return StreamBuilder(
-      stream: musicPlayerService.playerSequenceStateStream(), 
-      builder:(context, snapshot) {
+      stream: musicPlayerService.playerSequenceStateStream(),
+      builder: (context, snapshot) {
         final state = snapshot.data;
-        Song? song;
-        
-        if (state != null) {
-          song = state.currentSource?.tag as Song;
+
+        if (state == null || state.currentSource == null) {
+          return Column(
+            children: [
+              Text(
+                "No Title",
+                style: TextStyle(color: Colors.grey, fontSize: 18),
+              ),
+              Text(
+                "No Vibe",
+                style: TextStyle(color: Colors.grey, fontSize: 14),
+              ),
+            ],
+          );
         }
+
+        Song song = state.currentSource?.tag as Song;
 
         return Column(
           children: [
-            Text(
-                song != null ? song.title : "No Title",
-                maxLines: 1,
+            SizedBox(
+              height: 25,
+              child: song.title.length > 20 ? Marquee(
+                text: song.title,
                 style: TextStyle(color: Colors.white, fontSize: 18),
-                overflow: TextOverflow.ellipsis,
+                velocity: 40.0,
+                blankSpace: 40.0,
+              ) 
+              : Text(
+                song.title,
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
-            Text(song != null ? song.vibe : "No Vibe", 
-              style: TextStyle(color: Colors.grey, fontSize: 14)),
+            ),
+            Text(
+              song.vibe,
+              style: TextStyle(color: Colors.grey, fontSize: 14),
+            ),
           ],
         );
       },
