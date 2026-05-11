@@ -5,17 +5,17 @@ import 'package:xvibe_offline_mp3_player/view%20models/i_analytics_view_model.da
 class VibesPercentagesPieChart extends StatelessWidget {
   final IAnalyticsViewModel analyticsViewModel;
 
-  const VibesPercentagesPieChart({
+   VibesPercentagesPieChart({
     super.key,
     required this.analyticsViewModel
   });
 
-  static final List<Color> _color = [
-    Color.fromARGB(255, 245, 78, 0),
-    Color.fromARGB(255, 255, 198, 11),
-    Color.fromARGB(255, 192, 255, 19),
-    Color.fromARGB(255, 34, 255, 218),
-    Color.fromARGB(255, 255, 33, 181),
+  final List<Color> _color = [
+    Color.fromARGB(255, 255, 167, 126),
+    Color.fromARGB(255, 255, 223, 116),
+    Color.fromARGB(255, 217, 255, 114),
+    Color.fromARGB(255, 155, 255, 238),
+    Color.fromARGB(255, 255, 181, 230),
   ];
 
   static final Color _textColor = Colors.black;
@@ -28,7 +28,7 @@ class VibesPercentagesPieChart extends StatelessWidget {
           height: 250,
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 229, 142, 255),
+              color: Color.fromARGB(255, 232, 155, 255),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: Colors.white24,
