@@ -64,16 +64,19 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                   final state = snapshot.data;
 
                   if (state == null || state.currentSource == null) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8)
+                    return Padding(
+                      padding: EdgeInsets.only(top: 40, bottom: 25),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8)
+                        ),
+                        height: 330,
+                        child: Icon(
+                          Icons.music_note_rounded, 
+                          size: 150,
+                        )
                       ),
-                      height: 330,
-                      child: Icon(
-                        Icons.music_note_rounded, 
-                        size: 150,
-                      )
                     );
                   }
 
