@@ -75,7 +75,8 @@ class _PlaylistSongsPageState extends State<PlaylistSongsPage> {
                     songId: playlistSongViewModel.getPlaylistSongs[index].songId,
                     title:playlistSongViewModel.getPlaylistSongs[index].title, 
                     vibe: playlistSongViewModel.getPlaylistSongs[index].vibe, 
-                    indexId: index
+                    indexId: index,
+                    backgroundColor: playlistSongViewModel.getPlaylistSongs[index].backgroundColor,
                   ),
                   SizedBox(height: 5,)
                 ],
