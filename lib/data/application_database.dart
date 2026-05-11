@@ -37,7 +37,8 @@ class ApplicationDatabase {
         title TEXT,
         vibe TEXT,
         path TEXT,
-        isFavorite INTEGER
+        isFavorite INTEGER,
+        backgroundColor INTEGER
       )
     """);
 
