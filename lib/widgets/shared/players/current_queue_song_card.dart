@@ -9,6 +9,7 @@ class CurrentQueueSongCard extends StatelessWidget {
   final String vibe;
   final String path;
   final int indexId;
+  final Color backgroundColor;
 
   const CurrentQueueSongCard({
     super.key,
@@ -17,7 +18,8 @@ class CurrentQueueSongCard extends StatelessWidget {
     required this.title,
     required this.vibe,
     required this.path,
-    required this.indexId
+    required this.indexId,
+    required this.backgroundColor
   });
 
   @override
@@ -36,12 +38,10 @@ class CurrentQueueSongCard extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/music_card_default.jpeg"),
-                  fit: BoxFit.cover,
-                ),
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(6),
               ),
+              child: Icon(Icons.music_note_rounded),
             ),
             SizedBox(width: 8),
             Expanded(
