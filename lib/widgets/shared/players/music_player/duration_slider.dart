@@ -23,7 +23,7 @@ class DurationSlider extends StatelessWidget {
             trackHeight: 1,
             activeTrackColor: Colors.white,
             inactiveTrackColor: Colors.grey,
-            thumbColor: Colors.deepOrangeAccent,
+            thumbColor: Colors.white,
             thumbShape: RoundSliderThumbShape(enabledThumbRadius: 6),
           ),
           child: Column(
