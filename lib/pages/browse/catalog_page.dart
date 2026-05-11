@@ -62,6 +62,7 @@ class _CatalogPageState extends State<CatalogPage> {
                     songTitle: browseVibeViewModel.getSongs[index].title, 
                     songVibe: browseVibeViewModel.getSongs[index].vibe, 
                     indexId: index,
+                    backgroundColor: browseVibeViewModel.getSongs[index].backgroundColor,
                     callback: () {
                       browseVibeViewModel.play(index);
                       SwipableMusicPlayerHandler.show(SwipableMusicPlayer(), context);
