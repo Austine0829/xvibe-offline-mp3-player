@@ -1,3 +1,4 @@
+import 'package:flutter_randomcolor/flutter_randomcolor.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_scanning_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/media_store.dart';
@@ -15,7 +16,13 @@ class MediaStoreMusicScanningService implements IMusicScanningService {
           id: audioFile["id"], 
           title: audioFile["title"], 
           vibe: "Chill", 
-          path: audioFile["path"])
+          path: audioFile["path"],
+          backgroundColor: RandomColor.getColorObject(
+            Options(
+              luminosity: Luminosity.light
+            )
+          )
+        )
       );
     }
 
