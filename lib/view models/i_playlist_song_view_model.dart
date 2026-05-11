@@ -12,7 +12,7 @@ abstract class IPlaylistSongViewModel {
 
   Future<void> play(int index);
 
-  Future<void> addPlaylistSong(PlaylistSongDTO playlistSongDTO);
+  Future<void> addPlaylistSong(int songId);
   Future<void> initialize(String playlistId);
   Future<void> deletePlaylistSong(String playlistSongId);
   Future<void> addSongToPlaylist(String playlistId, int songId);
