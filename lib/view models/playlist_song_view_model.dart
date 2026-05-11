@@ -164,16 +164,8 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
     _sucessMessage = null;
 
     try {
-      final PlaylistSongDTO playlistSongDTO = _playlistSongs
-        .firstWhere((playlistSong) => playlistSong.songId == songId);
-
       await _musicPlayerService.addAudioToCurrentQueue(
-        Song(
-          id: playlistSongDTO.songId, 
-          title: playlistSongDTO.title, 
-          vibe: playlistSongDTO.vibe, 
-          path: playlistSongDTO.path
-        )
+        _songService.getSongSources[songId]!
       );
 
       _sucessMessage = "Song has been added in the current queue";
