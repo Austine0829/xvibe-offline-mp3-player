@@ -51,26 +51,36 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
   String? get successMessage => _sucessMessage;
   
   @override
-  Future<void> addPlaylistSong(PlaylistSongDTO playlistSongDTO) async {
+  Future<void> addPlaylistSong(int songId) async {
     _errorMessage = null;
 
     try {
+      final Song song = _songService.getSongSources[songId]!;
+
       await _playlistSongService.addPlaylistSong(
           PlaylistSong(
-            id: playlistSongDTO.playlistSongId,
-            songId: playlistSongDTO.songId,
+            id: UuidGenerator.generate(),
+            songId: song.id,
             playlistId: _currentPlaylistId
         )
       );
 
-      _playlistSongs.add(playlistSongDTO);
+      _playlistSongs.add(PlaylistSongDTO(
+        playlistSongId: UuidGenerator.generate(), 
+        songId: songId, 
+        title: song.title, 
+        vibe: song.vibe, 
+        path: song.path, 
+        backgroundColor: song.backgroundColor
+      ));
+
       await _musicPlayerService.addAudioInPlaylist(
         _currentPlaylistId, 
-        playlistSongDTO.songId
+        songId
       );
 
       int foundIndex = _songs
-        .indexWhere((song) => song.id == playlistSongDTO.songId);
+        .indexWhere((song) => song.id == songId);
        if (foundIndex != -1) _songs.removeAt(foundIndex);
     } catch (e) {
       _errorMessage = "Error has occured while adding the song in the playlist";
