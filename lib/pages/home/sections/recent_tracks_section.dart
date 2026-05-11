@@ -71,7 +71,8 @@ class _RecentTracksSectionState extends State<RecentTracksSection> {
                         songId: song.id, 
                         songTitle: song.title, 
                         songVibe: song.vibe, 
-                        indexId: index
+                        indexId: index,
+                        backgroundColor: song.backgroundColor,
                       )
                     );
                   }
