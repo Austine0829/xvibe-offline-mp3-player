@@ -19,7 +19,7 @@ class SevenSpanDaysListenBarChart extends StatelessWidget {
         height: 250,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 124, 196, 255),
+          color: const Color.fromARGB(255, 153, 209, 255),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(width: 1),
         ),
