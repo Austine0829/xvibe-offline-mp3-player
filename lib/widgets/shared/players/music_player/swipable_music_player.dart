@@ -8,6 +8,7 @@ import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/dur
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/play_pause_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/repeat_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/shuffle_button.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/sound_wave_animation.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/title_subtitle.dart';
 
 class SwipableMusicPlayer extends StatefulWidget {
@@ -47,11 +48,14 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
           child: ListView(
             controller: scrollController,
             children: [
-              Align(
-                alignment: AlignmentGeometry.topCenter,
-                child: const Text(
-                  "Now playing...",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+              SizedBox(
+                height: 32, 
+                width: 28,  
+                child: Align(
+                    child: SoundWaveAnimation(
+                    isPlaying: true,
+                    barCount: 10,
+                  ) 
                 ),
               ),
               StreamBuilder(
