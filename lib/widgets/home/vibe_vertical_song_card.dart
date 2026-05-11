@@ -10,6 +10,7 @@ class VibeVerticalSongCard extends StatelessWidget {
   final String songTitle;
   final String songVibe;
   final int indexId;
+  final Color backgroundColor;
 
   const VibeVerticalSongCard({
     super.key,
@@ -17,6 +18,7 @@ class VibeVerticalSongCard extends StatelessWidget {
     required this.songTitle,
     required this.songVibe,
     required this.indexId,
+    required this.backgroundColor
   });
 
   @override
@@ -36,11 +38,10 @@ class VibeVerticalSongCard extends StatelessWidget {
               width: 150,
               height: 150,
               decoration: BoxDecoration(
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(6),
-                image: DecorationImage(
-                  image: AssetImage("assets/music_card_default.jpeg"),
-                ),
               ),
+              child: Icon(Icons.music_note_rounded, size: 80),
             ),
             SizedBox(height: 10),
             Text(
