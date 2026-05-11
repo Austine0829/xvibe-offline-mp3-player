@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/analytics/cards_analytics.dart';
 import 'package:xvibe_offline_mp3_player/widgets/analytics/vibes_percentages_pie_chart.dart';
 import 'package:xvibe_offline_mp3_player/widgets/analytics/seven_span_days_listen_bar_chart.dart';
@@ -15,18 +17,19 @@ class AnalyticsPage extends StatefulWidget {
 }
 
 class _AnalyticsPageState extends State<AnalyticsPage> {
-
   @override
   void initState() {
-    super.initState(); 
+    super.initState();
     final viewModel = context.read<AnalyticsViewModel>();
-    Future.microtask(() async => 
-      await viewModel.initialize());
+    Future.microtask(() async => await viewModel.initialize());
   }
 
   @override
   Widget build(BuildContext context) {
-    final IAnalyticsViewModel analyticsViewModel = context.watch<AnalyticsViewModel>();
+    final IAnalyticsViewModel analyticsViewModel = context
+        .watch<AnalyticsViewModel>();
+    final IMusicPlayerService musicPlayerService = context
+        .watch<MusicPlayerService>();
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -36,14 +39,26 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       ),
       body: SingleChildScrollView(
         child: Column(
-        children: [
-            CardsAnalytics(analyticsViewModel: analyticsViewModel,),
-            VibesPercentagesPieChart(analyticsViewModel: analyticsViewModel,),
-            SevenSpanDaysListenBarChart(analyticsViewModel: analyticsViewModel,),
-            SizedBox(height: 50,)
+          children: [
+            CardsAnalytics(analyticsViewModel: analyticsViewModel),
+            VibesPercentagesPieChart(analyticsViewModel: analyticsViewModel),
+            SevenSpanDaysListenBarChart(analyticsViewModel: analyticsViewModel),
+            StreamBuilder(
+              stream: musicPlayerService.playerSequenceStateStream(),
+              builder: (context, snapshot) {
+                final state = snapshot.data;
+                int? index;
+
+                if (state != null) {
+                  index = state.currentIndex;
+                }
+
+                return SizedBox(height: index != null ? 150 : 50);
+              },
+            ),
           ],
-        )
-      ) 
+        ),
+      ),
     );
   }
 }
