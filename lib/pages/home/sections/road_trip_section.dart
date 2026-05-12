@@ -46,15 +46,6 @@ class _RoadTripSectionState extends State<RoadTripSection> {
                 textLabel: _label,
                 textButtonLabel: LabelName.showMore,
                 callback: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => ShowMorePage(
-                  //       vibeViewModel: (context) => context.watch<RoadTripVibeViewModel>()
-                  //     ),
-                  //   ),
-                  // );
-
                   Navigator.push(
                     context, 
                     PageRouteBuilder(
