@@ -40,8 +40,8 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CardsAnalytics(analyticsViewModel: analyticsViewModel),
             VibesPercentagesPieChart(analyticsViewModel: analyticsViewModel),
+            CardsAnalytics(analyticsViewModel: analyticsViewModel),
             SevenSpanDaysListenBarChart(analyticsViewModel: analyticsViewModel),
             StreamBuilder(
               stream: musicPlayerService.playerSequenceStateStream(),
