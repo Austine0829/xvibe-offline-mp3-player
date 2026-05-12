@@ -23,4 +23,5 @@ abstract class ISongService extends ChangeNotifier {
   Future<List<int>> getSongsIdWithTitle({String title = ""});
   Future<String> getSongsCount();
   Future<List<VibePercentageDTO>> getVibesPercentages();
+  Future<void> updateFavorite(int songId, bool isFavorite);
 }

@@ -107,4 +107,18 @@ class SongService extends ChangeNotifier implements ISongService {
 
     return vibesPercentagesDTO;
   }
+  
+  @override
+  Future<void> updateFavorite(int songId, bool isFavorite) async {
+    final Song song = _songSources[songId]!;
+
+    final Song updatedSong = song.updateFavorite(isFavorite: isFavorite);
+
+    await _songRepository.update(songId, updatedSong);
+
+    _audioSources[songId] = AudioSource.file(updatedSong.path, tag: updatedSong);
+    _songSources[songId] = updatedSong;
+
+    notifyListeners();
+  }
 }
