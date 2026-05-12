@@ -14,12 +14,12 @@ class SevenSpanDaysListenBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Container(
         height: 250,
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 153, 209, 255),
+          color: Color.fromARGB(255, 119, 249, 241),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(width: 1),
         ),
