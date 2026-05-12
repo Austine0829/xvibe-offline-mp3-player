@@ -5,44 +5,42 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.
 class RepeatButton extends StatefulWidget {
   final IMusicPlayerService musicPlayerService;
 
-  const RepeatButton({
-    super.key,
-    required this.musicPlayerService
-  });
+  const RepeatButton({super.key, required this.musicPlayerService});
 
   @override
   State<RepeatButton> createState() => _RepeatButtonState();
 }
 
 class _RepeatButtonState extends State<RepeatButton> {
+  late LoopMode currentLoopMode;
+
+  @override
+  void initState() {
+    super.initState();
+    currentLoopMode = widget.musicPlayerService.currentLoopMode;
+  }
 
   Future<void> repeat(LoopMode mode) async {
     await widget.musicPlayerService.setLoopMode(mode);
   }
 
   void repeatMode(LoopMode mode) => setState(() {
+    currentLoopMode = mode;
     repeat(mode);
   });
 
   @override
   Widget build(BuildContext context) {
-    switch (widget.musicPlayerService.currentLoopMode) {
-      case LoopMode.off:
-        return IconButton(
-          onPressed: () => repeatMode(LoopMode.one),
-          icon: Icon(Icons.repeat, color: Colors.grey, size: 30),
-        );
-      case LoopMode.one:
-        return IconButton(
-          onPressed: () => repeatMode(LoopMode.all),
-          icon: Icon(Icons.repeat_one, color: Colors.white, size: 30),
-        );
-
-      case LoopMode.all:
-        return IconButton(
-          onPressed: () => repeatMode(LoopMode.off),
-          icon: Icon(Icons.repeat, color: Colors.white, size: 30),
-        );
+    if (currentLoopMode == LoopMode.one) {
+      return IconButton(
+        onPressed: () => repeatMode(LoopMode.all),
+        icon: Icon(Icons.repeat_one, color: Colors.white, size: 30),
+      );
     }
+
+    return IconButton(
+      onPressed: () => repeatMode(LoopMode.one),
+      icon: Icon(Icons.repeat, color: Colors.white, size: 30),
+    );
   }
 }
