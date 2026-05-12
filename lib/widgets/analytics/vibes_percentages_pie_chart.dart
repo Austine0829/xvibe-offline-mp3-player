@@ -28,7 +28,7 @@ class VibesPercentagesPieChart extends StatelessWidget {
           height: 250,
           child: Container(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 232, 155, 255),
+              color: Colors.white12,
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: Colors.white24,
@@ -91,7 +91,7 @@ Widget _legendItem(Color color, String label) {
           ),
         ),
         const SizedBox(width: 8),
-        Text(label, style: const TextStyle(fontSize: 13, color: Colors.black)),
+        Text(label, style: const TextStyle(fontSize: 13, color: Colors.white)),
       ],
     ),
   );
