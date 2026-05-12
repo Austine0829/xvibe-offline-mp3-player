@@ -24,7 +24,7 @@ class CardsAnalytics extends StatelessWidget {
                   child: Container(
                     height: 150,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 178, 172),
+                      color: const Color.fromARGB(255, 246, 185, 252),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Align(
@@ -54,7 +54,7 @@ class CardsAnalytics extends StatelessWidget {
                   child: Container(
                     height: 150,
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 158, 255, 201),
+                      color: Color.fromARGB(255, 185, 233, 247),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Align(
@@ -90,7 +90,7 @@ class CardsAnalytics extends StatelessWidget {
               child: Container(
                 height: 150,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 179, 255, 141),
+                  color: Color.fromARGB(255, 179, 247, 144),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Align(
