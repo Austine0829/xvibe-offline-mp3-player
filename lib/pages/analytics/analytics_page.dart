@@ -53,7 +53,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   index = state.currentIndex;
                 }
 
-                return SizedBox(height: index != null ? 150 : 50);
+                return SizedBox(height: index != null ? 165 : 60);
               },
             ),
           ],
