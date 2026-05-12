@@ -5,6 +5,7 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/current_queue_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/duration_slider.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/favorite.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/play_pause_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/repeat_button.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/shuffle_button.dart';
@@ -128,11 +129,14 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                     IconButton(
-                      onPressed: () {}, 
-                      icon: Icon(Icons.favorite),
-                      color: Colors.white,
-                      iconSize: 35,
+                    StreamBuilder(
+                      stream: _musicPlayerService.playerSequenceStateStream(), 
+                      builder: (context, snapshot) {
+                        return Favorite(
+                          songId: _musicPlayerService
+                            .getCurrentPlayingSongId()
+                        );
+                      }
                     ),
                     IconButton(
                       onPressed: () {
