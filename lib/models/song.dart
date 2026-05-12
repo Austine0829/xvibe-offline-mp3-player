@@ -50,4 +50,15 @@ class Song {
       backgroundColor: backgroundColor
     );
   }
+
+  Song updateFavorite({required bool isFavorite}) {
+    return Song(
+      id: id, 
+      title: title, 
+      vibe: vibe, 
+      path: path,
+      isFavorite: isFavorite,
+      backgroundColor: backgroundColor
+    );
+  }
 }
