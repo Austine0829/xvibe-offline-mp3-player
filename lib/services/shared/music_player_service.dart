@@ -16,7 +16,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   MusicPlayerService(this._songService);
 
   @override
-  LoopMode currentLoopMode = LoopMode.off;
+  LoopMode currentLoopMode = LoopMode.all;
   
   @override
   bool isShuffle = false;
