@@ -105,6 +105,6 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
       lastSevenLogs.add(listens[i]);
     }    
     
-    return listens.reversed.toList();
+    return listens;
   }
 }
