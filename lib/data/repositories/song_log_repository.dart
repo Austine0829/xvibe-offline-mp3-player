@@ -66,7 +66,7 @@ class SongLogRepository implements ISongLogRepository {
         SELECT date, weekDay, COUNT(*) AS count 
         FROM $_tableSongLog 
         GROUP BY date
-        ORDER BY id ASC;
+        ORDER BY date ASC;
       """);
     
     return listens.map((listen) => ListenDTO.toObject(listen)).toList();
