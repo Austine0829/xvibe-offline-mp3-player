@@ -1,19 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:xvibe_offline_mp3_player/constants/hive_keys.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_session_cache_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 
 class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   final AudioPlayer _player = AudioPlayer();
   final ISongService _songService;
+  final ISessionCacheService _sessionCacheService;
 
   final Map<String, List<int>> _playlistsSongsId = {};
   List<Song>? _currentQueueSongs = [];
   
   String _currentPlaylistId = "";
 
-  MusicPlayerService(this._songService);
+  MusicPlayerService(
+    this._songService, 
+    this._sessionCacheService) {
+      _initPreviousSession();
+      _initBackgroundJobSessionCaching();
+    }
 
   @override
   LoopMode currentLoopMode = LoopMode.all;
@@ -36,7 +44,13 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     if (_currentPlaylistId != playlistId) {
       _currentPlaylistId = playlistId;
       _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
-      await setAudioSource(playlistId);
+      await _setAudioSource(playlistId, index);
+      await _sessionCacheService.saveSession(
+        songsId: _playlistsSongsId[playlistId]!, 
+        index: index, 
+        startPositionSeconds: 0, 
+        playlistId: playlistId
+      );
     }
 
     /*
@@ -48,7 +62,13 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     if (_currentPlaylistId == playlistId 
         && !_isSimilar(_currentQueueSongs!, _playlistsSongsId[_currentPlaylistId]!)) {
         _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
-        await setAudioSource(playlistId);
+        await _setAudioSource(playlistId, index);
+        await _sessionCacheService.saveSession(
+        songsId: _playlistsSongsId[playlistId]!, 
+        index: index, 
+        startPositionSeconds: 0, 
+        playlistId: playlistId
+      );
     }
 
     await _player.seek(Duration(), index: index);
@@ -74,8 +94,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     _playlistsSongsId[playlistId] = songsId;
   }
 
-  @override
-  Future<void> setAudioSource(String playlistId) async {
+  Future<void> _setAudioSource(String playlistId, int initialIndex) async {
     if (!_playlistsSongsId.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
 
     List<AudioSource> audioSources = [];
@@ -86,8 +105,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     await _player.setAudioSources(
       audioSources,
-      initialIndex: 0,
-      initialPosition: Duration.zero,
+      initialIndex: initialIndex,
       shuffleOrder: DefaultShuffleOrder()
     );
   }
@@ -134,8 +152,10 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     _playlistsSongsId[playlistId]!.removeAt(index);
 
     if (_currentPlaylistId != playlistId) return;
-      _currentQueueSongs!.removeAt(index);
-      await _player.removeAudioSourceAt(index);
+
+    _currentQueueSongs!.removeAt(index);
+    await _player.removeAudioSourceAt(index);
+    _sessionCacheService.removeSongAt(index);
   }
 
   @override
@@ -146,8 +166,10 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     _playlistsSongsId[playlistId]!.add(songId);
   
     if (_currentPlaylistId != playlistId) return;
-      _currentQueueSongs!.add(_songService.getSongSources[songId]!);
-      await _player.addAudioSource(audioSource);
+
+    _currentQueueSongs!.add(_songService.getSongSources[songId]!);
+     await _player.addAudioSource(audioSource);
+     _sessionCacheService.addSongId(songId);
   }
   
   @override
@@ -163,6 +185,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     _currentQueueSongs!.add(song);
     final audioSource = AudioSource.file(song.path, tag: song);    
     await _player.addAudioSource(audioSource);
+    await _sessionCacheService.addSongId(song.id);
 
     if (_currentPlaylistId.isNotEmpty) return;
     _player.play();
@@ -180,7 +203,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     if (index <= -1) throw Exception("Set index is invalid");
 
     _currentQueueSongs!.removeAt(index);
-    _player.removeAudioSourceAt(index);
+    await _player.removeAudioSourceAt(index);
+    await _sessionCacheService.removeSongAt(index);
 
     notifyListeners();
   }
@@ -236,5 +260,43 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     await _player.play();
     await _player.seek(Duration(), index: _currentQueueSongs!.length - 1);
+  }
+
+  void _initPreviousSession() async {
+    final dynamic previousSession = _sessionCacheService.loadSession();
+
+    if (previousSession == null) return;
+
+    _currentPlaylistId = previousSession[HiveKeys.playlistIdKey];
+
+    final List<int> previousSessionSongsId = previousSession[HiveKeys.songsIdKey];
+
+    _playlistsSongsId[_currentPlaylistId] = previousSessionSongsId;
+    _currentQueueSongs = _getQueueSongs(previousSessionSongsId);
+
+    final initialIndex = previousSession[HiveKeys.songIndexKey];
+
+    await _setAudioSource(_currentPlaylistId, initialIndex);
+    await _player.seek(
+      Duration(seconds: previousSession[HiveKeys.songSecondsPositionKey]), 
+      index: initialIndex
+    );
+  }
+
+  void _initBackgroundJobSessionCaching() {
+    _player.positionStream.listen((position) async {
+        await _sessionCacheService
+          .updateStartingPosition(position.inSeconds);
+      }
+    );
+
+    _player.sequenceStateStream.listen((data) async {
+        int? currentIndex = data.currentIndex;
+
+        if (currentIndex == null) return;
+
+        await _sessionCacheService.updateIndex(currentIndex);
+      }
+    );
   }
 }
