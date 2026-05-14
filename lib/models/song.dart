@@ -1,11 +1,27 @@
 import 'dart:ui';
+import 'package:hive_ce/hive.dart';
 
+part 'song.g.dart';
+
+@HiveType(typeId: 0)
 class Song {
+
+  @HiveField(0)
   final int id;
+  
+  @HiveField(1)
   final String title;
+
+  @HiveField(2)
   final String vibe;
+
+  @HiveField(3)
   final String path;
+
+  @HiveField(4)
   final bool isFavorite;
+
+  @HiveField(5)
   final Color backgroundColor;
 
   Song({
