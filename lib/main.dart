@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_ce_flutter/adapters.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:xvibe_offline_mp3_player/constants/hive_keys.dart';
 import 'package:xvibe_offline_mp3_player/data/application_database.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_repository.dart';
 import 'package:xvibe_offline_mp3_player/data/repositories/playlist_song_repository.dart';
@@ -11,6 +13,8 @@ import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/pages/analytics/analytics_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/browse/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/home_page.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/i_session_cache_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/session_cache_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/analytics_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/browse_vibe_view_model.dart';
@@ -57,11 +61,15 @@ Future<void> permission(ISongService songService, IMusicScanningService musicSca
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await Hive.initFlutter();  
+  Hive.registerAdapter(SongAdapter());
+  await Hive.openBox(HiveKeys.queueCache);
 
   final ApplicationDatabase applicationDatabase = ApplicationDatabase();
   final SongRepository songRepository = SongRepository(appDb: applicationDatabase);
   final SongService songService = SongService(songRepository);
   final MediaStoreMusicScanningService mediaStoreMusicScanningService = MediaStoreMusicScanningService();
+  final ISessionCacheService sessionCacheService = SessionCacheService();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await permission(songService, mediaStoreMusicScanningService);
@@ -78,7 +86,7 @@ void main() async {
         Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
         Provider(create: (_) => SongLogRepository(appDb: applicationDatabase)),
         ChangeNotifierProvider(create: (_) => songService),
-        ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>())),
+        ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>(), sessionCacheService)),
         ChangeNotifierProvider(create: (context) => SongLogService(
           context.read<SongLogRepository>(), context.read<MusicPlayerService>())
         ),
