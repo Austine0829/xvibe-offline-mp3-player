@@ -11,7 +11,6 @@ abstract class IMusicPlayerService {
   Future<void> setLoopMode(LoopMode mode);
   Future<void> enableShuffle(bool boolean);
   void setPlaylist(String playlistId, List<int> songsId);
-  Future<void> setAudioSource(String playlistId);
   Stream<PlayerState> playerStateStream();
   Stream<Duration> positionStream();
   Stream<SequenceState> playerSequenceStateStream();
