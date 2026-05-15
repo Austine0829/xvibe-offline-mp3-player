@@ -5,6 +5,8 @@ abstract class IMusicPlayerService {
   late LoopMode currentLoopMode;
   late bool isShuffle;
 
+  bool get isLoading;
+
   Future<void> play();
   Future<void> pause();
   Future<void> seekIndex(String playlistId, int index);
