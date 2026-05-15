@@ -16,6 +16,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   
   String _currentPlaylistId = "";
 
+  bool _isLoading = false;
+
   MusicPlayerService(
     this._songService, 
     this._sessionCacheService) {
@@ -28,6 +30,9 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   
   @override
   bool isShuffle = false;
+
+  @override
+  bool get isLoading => _isLoading;
 
   @override
   Future<void> play() async {
@@ -202,11 +207,19 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   Future<void> removeCurrentQueueSongAt(int index) async {
     if (index <= -1) throw Exception("Set index is invalid");
 
-    _currentQueueSongs!.removeAt(index);
-    await _player.removeAudioSourceAt(index);
-    await _sessionCacheService.removeSongAt(index);
-
+    _isLoading = true;
     notifyListeners();
+
+    try {
+      _currentQueueSongs!.removeAt(index);
+      await _player.removeAudioSourceAt(index);
+      await _sessionCacheService.removeSongAt(index);
+    } catch (e) {
+      print("Music Player Error: ${e.toString()}");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
   
   @override

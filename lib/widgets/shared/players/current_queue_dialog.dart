@@ -12,6 +12,17 @@ class CurrentQueueDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     if (musicPlayerService.isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Queue", style: TextStyle(color: Colors.white),), 
