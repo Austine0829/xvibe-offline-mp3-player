@@ -26,6 +26,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     this._sessionCacheService) {
       _initPreviousSession();
       _initBackgroundJobSessionCaching();
+      _player.setLoopMode(LoopMode.all); // default is off. i want the default to be all.
     }
 
   @override
