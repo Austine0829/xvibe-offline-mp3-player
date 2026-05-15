@@ -6,6 +6,9 @@ import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.
 import 'package:xvibe_offline_mp3_player/services/shared/i_session_cache_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_song_service.dart';
 
+// NOTE: queue and playlist management is also implemented here for simplicity.
+// Might not refactor it on future because i'm lazy to do so.
+
 class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   final AudioPlayer _player = AudioPlayer();
   final ISongService _songService;
@@ -48,14 +51,9 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   Future<void> seekIndex(String playlistId, int index) async {
     if (_currentPlaylistId != playlistId) {
       _currentPlaylistId = playlistId;
-      _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
-      await _setAudioSource(playlistId, index);
-      await _sessionCacheService.saveSession(
-        songsId: _playlistsSongsId[playlistId]!, 
-        index: index, 
-        startPositionSeconds: 0, 
-        playlistId: playlistId
-      );
+
+      _initSongSourcesAndSaveSessionThenPlay(playlistId, index);
+      return;
     }
 
     /*
@@ -66,14 +64,8 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     */
     if (_currentPlaylistId == playlistId 
         && !_isSimilar(_currentQueueSongs!, _playlistsSongsId[_currentPlaylistId]!)) {
-        _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
-        await _setAudioSource(playlistId, index);
-        await _sessionCacheService.saveSession(
-        songsId: _playlistsSongsId[playlistId]!, 
-        index: index, 
-        startPositionSeconds: 0, 
-        playlistId: playlistId
-      );
+        _initSongSourcesAndSaveSessionThenPlay(playlistId, index);
+      return;
     }
 
     await _player.seek(Duration(), index: index);
@@ -97,22 +89,6 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   @override
   void setPlaylist(String playlistId, List<int> songsId) {
     _playlistsSongsId[playlistId] = songsId;
-  }
-
-  Future<void> _setAudioSource(String playlistId, int initialIndex) async {
-    if (!_playlistsSongsId.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
-
-    List<AudioSource> audioSources = [];
-
-    for (var songId in _playlistsSongsId[playlistId]!) {
-      audioSources.add(_songService.getAudioSources[songId]!);
-    }
-
-    await _player.setAudioSources(
-      audioSources,
-      initialIndex: initialIndex,
-      shuffleOrder: DefaultShuffleOrder()
-    );
   }
 
   @override
@@ -238,15 +214,6 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     return temporarySongs;
   }
-
-  bool _isSimilar(List<Song> songs, List<int> songsId) {
-    if (songs.length != songsId.length) return false;
-
-    final songsIdSetOne = songs.map((song) => song.id).toSet();
-    final songsIdSetTwo = songsId.map((songId) => songId).toSet();
-
-    return songsIdSetOne.containsAll(songsIdSetTwo);
-  }
   
   @override
   int getCurrentPlayingSongId() {
@@ -273,6 +240,31 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
 
     await _player.play();
     await _player.seek(Duration(), index: _currentQueueSongs!.length - 1);
+  }
+
+  Future<void> _setAudioSource(String playlistId, int initialIndex) async {
+    if (!_playlistsSongsId.containsKey(playlistId)) throw Exception("You are using a key that doesn't exist");
+
+    List<AudioSource> audioSources = [];
+
+    for (var songId in _playlistsSongsId[playlistId]!) {
+      audioSources.add(_songService.getAudioSources[songId]!);
+    }
+
+    await _player.setAudioSources(
+      audioSources,
+      initialIndex: initialIndex,
+      shuffleOrder: DefaultShuffleOrder()
+    );
+  }
+
+  bool _isSimilar(List<Song> songs, List<int> songsId) {
+    if (songs.length != songsId.length) return false;
+
+    final songsIdSetOne = songs.map((song) => song.id).toSet();
+    final songsIdSetTwo = songsId.map((songId) => songId).toSet();
+
+    return songsIdSetOne.containsAll(songsIdSetTwo);
   }
 
   void _initPreviousSession() async {
@@ -311,5 +303,21 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
         await _sessionCacheService.updateIndex(currentIndex);
       }
     );
+  }
+
+  Future<void> _initSongSourcesAndSaveSessionThenPlay(
+    String playlistId, int index) async {
+      _currentQueueSongs = _getQueueSongs(_playlistsSongsId[_currentPlaylistId]!);
+      await _setAudioSource(playlistId, index);
+      await _sessionCacheService.saveSession(
+        songsId: _playlistsSongsId[playlistId]!, 
+        index: index, 
+        startPositionSeconds: 0, 
+        playlistId: playlistId
+      );
+
+      await play();
+
+      notifyListeners();
   }
 }
