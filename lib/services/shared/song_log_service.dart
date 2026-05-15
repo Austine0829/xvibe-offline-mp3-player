@@ -65,8 +65,6 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
     notifyListeners();
   }
 
-  int _lastLoggedSongId = -1;
-
   void _initBackgroundJobSongLogger() {
     _musicPlayerService.positionStream().listen((position) {
       final duration = _musicPlayerService.currentSongDuration();
@@ -77,9 +75,11 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
       final int songId = _musicPlayerService.getCurrentPlayingSongId();
 
       if (songId == -1) return;
-      if (songId == _lastLoggedSongId) return;
-
-      _lastLoggedSongId = songId;
+      
+      if (_recentSongsId.any((recentSongId) 
+        => recentSongId == songId)) {
+        return;
+      }
 
       _logTrack(SongLogDTO(
         songId: songId,
