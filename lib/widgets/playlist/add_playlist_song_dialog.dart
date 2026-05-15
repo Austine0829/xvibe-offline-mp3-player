@@ -12,6 +12,17 @@ class AddPlaylistSongDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (playlistSongViewModel.isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: CircularProgressIndicator(
+            color: Colors.white,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: DraggableScrollableSheet(

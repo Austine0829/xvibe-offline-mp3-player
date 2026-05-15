@@ -52,7 +52,9 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
   
   @override
   Future<void> addPlaylistSong(int songId) async {
+    _isLoading = true;
     _errorMessage = null;
+    notifyListeners();
 
     try {
       final Song song = _songService.getSongSources[songId]!;
@@ -85,6 +87,7 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
     } catch (e) {
       _errorMessage = "Error has occured while adding the song in the playlist";
     } finally {
+      _isLoading = false;
       notifyListeners();
     }
   }
