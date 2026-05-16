@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:xvibe_offline_mp3_player/DTO/playlist_song_dto.dart';
+import 'package:xvibe_offline_mp3_player/constants/playlist_id.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist.dart';
 import 'package:xvibe_offline_mp3_player/models/playlist_song.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
@@ -19,6 +20,7 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
   List<PlaylistSongDTO> _playlistSongs = [];
   List<Song> _songs = []; 
   List<Playlist> _playlists = [];
+  List<Song> _favoriteSongs = [];
 
   String? _errorMessage;
   String? _sucessMessage;
@@ -49,6 +51,9 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
 
   @override
   String? get successMessage => _sucessMessage;
+
+  @override
+  List<Song> get getFavoriteSongs => _favoriteSongs;
   
   @override
   Future<void> addPlaylistSong(int songId) async {
@@ -188,6 +193,44 @@ class PlaylistSongViewModel extends ChangeNotifier implements IPlaylistSongViewM
       notifyListeners();
     }
   }  
+
+   @override
+  Future<void> initializeFavoriteSongs() async {
+    _currentPlaylistId = Playlistid.favorites;
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      _favoriteSongs = await _songService.getFavoriteSongs();
+      _playlists = await _playlistService.getPlaylists();
+
+      final List<int> favoriteSongsId = _favoriteSongs
+        .map((favoriteSong) => favoriteSong.id)
+        .toList();
+      _musicPlayerService.setPlaylist(_currentPlaylistId, favoriteSongsId);
+
+    } catch (e) {
+      _errorMessage = "Error has occured while getting the songs in playlist";
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+  
+  @override
+  Future<void> removeFavoriteSong(int songId) async {
+    _errorMessage = null;
+    
+    try {
+      await _songService.updateFavorite(songId, false);
+      _favoriteSongs.removeWhere((favoriteSongId) => favoriteSongId.id == songId);
+    } catch (e) {
+      _errorMessage = "Error has occured while deleting favorite";
+    } finally {
+      notifyListeners();
+    }
+  }
 
   List<Song> _filterPlaylistSong(List<PlaylistSongDTO> playlistSongs, List<Song> songs) {
     List<Song> filteredSongs = [];
