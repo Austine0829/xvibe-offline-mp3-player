@@ -3,6 +3,7 @@ import 'package:xvibe_offline_mp3_player/view%20models/i_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/vibe_song_card_menu/add_to_playlist_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/vibe_song_card_menu/delete_song_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/home/vibe_song_card_menu/edit_song_dialog.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/add_to_favorite.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
@@ -11,7 +12,7 @@ import '../../../utils/app_text_theme.dart';
 class BottomSwipableSongMenuSheet extends StatelessWidget {
   static const double iconSize = 35;
   static const Color iconColor = Colors.white;
-  
+
   final IVibeViewModel vibeViewModel;
   final int songId;
   final int indexId;
@@ -20,7 +21,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
     super.key,
     required this.vibeViewModel,
     required this.songId,
-    required this.indexId
+    required this.indexId,
   });
 
   @override
@@ -56,21 +57,22 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                   if (!context.mounted) return;
 
                   if (vibeViewModel.errorMessage != null) {
-                    ScaffoldMessenger.of(context)
-                      .showSnackBar(SnackBar(content: Text(vibeViewModel.errorMessage!)));
-                    return ;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(vibeViewModel.errorMessage!)),
+                    );
+                    return;
                   }
 
-                  if (vibeViewModel.getPlaylists.isEmpty) return; 
+                  if (vibeViewModel.getPlaylists.isEmpty) return;
 
                   showDialog(
-                    context: context, 
+                    context: context,
                     builder: (context) {
                       return AddToPlaylistDialog(
-                        vibeViewModel: vibeViewModel, 
-                        songId: songId
+                        vibeViewModel: vibeViewModel,
+                        songId: songId,
                       );
-                    }
+                    },
                   );
                 },
                 leading: Icon(
@@ -83,17 +85,23 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                   style: Theme.of(context).textTheme.listTitleLabel,
                 ),
               ),
+              AddToFavorite(
+                songId: songId,
+                iconColor: iconColor,
+                iconSize: iconSize,
+                activeIconColor: Colors.red,
+              ),
               ListTile(
                 onTap: () {
                   Navigator.pop(context);
                   showDialog(
-                    context: context, 
+                    context: context,
                     builder: (context) {
                       return EditSongDialog(
-                        vibeViewModel: vibeViewModel, 
-                        songId: songId
+                        vibeViewModel: vibeViewModel,
+                        songId: songId,
                       );
-                    }
+                    },
                   );
                 },
                 leading: Icon(
@@ -112,9 +120,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                     context: context,
                     showDragHandle: true,
                     builder: (context) {
-                      return SongInformation(
-                        songId: songId
-                      );
+                      return SongInformation(songId: songId);
                     },
                   );
                 },
@@ -124,18 +130,16 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                   style: Theme.of(context).textTheme.listTitleLabel,
                 ),
               ),
-              ListTile(     
+              ListTile(
                 onTap: () {
                   Navigator.pop(context);
                   showDialog(
-                    context: context, 
+                    context: context,
                     builder: (context) {
-                      return SetRingtone(
-                        songId: songId
-                      );
-                    }
+                      return SetRingtone(songId: songId);
+                    },
                   );
-                },     
+                },
                 leading: Icon(
                   Icons.notifications,
                   size: iconSize,
@@ -149,10 +153,8 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
               ListTile(
                 onTap: () {
                   Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (_) => Share(songId: songId)
-                    )
+                    context,
+                    MaterialPageRoute(builder: (_) => Share(songId: songId)),
                   );
                 },
                 leading: Icon(Icons.share, size: iconSize, color: iconColor),
@@ -165,13 +167,13 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
                 onTap: () {
                   Navigator.pop(context);
                   showDialog(
-                    context: context, 
+                    context: context,
                     builder: (context) {
                       return DeleteSongDialog(
                         vibeViewModel: vibeViewModel,
-                        songId: songId
+                        songId: songId,
                       );
-                    }
+                    },
                   );
                 },
                 leading: Icon(Icons.delete, size: iconSize, color: iconColor),
