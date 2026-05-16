@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_song_view_model.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/playlist/song_menu/add_to_another_playlist_dialog.dart';
-import 'package:xvibe_offline_mp3_player/widgets/playlist/song_menu/delete_playlist_song_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
@@ -14,16 +11,16 @@ class BottomSwipablePlaylistSongMenuSheet extends StatelessWidget {
   static const Color iconColor = Colors.white;
   
   final IPlaylistSongViewModel playlistSongViewModel;
-  final String playlistSongId;
   final int songId;
   final int indexId;
+  final VoidCallback deleteCallBack;
 
   const BottomSwipablePlaylistSongMenuSheet({
     super.key,
     required this.playlistSongViewModel,
-    required this.playlistSongId,
     required this.songId,
-    required this.indexId
+    required this.indexId,
+    required this.deleteCallBack
   });
 
   @override
@@ -166,16 +163,7 @@ class BottomSwipablePlaylistSongMenuSheet extends StatelessWidget {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context, 
-                    builder: (context) {
-                      return DeletePlaylistSongDialog(
-                        playlistSongViewModel: context.watch<PlaylistSongViewModel>(), 
-                        playlistSongId: playlistSongId
-                      );
-                    }
-                  );
+                 deleteCallBack();
                 },
                 leading: Icon(Icons.delete, size: iconSize, color: iconColor),
                 title: Text(
