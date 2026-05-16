@@ -131,7 +131,7 @@ class SongRepository implements ISongRepository {
   }
   
   @override
-  Future<List<Song>> getFavoriteSongsId() async {
+  Future<List<Song>> getFavoriteSongs() async {
     final db = await  _db;
     final List<Map<String, Object?>> songs = await db
       .rawQuery("""
