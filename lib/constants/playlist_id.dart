@@ -7,5 +7,5 @@ class Playlistid {
   static const String acoustic = "3b7f1a9d-5c2e-4b6a-8d93-e1f4c7a2b658";
   static const String topListen = "e3a9c6d1-5b7f-4a82-9c4e-1d6f2b8a7c35";
   static const String mix = "4f2b8c7e-1a6d-4f93-a5c1-9e7b3d2c6a80";
-
+  static const String favorites = "e73a9484-9541-4796-9875-58fa6c276b33";
 }
