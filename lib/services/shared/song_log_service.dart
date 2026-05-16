@@ -66,14 +66,14 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
   }
 
   void _initBackgroundJobSongLogger() {
-    _musicPlayerService.positionStream().listen((position) {
+    _musicPlayerService.positionStream().listen((position) async {
       final duration = _musicPlayerService.currentSongDuration();
 
       if (duration == null || duration.inSeconds == 0) return;
 
-      // Set to 30% of song duration.
-      // Example: if duration is 100, the required is 30.
-      double requiredDurationInSeconds = (duration.inSeconds / 100) * 30; 
+      // Set to 99% of song duration.
+      // Example: if duration is 100, the required is 99.
+      double requiredDurationInSeconds = (duration.inSeconds / 100) * 99; 
       if (position.inSeconds < requiredDurationInSeconds) return;
 
       final int songId = _musicPlayerService.getCurrentPlayingSongId();
@@ -85,7 +85,7 @@ class SongLogService extends ChangeNotifier implements ISongLogService {
         return;
       }
 
-      _logTrack(SongLogDTO(
+      await _logTrack(SongLogDTO(
         songId: songId,
         date: DateString.now(),
       ));
