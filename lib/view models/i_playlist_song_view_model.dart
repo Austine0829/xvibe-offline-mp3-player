@@ -6,6 +6,7 @@ abstract class IPlaylistSongViewModel {
   List<PlaylistSongDTO> get getPlaylistSongs;
   List<Song> get getSongs;
   List<Playlist> get getPlaylists;
+  List<Song> get getFavoriteSongs;
   String? get errorMessage;
   String? get successMessage;
   bool get isLoading;
@@ -17,4 +18,6 @@ abstract class IPlaylistSongViewModel {
   Future<void> deletePlaylistSong(String playlistSongId);
   Future<void> addSongToPlaylist(String playlistId, int songId);
   Future<void> addSongToCurrentQueue(int songId);
+  Future<void> initializeFavoriteSongs();
+  Future<void> removeFavoriteSong(int songId);
 }

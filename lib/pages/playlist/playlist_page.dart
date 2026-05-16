@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:xvibe_offline_mp3_player/pages/playlist/favorites_page.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
@@ -80,6 +81,40 @@ class _PlaylistPageState extends State<PlaylistPage> {
               enabled: playlistViewModel.isLoading,
               child: Column(
                 children: [
+                  Card(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder: (_, _, _) => (
+                              FavoritesPage()
+                            ),
+                            transitionsBuilder:
+                                (context, animation, secondaryAnimation, child) {
+                                  final slide = Tween(
+                                    begin: const Offset(1.0, 0.0),
+                                    end: Offset.zero,
+                                  ).chain(CurveTween(curve: Curves.easeOut));
+
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: SlideTransition(
+                                      position: animation.drive(slide),
+                                      child: child,
+                                    ),
+                                  );
+                                },
+                            transitionDuration: const Duration(milliseconds: 800),
+                          ),
+                        );
+                      },
+                      leading: Icon(Icons.favorite),
+                      title: Text("Favorites"),
+                      tileColor: Colors.pinkAccent,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                  ),
                   ...List.generate(
                     playlistViewModel.getPlaylists.length,
                     (index) {
