@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/playlist/song_menu/add_to_another_playlist_dialog.dart';
+import 'package:xvibe_offline_mp3_player/widgets/shared/add_to_favorite.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/set_ringtone.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/share.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/song_information.dart';
@@ -105,6 +106,12 @@ class BottomSwipablePlaylistSongMenuSheet extends StatelessWidget {
                   "Add to Queue",
                   style: Theme.of(context).textTheme.listTitleLabel,
                 ),
+              ),
+              AddToFavorite(
+                songId: songId,
+                iconColor: iconColor,
+                iconSize: iconSize,
+                activeIconColor: Colors.red,
               ),
               ListTile(
                 onTap: () {
