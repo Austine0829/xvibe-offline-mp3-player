@@ -129,4 +129,16 @@ class SongRepository implements ISongRepository {
 
     return vibesCount.map((vibeCount) => VibeCountDTO.toObject(vibeCount)).toList();
   }
+  
+  @override
+  Future<List<Song>> getFavoriteSongsId() async {
+    final db = await  _db;
+    final List<Map<String, Object?>> songs = await db
+      .rawQuery("""
+        SELECT * FROM song
+        WHERE isFavorite = ?
+      """, [1]);
+
+    return songs.map((song) => Song.toObject(song)).toList();
+  }
 }

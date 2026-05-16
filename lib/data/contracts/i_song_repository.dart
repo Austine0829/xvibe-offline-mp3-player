@@ -16,4 +16,5 @@ abstract class ISongRepository {
   Future<List<int>> getIdWithTitle(String title);
   Future<String> getCount();
   Future<List<VibeCountDTO>> getVibesCount();
+  Future<List<Song>> getFavoriteSongsId();
 }
