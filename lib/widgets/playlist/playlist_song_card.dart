@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/utils/app_text_theme.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/i_playlist_song_view_model.dart';
+import 'package:xvibe_offline_mp3_player/view%20models/playlist_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/playlist/song_menu/bottom_swipable_playlist_song_menu_sheet.dart';
+import 'package:xvibe_offline_mp3_player/widgets/playlist/song_menu/delete_playlist_song_dialog.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/music_player/swipable_music_player_handler.dart';
 
@@ -79,9 +82,20 @@ class PlaylistSongCard extends StatelessWidget {
                   builder: (context) {
                     return BottomSwipablePlaylistSongMenuSheet(
                       playlistSongViewModel: playlistSongViewModel,
-                      playlistSongId: playlistSongId,
                       songId: songId, 
-                      indexId: indexId
+                      indexId: indexId,
+                      deleteCallBack: () {
+                        Navigator.pop(context);
+                        showDialog(
+                          context: context, 
+                          builder: (context) {
+                            return DeletePlaylistSongDialog(
+                              playlistSongViewModel: context.watch<PlaylistSongViewModel>(), 
+                              playlistSongId: playlistSongId
+                            );
+                          }
+                        );
+                      },
                     );
                   },
                 );
