@@ -160,9 +160,17 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+
+
   int _currentPageIndex = 0;
   bool isInitialize = false;
   int analyticsKey = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<SongService>().initializeAudioSources();
+  }
 
   @override
   Widget build(BuildContext context) {
