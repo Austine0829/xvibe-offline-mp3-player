@@ -71,6 +71,7 @@ class SongService extends ChangeNotifier implements ISongService {
     return await _songRepository.getIdWithTitle(title);
   }
 
+  @override
   Future<void> initializeAudioSources() async {
     final List<Song> songs = await _songRepository.getAll();
 
