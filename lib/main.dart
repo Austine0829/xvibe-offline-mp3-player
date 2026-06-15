@@ -15,6 +15,7 @@ import 'package:xvibe_offline_mp3_player/pages/browse/browse_page.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/home_page.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_session_cache_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/session_cache_service.dart';
+import 'package:xvibe_offline_mp3_player/services/shared/vibe_classifier_service.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/acoustic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/analytics_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/browse_vibe_view_model.dart';
@@ -40,26 +41,6 @@ import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model
 import 'package:xvibe_offline_mp3_player/view%20models/top_listen_log_song_view_model.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/mini_music_player/mini_music_player.dart';
 
-Future<void> permission(ISongService songService, IMusicScanningService musicScanningService) async {
-  final audio = await Permission.audio.request();
-
-  if (!audio.isGranted) {
-    openAppSettings();
-    return ;
-  }
-
-  List<Song> songs = await musicScanningService.scanSongs();
-
-  for (var song in songs) {
-    Song s = await songService.getSong(song.id);
-
-    if (s.id == song.id) continue;
-      await songService.addSong(song);
-  }
-
-  await songService.initializeAudioSources();
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -74,7 +55,6 @@ void main() async {
   final ISessionCacheService sessionCacheService = SessionCacheService();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await permission(songService, mediaStoreMusicScanningService);
 
   runApp(
     MultiProvider(
@@ -87,6 +67,7 @@ void main() async {
         Provider(create: (_) => PlaylistSongRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
         Provider(create: (_) => SongLogRepository(appDb: applicationDatabase)),
+        Provider(create: (_) => mediaStoreMusicScanningService),
         ChangeNotifierProvider(create: (_) => songService),
         ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>(), sessionCacheService)),
         ChangeNotifierProvider(create: (context) => SongLogService(
@@ -162,12 +143,130 @@ class Main extends StatefulWidget {
 }
 
 class _MainState extends State<Main> {
+  late final ISongService _songService;
+  late final IMusicScanningService _musicScanningService;
+
   int _currentPageIndex = 0;
-  bool isInitialize = false;
   int analyticsKey = 0;
+  bool _isInitialize = false;
+  bool _isLoading = true;
+  bool _isAllowed = false;
+  int _labeledCount = 0;
+  int _totalSongs = 0;
+  
+  late final AppLifecycleListener _lifecycleListener;
+  bool _hasRequestedPermission = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initClassifier();
+
+    _lifecycleListener = AppLifecycleListener(
+    onResume: _onAppResumed, // ← fires when user comes back to the app
+    );
+  }
+
+  @override
+  void dispose() {
+    _lifecycleListener.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onAppResumed() async {
+    if (!_hasRequestedPermission) return;
+    if (_isAllowed) return;
+
+    final audio = await Permission.audio.status;
+    if (audio.isGranted) {
+      setState(() => _isAllowed = true);
+      await _scanSongs();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    if (!_isInitialize) {
+      _songService = context.read<SongService>();
+      _musicScanningService = context.read<MediaStoreMusicScanningService>();
+      _permission();
+      _isInitialize = true;
+    }
+  }
+
+  Future<void> _initClassifier() async {
+    await VibeClassifierService.initialize();
+  }
+
+  Future<void> _permission() async {
+  final audio = await Permission.audio.request();
+
+    if (!audio.isGranted) {
+       _hasRequestedPermission = true;
+      await openAppSettings();
+      setState(() => _isAllowed = false);
+      return;
+    }
+
+    setState(() => _isAllowed = true);
+
+    await _scanSongs();
+  }
+
+  Future<void> _scanSongs() async {
+    try {
+      List<Song> songs = await _musicScanningService.scanSongs();
+      List<int> dbSongsId = await _songService.getSongsId();
+      List<Song> filteredSongs = [];
+
+      for (var song in songs) {
+        if (dbSongsId.contains(song.id)) continue;
+        filteredSongs.add(song);
+      }
+
+      setState(() {
+        _totalSongs = filteredSongs.length;
+      });
+
+      for (var song in filteredSongs) {
+        String predictedVibe = await VibeClassifierService.inference(song.path);
+        Song updatedVibeSong = song.updateVibe(vibe: predictedVibe);
+        song = updatedVibeSong;
+        await _songService.addSong(song);
+        
+        setState(() {
+          _labeledCount = _labeledCount + 1;
+        });
+      }
+
+    } catch (e) {
+      debugPrint('>>> Scan error: $e');
+    } finally {
+      await _songService.initializeAudioSources();
+      setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_isAllowed && _isLoading) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: Colors.deepOrangeAccent,),
+              SizedBox(height: 20,),
+              Text("Generating labels... $_labeledCount out of $_totalSongs", style: TextStyle(color: Colors.white),)
+            ],
+          ),
+        )
+      );
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
         extendBody: true,
