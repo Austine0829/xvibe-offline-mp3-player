@@ -49,6 +49,10 @@ dependencies:
   marquee: ^2.3.0
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
+  tflite_flutter: ^0.12.1
+  ffi: ^2.2.0
+  path_provider: ^2.1.5
+  ffmpeg_kit_flutter_new: ^4.2.1
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +82,8 @@ flutter:
     - assets/music/j_tajor.mp3
     - assets/music/adp.mp3
     - assets/music/kehlani.mp3
+    - assets/models/vibe_classification_model.tflite
+    - assets/models/yamnet_model.tflite
 
   fonts:
     - family: Oswald
