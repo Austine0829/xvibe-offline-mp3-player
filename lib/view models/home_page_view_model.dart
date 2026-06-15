@@ -11,10 +11,12 @@ class HomePageViewModel extends ChangeNotifier implements IHomePageViewModel {
     _refresh = true;
   }
 
+  @override
   bool refresh() {
     return _refresh;
   }
 
+  @override
   void setRefresh(bool refresh) {
     _refresh = refresh;
   }
