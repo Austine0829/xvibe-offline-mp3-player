@@ -1,27 +1,44 @@
+import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class ApplicationDatabase {
   static Database? _database;
+  static Future<Database>? _opening;
 
   Future<Database> get database async {
-    if (_database != null) return _database!;
-    
-    _database = await _initDatabase();
+    if (_database != null && _database!.isOpen) return _database!;
 
-    return _database!;
+    _opening ??= _initDatabase().then((db) {
+      _database = db;
+      _opening = null;
+      return db;
+    });
+
+    return await _opening!;
   }
 
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, "xvibe.db");
 
-    return await openDatabase(
-      path,
-      version: 1,
-      onConfigure: _onConfigure,
-      onCreate: _onCreate
-    );
+    try {
+       return await openDatabase(
+        path,
+        version: 1,
+        onConfigure: _onConfigure,
+        onCreate: _onCreate,
+      );
+    } catch (e) {
+      debugPrint("Re-trying initialization of database");
+      debugPrint("Error has occured while initializing database: $e");
+      return await openDatabase(
+        path,
+        version: 1,
+        onConfigure: _onConfigure,
+        onCreate: _onCreate,
+      );
+    }
   }
 
   Future<void> _onConfigure(Database db) async {
@@ -32,7 +49,7 @@ class ApplicationDatabase {
 
   Future<void> _onCreate(Database db, int version) async {
     await db.execute("""
-      CREATE TABLE song(
+      CREATE TABLE IF NOT EXISTS song(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
         vibe TEXT,
@@ -43,7 +60,7 @@ class ApplicationDatabase {
     """);
 
      await db.execute("""
-      CREATE TABLE playlist(
+      CREATE TABLE IF NOT EXISTS playlist(
         id TEXT PRIMARY KEY,
         name TEXT,
         backgroundColor INTEGER
@@ -51,7 +68,7 @@ class ApplicationDatabase {
     """);
 
      await db.execute("""
-      CREATE TABLE playlist_song(
+      CREATE TABLE IF NOT EXISTS playlist_song(
         id TEXT PRIMARY KEY,
         playlistId TEXT,
         songId INTEGER,
@@ -61,7 +78,7 @@ class ApplicationDatabase {
     """);
 
       await db.execute("""
-      CREATE TABLE song_log(
+      CREATE TABLE IF NOT EXISTS song_log(
         id TEXT PRIMARY KEY,
         songId INTEGER,
         date TEXT,
