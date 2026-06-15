@@ -80,7 +80,9 @@ class _EnergeticSectionState extends State<EnergeticSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
                     final int songId = energeticVibeViewModel.getSongsId[index];
-                    final Song song = energeticVibeViewModel.getSongs[songId]!;
+                    final Song? song = energeticVibeViewModel.getSongs[songId];
+
+                    if (song == null) return SizedBox.shrink();
 
                     return VibeVerticalSongCard(
                       vibeViewModel: energeticVibeViewModel,

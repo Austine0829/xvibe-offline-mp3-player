@@ -80,7 +80,9 @@ class _ChaoticVibeSectionState extends State<ChaoticVibeSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
                     final int songId = chaoticVibeViewModel.getSongsId[index];
-                    final Song song = chaoticVibeViewModel.getSongs[songId]!;
+                    final Song? song = chaoticVibeViewModel.getSongs[songId];
+
+                    if (song == null) return SizedBox.shrink();
 
                     return VibeVerticalSongCard(
                       vibeViewModel: chaoticVibeViewModel,

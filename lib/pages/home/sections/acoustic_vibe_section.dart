@@ -80,7 +80,9 @@ class _AcousticVibeSectionState extends State<AcousticVibeSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (_, index) {
                     final int songId = acousticVibeViewModel.getSongsId[index];
-                    final Song song = acousticVibeViewModel.getSongs[songId]!;
+                    final Song? song = acousticVibeViewModel.getSongs[songId];
+
+                    if (song == null) return SizedBox.fromSize();
 
                     return VibeVerticalSongCard(
                       vibeViewModel: acousticVibeViewModel,
