@@ -215,7 +215,7 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
       await _player.removeAudioSourceAt(index);
       await _sessionCacheService.removeSongAt(index);
     } catch (e) {
-      print("Music Player Error: ${e.toString()}");
+      debugPrint("Music Player Error: ${e.toString()}");
     } finally {
       _isLoading = false;
       notifyListeners();
