@@ -1,8 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:ffmpeg_kit_flutter_new/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter_new/ffprobe_kit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:xvibe_offline_mp3_player/constants/vibe.dart';
@@ -49,19 +47,8 @@ class VibeClassifierService {
     final tempDir = await getTemporaryDirectory();
     final outputPath = "${tempDir.path}/audio_pcm.raw";
 
-    final session = await FFprobeKit.execute(
-      '-v quiet -print_format json -show_format "$filePath"'
-    );
-
-    final output = await session.getOutput();
-    final json = jsonDecode(output!);
-    final duration = double.parse(json['format']['duration']);
-
-    final startSec = duration / 2;
-
-    final sessionTwo = await FFmpegKit.executeWithArguments([
+     final sessionTwo = await FFmpegKit.executeWithArguments([
       '-y',
-      '-ss', startSec.toString(),
       '-i', filePath,
       '-t', '60',
       '-ar', '16000',
