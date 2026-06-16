@@ -261,8 +261,8 @@ class _MainState extends State<Main> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(color: Colors.deepOrangeAccent,),
-              SizedBox(height: 20,),
+              CircularProgressIndicator(color: Colors.white, strokeWidth: 8, strokeAlign: 2,),
+              SizedBox(height: 30,),
               Text("Generating labels... $_labeledCount out of $_totalSongs", style: TextStyle(color: Colors.white),)
             ],
           ),
