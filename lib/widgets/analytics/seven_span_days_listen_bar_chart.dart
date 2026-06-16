@@ -40,12 +40,12 @@ class SevenSpanDaysListenBarChart extends StatelessWidget {
                 barTouchData: BarTouchData(
                   enabled: true,
                   touchTooltipData: BarTouchTooltipData(
-                    getTooltipColor: (group) => const Color.fromARGB(255, 124, 196, 255),
+                    getTooltipColor: (group) => Colors.black,
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       final data = analyticsViewModel.getListens[groupIndex];
                       return BarTooltipItem(
                         '${data.weekDay}, ${data.date}\n${rod.toY.toInt()} Listen/s',
-                        const TextStyle(color: Colors.black),
+                        const TextStyle(color: Colors.white),
                       );
                     },
                   ),
