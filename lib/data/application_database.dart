@@ -1,47 +1,32 @@
-import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class ApplicationDatabase {
   static Database? _database;
-  static Future<Database>? _opening;
+
+    Future<void> initialize() async {
+    _database = await _initDatabase();
+  }
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-
-    _opening ??= _initDatabase().then((db) {
-      _database = db;
-      _opening = null;
-      return db;
-    });
-
-    return await _opening!;
+    _database = await _initDatabase();
+    return _database!;
   }
 
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, "xvibe.db");
 
-    try {
-       return await openDatabase(
+    return await openDatabase(
         path,
         version: 1,
-        onConfigure: _onConfigure,
+        onConfigure: _onConfig,
         onCreate: _onCreate,
-      );
-    } catch (e) {
-      debugPrint("Re-trying initialization of database");
-      debugPrint("Error has occured while initializing database: $e");
-      return await openDatabase(
-        path,
-        version: 1,
-        onConfigure: _onConfigure,
-        onCreate: _onCreate,
-      );
-    }
+    );
   }
 
-  Future<void> _onConfigure(Database db) async {
+  Future<void> _onConfig(Database db) async {
     await db.execute("""
       PRAGMA foreign_keys = ON
     """);
