@@ -1,17 +1,23 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:synchronized/synchronized.dart';
 
 class ApplicationDatabase {
+  static final ApplicationDatabase instance = ApplicationDatabase._();
   static Database? _database;
+  static final _lock = Lock();
 
-    Future<void> initialize() async {
-    _database = await _initDatabase();
-  }
+  ApplicationDatabase._();
 
   Future<Database> get database async {
     if (_database != null && _database!.isOpen) return _database!;
-    _database = await _initDatabase();
-    return _database!;
+
+    return await _lock.synchronized(() async {
+      if (_database != null && _database!.isOpen) return _database!;
+
+       _database = await _initDatabase();
+       return _database!;
+    });
   }
 
   Future<Database> _initDatabase() async {
