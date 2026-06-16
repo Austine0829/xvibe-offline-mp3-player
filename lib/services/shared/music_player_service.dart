@@ -24,10 +24,17 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
   MusicPlayerService(
     this._songService, 
     this._sessionCacheService) {
-      _initPreviousSession();
-      _initBackgroundJobSessionCaching();
+      _init();
       _player.setLoopMode(LoopMode.all); // default is off. i want the default to be all.
     }
+
+  Future<void> _init() async {
+    debugPrint('>>> _init started');
+    await _initPreviousSession();
+    debugPrint('>>> session restored, starting background job');
+    _initBackgroundJobSessionCaching();
+    debugPrint('>>> background job started');
+  }
 
   @override
   LoopMode currentLoopMode = LoopMode.all;
@@ -268,10 +275,15 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     return songsIdSetOne.containsAll(songsIdSetTwo);
   }
 
-  void _initPreviousSession() async {
+  Future<void> _initPreviousSession() async {
     final dynamic previousSession = _sessionCacheService.loadSession();
 
-    if (previousSession == null) return;
+    debugPrint('>>> loadSession result: $previousSession');
+
+    if (previousSession == null) {
+      debugPrint('>>> no previous session found');
+      return;
+    }
 
     _currentPlaylistId = previousSession[HiveKeys.playlistIdKey];
 
@@ -287,6 +299,9 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
       Duration(seconds: previousSession[HiveKeys.songSecondsPositionKey]), 
       index: initialIndex
     );
+
+    debugPrint('>>> session fully restored');
+    notifyListeners();
   }
 
   void _initBackgroundJobSessionCaching() {
