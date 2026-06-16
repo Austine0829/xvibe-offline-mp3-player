@@ -47,7 +47,7 @@ class VibeClassifierService {
     final tempDir = await getTemporaryDirectory();
     final outputPath = "${tempDir.path}/audio_pcm.raw";
 
-     final sessionTwo = await FFmpegKit.executeWithArguments([
+     final session = await FFmpegKit.executeWithArguments([
       '-y',
       '-i', filePath,
       '-t', '60',
@@ -57,7 +57,7 @@ class VibeClassifierService {
       outputPath,
     ]);
 
-    final returnCode = await sessionTwo.getReturnCode();
+    final returnCode = await session.getReturnCode();
 
     if (returnCode == null || !returnCode.isValueSuccess()) return null;
     final file = File(outputPath);
