@@ -11,7 +11,9 @@ class SongService extends ChangeNotifier implements ISongService {
   final Map<int, AudioSource> _audioSources = {};
   final Map<int, Song> _songSources = {};
 
-  SongService(this._songRepository);
+  SongService(this._songRepository) {
+    initializeAudioSources();
+  }
   
   @override
   Map<int, AudioSource> get getAudioSources => _audioSources;
