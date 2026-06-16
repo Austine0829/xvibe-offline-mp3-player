@@ -25,4 +25,5 @@ abstract class ISongService extends ChangeNotifier {
   Future<List<VibePercentageDTO>> getVibesPercentages();
   Future<void> updateFavorite(int songId, bool isFavorite);
   Future<void> initializeAudioSources();
+  Future<List<Song>> getFavoriteSongs();
 }
