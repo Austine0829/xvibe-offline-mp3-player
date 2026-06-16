@@ -120,4 +120,9 @@ class SongService extends ChangeNotifier implements ISongService {
 
     notifyListeners();
   }
+  
+  @override
+  Future<List<Song>> getFavoriteSongs() async {
+    return await _songRepository.getFavoriteSongs();
+  }
 }
