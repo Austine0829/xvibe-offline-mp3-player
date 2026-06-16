@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/adapters.dart';
@@ -49,6 +51,7 @@ void main() async {
   await Hive.openBox(HiveKeys.queueCache);
 
   final ApplicationDatabase applicationDatabase = ApplicationDatabase();
+  await applicationDatabase.initialize();
   final SongRepository songRepository = SongRepository(appDb: applicationDatabase);
   final SongService songService = SongService(songRepository);
   final MediaStoreMusicScanningService mediaStoreMusicScanningService = MediaStoreMusicScanningService();
@@ -163,7 +166,7 @@ class _MainState extends State<Main> {
     _initClassifier();
 
     _lifecycleListener = AppLifecycleListener(
-    onResume: _onAppResumed, // ← fires when user comes back to the app
+    onResume: _onAppResumed,
     );
   }
 
