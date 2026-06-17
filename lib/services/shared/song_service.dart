@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:xvibe_offline_mp3_player/DTO/vibe_count_dto.dart';
 import 'package:xvibe_offline_mp3_player/DTO/vibe_percentage_dto.dart';
 import 'package:xvibe_offline_mp3_player/data/contracts/i_song_repository.dart';
@@ -11,9 +12,7 @@ class SongService extends ChangeNotifier implements ISongService {
   final Map<int, AudioSource> _audioSources = {};
   final Map<int, Song> _songSources = {};
 
-  SongService(this._songRepository) {
-    initializeAudioSources();
-  }
+  SongService(this._songRepository);
   
   @override
   Map<int, AudioSource> get getAudioSources => _audioSources;
@@ -79,7 +78,19 @@ class SongService extends ChangeNotifier implements ISongService {
 
     for (var song in songs) {
       _audioSources[song.id] = AudioSource
-        .file(song.path, tag: song);
+        .file(
+          song.path, 
+          tag: MediaItem(
+              id: song.id.toString(), 
+              title: song.title,
+              album: "Album",
+              artist: "Artist",
+              extras: {
+                "backgroundColor": song.backgroundColor.toARGB32(),
+                "vibe": song.vibe
+              }
+            )
+          );
       _songSources[song.id] = song;
     }
   }
