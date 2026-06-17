@@ -125,7 +125,6 @@ class RecentLogSongsViewModel extends ChangeNotifier implements ISongLogViewMode
   Future<void> initialize() async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
 
     try {
       final List<int> songsId = await _songLogService.getRecentSongsIdByDate(DateString.now());

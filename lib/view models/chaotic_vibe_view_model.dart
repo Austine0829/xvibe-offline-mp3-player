@@ -123,7 +123,6 @@ class ChaoticVibeViewModel extends ChangeNotifier implements IVibeViewModel  {
   Future<void> initialize() async {
     _isLoading = true;
     _errorMessage = null;
-    notifyListeners();
 
     try {
       _songsId = await _songService.getSongsId(vibe: Vibe.chaotic);
