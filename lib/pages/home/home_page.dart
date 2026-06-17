@@ -13,42 +13,54 @@ import 'package:xvibe_offline_mp3_player/view%20models/chill_vibe_view_model.dar
 import 'package:xvibe_offline_mp3_player/view%20models/energetic_vibe_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/home_page_view_model.dart';
 import 'package:xvibe_offline_mp3_player/pages/home/sections/energetic_section.dart';
-import 'package:xvibe_offline_mp3_player/view%20models/i_home_page_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/recent_log_songs_view_model.dart';
 import 'package:xvibe_offline_mp3_player/view%20models/road_trip_vibe_view_model.dart';
 import 'sections/recent_tracks_section.dart';
 import 'sections/road_trip_section.dart';
 import '../../utils/app_text_theme.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget{
+   const HomePage({super.key});
+
+   @override
+   State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    _initViewModelsDataSource();
+  }
+
+  @override
+  void didUpdateWidget(covariant HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final homePageViewModel = context.read<HomePageViewModel>();
+    if (homePageViewModel.refresh()) {
+      Future.microtask(() async {
+        await _initViewModelsDataSource();
+        homePageViewModel.setRefresh(false);
+      });
+    }
+  }
+
+  Future<void> _initViewModelsDataSource() async {
+    await Future.wait([
+      context.read<RoadTripVibeViewModel>().initialize(),
+      context.read<RecentLogSongsViewModel>().initialize(),
+      context.read<EnergeticVibeViewModel>().initialize(),
+      context.read<ChillVibeViewModel>().initialize(),
+      context.read<AcousticVibeViewModel>().initialize(),
+      context.read<ChaoticVibeViewModel>().initialize(),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final IHomePageViewModel homePageViewModel = context.watch<HomePageViewModel>();
     final IMusicPlayerService musicPlayerService = context.watch<MusicPlayerService>();
-
-    if (homePageViewModel.refresh() && context.mounted) {
-      // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<RoadTripVibeViewModel>().initialize());
-
-      // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<RecentLogSongsViewModel>().initialize());
-
-      // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<EnergeticVibeViewModel>().initialize());
-
-      // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<ChillVibeViewModel>().initialize());
-
-      // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<AcousticVibeViewModel>().initialize());
-
-      // ignore: use_build_context_synchronously
-      Future.microtask(() async => await context.read<ChaoticVibeViewModel>().initialize());
-
-      homePageViewModel.setRefresh(false);
-    }
+    context.watch<HomePageViewModel>();
 
     return Scaffold(
       appBar: AppBar(
