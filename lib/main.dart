@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_ce_flutter/adapters.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:xvibe_offline_mp3_player/constants/hive_keys.dart';
@@ -46,6 +47,12 @@ import 'package:xvibe_offline_mp3_player/widgets/shared/players/mini_music_playe
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.xvibe.channel.audio',
+    androidNotificationChannelName: 'Xvibe Playback',
+    androidNotificationOngoing: true,
+  );
+
   await Hive.initFlutter();  
   Hive.registerAdapter(SongAdapter());
   await Hive.openBox(HiveKeys.queueCache);
@@ -54,6 +61,7 @@ void main() async {
   await applicationDatabase.initDatabase();
   final SongRepository songRepository = SongRepository(appDb: applicationDatabase);
   final SongService songService = SongService(songRepository);
+  await songService.initializeAudioSources();
   final MediaStoreMusicScanningService mediaStoreMusicScanningService = MediaStoreMusicScanningService();
   final ISessionCacheService sessionCacheService = SessionCacheService();
 
