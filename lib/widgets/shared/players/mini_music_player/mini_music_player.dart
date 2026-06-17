@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
-import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/current_queue_dialog.dart';
@@ -43,11 +43,11 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
           return SizedBox.shrink();
         }
 
-        Song song = state.currentSource?.tag as Song;
+        MediaItem mediaItem = state.currentSource?.tag as MediaItem;
         
         return Card(
           margin: EdgeInsets.all(15),
-          color: song.backgroundColor,
+          color: mediaItem.extras?["backgroundColor"] ?? Colors.grey,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -62,14 +62,14 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
                     title: SizedBox(
                       height: 20,
                       child: Marquee(
-                        text: song.title,
+                        text: mediaItem.title,
                         style: TextStyle(color: Colors.white, fontSize: 13),
                         velocity: 40.0,
                         blankSpace: 40.0,
                       ),
                     ),
                     subtitle: Text(
-                      song.vibe,
+                       mediaItem.extras?["vibe"] ?? "Null",
                       style: TextStyle(color: Colors.blueGrey, fontSize: 13),
                     ),
                     trailing: SizedBox(

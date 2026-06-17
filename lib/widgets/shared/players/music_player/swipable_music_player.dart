@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:provider/provider.dart';
-import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/widgets/shared/players/current_queue_dialog.dart';
@@ -81,13 +81,13 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                     );
                   }
 
-                  Song song = state.currentSource?.tag as Song;
+                  MediaItem mediaItem = state.currentSource?.tag as MediaItem;
 
                   return  Padding(
                     padding: EdgeInsets.only(top: 40, bottom: 25),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: song.backgroundColor,
+                        color: mediaItem.extras?["backgroundColor"] ?? Colors.grey,
                         borderRadius: BorderRadius.circular(8)
                       ),
                       height: 330,

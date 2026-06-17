@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
-import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/music_player_service.dart';
 
@@ -21,8 +21,8 @@ class TitleSubtitle extends StatelessWidget {
     if (musicPlayerService.getCurrentQueue().isEmpty) {
       return Column(
         children: [
-          Text("No Title", style: TextStyle(color: Colors.white, fontSize: 18)),
-          Text("No Vibe", style: TextStyle(color: Colors.grey, fontSize: 14)),
+          Text("Null", style: TextStyle(color: Colors.white, fontSize: 18)),
+          Text("Null", style: TextStyle(color: Colors.grey, fontSize: 14)),
         ],
       );
     }
@@ -36,36 +36,36 @@ class TitleSubtitle extends StatelessWidget {
           return Column(
             children: [
               Text(
-                "No Title",
+                "Null",
                 style: TextStyle(color: Colors.grey, fontSize: 18),
               ),
               Text(
-                "No Vibe",
+                "Null",
                 style: TextStyle(color: Colors.grey, fontSize: 14),
               ),
             ],
           );
         }
 
-        Song song = state.currentSource?.tag as Song;
+        MediaItem mediaItem = state.currentSource?.tag as MediaItem;
 
         return Column(
           children: [
             SizedBox(
               height: 25,
-              child: song.title.length > 20 ? Marquee(
-                text: song.title,
+              child: mediaItem.title.length > 20 ? Marquee(
+                text: mediaItem.title,
                 style: TextStyle(color: Colors.white, fontSize: 18),
                 velocity: 40.0,
                 blankSpace: 40.0,
               ) 
               : Text(
-                song.title,
+                mediaItem.title,
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             ),
             Text(
-              song.vibe,
+              mediaItem.extras?["vibe"] ?? "Null",
               style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
           ],
