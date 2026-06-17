@@ -50,7 +50,9 @@ void main() async {
   Hive.registerAdapter(SongAdapter());
   await Hive.openBox(HiveKeys.queueCache);
 
-  final SongRepository songRepository = SongRepository(appDb: ApplicationDatabase.instance);
+  final ApplicationDatabase applicationDatabase = ApplicationDatabase();
+  await applicationDatabase.initDatabase();
+  final SongRepository songRepository = SongRepository(appDb: applicationDatabase);
   final SongService songService = SongService(songRepository);
   final MediaStoreMusicScanningService mediaStoreMusicScanningService = MediaStoreMusicScanningService();
   final ISessionCacheService sessionCacheService = SessionCacheService();
@@ -61,13 +63,13 @@ void main() async {
     MultiProvider(
       providers: [
         Provider(create: (_) => LabelingService()),
-        Provider(create: (_) => ApplicationDatabase.instance),
+        Provider(create: (_) => applicationDatabase),
         Provider(create: (_) => songRepository),
-        Provider(create: (_) => PlaylistRepository(appDb: ApplicationDatabase.instance)),
+        Provider(create: (_) => PlaylistRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistService(context.read<PlaylistRepository>())),
-        Provider(create: (_) => PlaylistSongRepository(appDb: ApplicationDatabase.instance)),
+        Provider(create: (_) => PlaylistSongRepository(appDb: applicationDatabase)),
         Provider(create: (context) => PlaylistSongService(context.read<PlaylistSongRepository>())),
-        Provider(create: (_) => SongLogRepository(appDb: ApplicationDatabase.instance)),
+        Provider(create: (_) => SongLogRepository(appDb: applicationDatabase)),
         Provider(create: (_) => mediaStoreMusicScanningService),
         ChangeNotifierProvider(create: (_) => songService),
         ChangeNotifierProvider(create: (context) => MusicPlayerService(context.read<SongService>(), sessionCacheService)),
