@@ -47,7 +47,7 @@ class _MiniMusicPlayerState extends State<MiniMusicPlayer> {
         
         return Card(
           margin: EdgeInsets.all(15),
-          color: mediaItem.extras?["backgroundColor"] ?? Colors.grey,
+          color: Color(mediaItem.extras?["backgroundColor"] as int),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

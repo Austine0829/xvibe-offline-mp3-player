@@ -87,7 +87,7 @@ class _SwipableMusicPlayerState extends State<SwipableMusicPlayer> {
                     padding: EdgeInsets.only(top: 40, bottom: 25),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: mediaItem.extras?["backgroundColor"] ?? Colors.grey,
+                        color: Color(mediaItem.extras?["backgroundColor"] as int),
                         borderRadius: BorderRadius.circular(8)
                       ),
                       height: 330,
