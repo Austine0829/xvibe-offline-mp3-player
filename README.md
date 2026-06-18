@@ -1,16 +1,95 @@
-# xvibe_offline_mp3_player
+# Xvibe: An AI-Integrated Offline MP3 Music Player
 
-A new Flutter project.
+## Overview
 
-## Getting Started
+***Xvibe*** is an Offline MP3 Player embedded with a *neural network* classifier that classifies songs into vibes and is later used by Xvibe to organize, randomly recommend a list of songs, and track how your songs are distributed into categories, which are *acoustic*, *chaotic*, *road trip*, *energetic*, and *chill*.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+### Home Page
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Displays songs categorized into five vibe categories:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  * *Acoustic* (Acoustic)
+  * *Chaotic* (Rock and Metal)
+  * *Road Trip* (R&B and Reggae)
+  * *Energetic* (Country, Disco, and Pop)
+  * *Chill* (Blues and Jazz)
+* Displays recently listened songs from the current day.
+* Displays the Top 25 most-listened songs based on listen count.
+* Displays a Mix For You category containing randomly selected and recommended songs from the user's music library.
+
+### Playlist Page
+
+* Create and customize playlists.
+* Browse favorites.
+
+### Browse Page
+
+* Search songs by title.
+* Browse songs organized by vibe categories.
+
+### Analytics Page
+
+* View the distribution of songs across vibe categories.
+* View the total number of songs.
+* View the total number of playlists.
+* View the total number of listened-to songs.
+* Track daily listening activity for the past 7 days.
+
+### Music Players
+
+#### Mini Music Player
+
+* Play and pause songs.
+* Browse the current queue.
+* Play or remove songs from the queue.
+
+#### Notification Music Player
+
+* Play and pause songs.
+* Skip to the next or previous song.
+* Stop playback directly from notifications.
+
+#### Main Music Player
+
+* Play and pause songs.
+* Skip to the next or previous song.
+* Add or remove songs from favorites.
+* Browse the current queue.
+* Play or remove songs from the queue.
+* Shuffle the current queue.
+* Repeat the current song.
+
+### Other Features
+
+* Automated song labeling using a neural network classifier that categorizes songs into:
+
+  * *Acoustic* (Acoustic)
+  * *Chaotic* (Rock and Metal)
+  * *Road Trip* (R&B and Reggae)
+  * *Energetic* (Country, Disco, and Pop)
+  * *Chill* (Blues and Jazz)
+* Update song titles and vibe classifications.
+* Delete songs from the library.
+* Song queue management.
+* Share songs.
+* Set songs as ringtones.
+
+## Application Technologies
+Dart, Flutter, SQLite, TFLite, Hive.
+
+## ML Technologies
+* Python, TensorFlow Keras, NumPy, Pandas, Scikit-Learn, Jupyter, YAMNet. 
+* Check the neural network classifier model, here: <a href="https://github.com/Austine0829/music-vibes-classification" target="_blank">View Repository</a>
+
+## Architecture
+- MVVM
+- Layered
+
+## Screenshots
+
+<img src="assets/screenshots/xvibe-banner.png">
+
+
+
