@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:xvibe_offline_mp3_player/constants/hive_keys.dart';
 import 'package:xvibe_offline_mp3_player/models/song.dart';
 import 'package:xvibe_offline_mp3_player/services/shared/i_music_player_service.dart';
@@ -172,7 +173,19 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     }
 
     _currentQueueSongs!.add(song);
-    final audioSource = AudioSource.file(song.path, tag: song);    
+    final audioSource = AudioSource.file(
+      song.path, 
+      tag: MediaItem(
+        id: song.id.toString(), 
+        title: song.title,
+        album: "Album",
+        artist: "Artist",
+        extras: {
+          "backgroundColor": song.backgroundColor.toARGB32(),
+          "vibe": song.vibe
+        }
+      )
+    );       
     await _player.addAudioSource(audioSource);
     await _sessionCacheService.addSongId(song.id);
 
@@ -243,7 +256,19 @@ class MusicPlayerService extends ChangeNotifier implements IMusicPlayerService {
     }
 
     _currentQueueSongs!.add(song);
-    final audioSource = AudioSource.file(song.path, tag: song);    
+    final audioSource = AudioSource.file(
+      song.path, 
+      tag: MediaItem(
+        id: song.id.toString(), 
+        title: song.title,
+        album: "Album",
+        artist: "Artist",
+        extras: {
+          "backgroundColor": song.backgroundColor.toARGB32(),
+          "vibe": song.vibe
+        }
+      )
+    );    
     await _player.addAudioSource(audioSource);
 
     await _player.play();
