@@ -4,6 +4,8 @@
 
 ***Xvibe*** is an Offline MP3 Player embedded with a *neural network* classifier that classifies songs into vibes and is later used by Xvibe to organize, randomly recommend a list of songs, and track how your songs are distributed into categories, which are *acoustic*, *chaotic*, *road trip*, *energetic*, and *chill*.
 
+Download the APK: [Here](https://github.com/Austine0829/xvibe-offline-mp3-player/releases)
+
 ## Features
 
 ### Home Page
