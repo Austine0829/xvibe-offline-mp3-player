@@ -77,7 +77,7 @@
 * Set songs as ringtones.
 
 ## Application Technologies
-Dart, Flutter, SQLite, TFLite, Hive.
+Dart, Flutter, SQLite, TFLite, Hive, Provider.
 
 ## ML Technologies
 * Python, TensorFlow Keras, NumPy, Pandas, Scikit-Learn, Jupyter, YAMNet. 
