@@ -93,3 +93,27 @@ Dart, Flutter, SQLite, TFLite, Hive.
 
 
 
+## How to run the project
+
+### Prerequisites
+
+* Ensure your device is already connected to your machine(Skip if using an emulator).
+* Phone is already in developer mode, and debugging mode is enabled(Skip if using an emulator).
+* Git
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/Austine0829/xvibe-offline-mp3-player.git
+cd xvibe-offline-mp3-player
+```
+
+### Install the packages
+```bash
+flutter pub get
+```
+
+### Run the Application
+```bash
+flutter run --release
+```
