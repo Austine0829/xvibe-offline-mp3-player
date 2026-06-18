@@ -35,7 +35,7 @@ class BottomSwipableSongMenuSheet extends StatelessWidget {
             children: [
               ListTile(
                 onTap: () {
-                  browseVibeViewModel.play(indexId);
+                  browseVibeViewModel.addSongToCurrentQueuePlay(songId);
                   Navigator.pop(context);
                 },
                 leading: Icon(
