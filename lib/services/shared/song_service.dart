@@ -51,7 +51,19 @@ class SongService extends ChangeNotifier implements ISongService {
   Future<void> updateSong(int songId, Song song) async {
     await _songRepository.update(songId, song);
 
-    _audioSources[songId] = AudioSource.file(song.path, tag: song);
+    _audioSources[songId] = AudioSource.file(
+      song.path, 
+      tag: MediaItem(
+        id: song.id.toString(), 
+        title: song.title,
+        album: "Album",
+        artist: "Artist",
+        extras: {
+          "backgroundColor": song.backgroundColor.toARGB32(),
+          "vibe": song.vibe
+        }
+      )
+    );    
     _songSources[songId] = song;
 
     notifyListeners();
