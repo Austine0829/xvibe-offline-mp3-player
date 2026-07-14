@@ -90,6 +90,7 @@ class _HomePageState extends State<HomePage> {
               StreamBuilder(
                 stream: musicPlayerService.playerSequenceStateStream(), 
                 builder: (context, snapshot) {
+                  var deviceHeight = MediaQuery.of(context).size.height;
                   final state = snapshot.data;
                   int? index;
 
@@ -97,7 +98,10 @@ class _HomePageState extends State<HomePage> {
                     index = state.currentIndex;
                   }
 
-                  return SizedBox(height: index != null ? 170 : 70);
+                  return SizedBox(height: index != null ? 
+                    deviceHeight * 0.27: 
+                    deviceHeight * 0.15
+                  );
                 }
               )
             ],

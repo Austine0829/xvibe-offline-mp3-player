@@ -46,6 +46,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
             StreamBuilder(
               stream: musicPlayerService.playerSequenceStateStream(),
               builder: (context, snapshot) {
+                var deviceHeight = MediaQuery.of(context).size.height;
                 final state = snapshot.data;
                 int? index;
 
@@ -53,7 +54,10 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                   index = state.currentIndex;
                 }
 
-                return SizedBox(height: index != null ? 165 : 60);
+                return SizedBox(height: index != null ? 
+                    deviceHeight * 0.27: 
+                    deviceHeight * 0.15
+                );
               },
             ),
           ],
